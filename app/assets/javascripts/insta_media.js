@@ -52,7 +52,7 @@ function showPosition(position) {
   var longitude = position.coords.longitude;
   var myLatlng = new google.maps.LatLng(latitude, longitude);
   var mapOptions = {
-    zoom: 8,
+    zoom: 10,
     center: myLatlng,
     styles: styles,
     mapTypeId: google.maps.MapTypeId.ROADMAP
@@ -69,15 +69,19 @@ function showPosition(position) {
   });
 
   $(map).on('ajax:success', function(event, data) {
-		$(".container").html(data.instagram);
-		$(".container").imagesLoaded(function(){
-		  $(".container").masonry({
-		    itemSelector : '.thumbnail',
-		    gutterWidth : 15,
-		    isFitWidth: true
-		  });
-		});
-		$(".container").masonry("reload");
+  	if(data.instagram == ""){
+  		$(".container").html('<div class="center alert alert-danger"><strong>Unfortunately no images where found for this geolocation.</strong></div>');
+  	} else {
+			$(".container").html(data.instagram);
+			$(".container").imagesLoaded(function(){
+		  	$(".container").masonry({
+		    	itemSelector : '.thumbnail',
+		    	gutterWidth : 15,
+		    	isFitWidth: true
+		  	});
+			});
+			$(".container").masonry("reload");
+  	}
 	});
 
 };
