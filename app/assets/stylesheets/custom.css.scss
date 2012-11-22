@@ -1,0 +1,34 @@
+$inputBorderRadius: 8px;
+
+/* import bootstrap and google font */
+
+@import "bootstrap";
+
+/* universal */
+
+html { height: 100%; }
+body { height: 40%; margin: 0; padding: 0; background-image:url("furley_bg.png"); }
+.container { margin-top: 15px; }
+#map_canvas { margin-top: 41px; height: 100%; }
+
+.center { text-align: center; h1 { margin-bottom: 10px; } }
+.nav { padding-top: 12px; font-size: 16px; letter-spacing: -1px; li:hover { text-decoration: underline; } }
+.navbar-inner { height: 30px; line-height: 30px; background-color: #063540; background-image: none; background-repeat: no-repeat; border-bottom: 1px solid #000; ul li { display: inline; a { color: white; margin-right: 25px; text-decoration: none; } } }
+.create-btn-home { margin-bottom: 25px; margin-right: 50px; }
+.poll-edit-badge { margin-bottom: 25px; }
+.thumbnail { background-color: white; width: 225px; margin: 0 2px 15px; padding: 15px; box-shadow: 3px 3px 8px #999; img { border-radius: 3px; } a { &:hover { text-decoration: none; background-color: #E5D9CF; } } }
+table { background-color: white; }
+#chart_div { box-shadow: 4px 4px 8px #999; }
+#show_photo { border-radius: 15px; box-shadow: -5px 6px 6px #999; }
+.progress { width: 700px; }
+.breadcrumb { background-color: #E5D9CF; height: 20px; a { color: #403D3A; } }
+.comment_area { background-color: #E5D9CF; padding: 5px; }
+.captions { width: 220px; }
+
+/* typography */
+
+h1, h2, h3, h4, h5, h6 { line-height: 1; }
+h1 { font-size: 3em; letter-spacing: -2px; margin-bottom: 30px; text-align: center; }
+h2 { font-size: 1.7em; letter-spacing: -1px; margin-bottom: 30px; text-align: normal; color: #999; }
+p { font-size: 1.1em; line-height: 1.7em; text-align: justify; img { float: left; height: 200px; width: 180px; border-radius: 8px; margin-right: 10px; box-shadow: -5px 5px 5px #888; } }
+#logo { font-family: 'Faster One', cursive; float: left; margin-left: 50px; font-size: 35px; color: #FFF; text-transform: uppercase; letter-spacing: -1px; font-weight: bold; line-height: 35px; &:hover { color: #FFF; text-decoration: none; } }
