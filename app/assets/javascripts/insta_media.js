@@ -1,5 +1,5 @@
 $(function() {
-	$('.modal').modal("show");
+  $('.modal').modal("show");
 });
 
 $(function () {
@@ -12,6 +12,7 @@ $(function () {
 	  });
 	});
 });
+
 
 var map;
 markersArray = [];
@@ -72,18 +73,16 @@ function showPosition(position) {
   	if(data.instagram == ""){
   		$(".container").html('<div class="center alert alert-danger"><strong>Unfortunately no images where found for this geolocation.</strong></div>');
   	} else {
-			$(".container").html(data.instagram);
+		  $(".container").html(data.instagram);
 			$(".container").imagesLoaded(function(){
 		  	$(".container").masonry({
 		    	itemSelector : '.thumbnail',
 		    	gutterWidth : 15,
 		    	isFitWidth: true
 		  	});
-			});
-			$(".container").masonry("reload");
+		  });
   	}
 	});
-
 };
 
 function placeMarker(location) {

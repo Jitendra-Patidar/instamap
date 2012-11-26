@@ -5,7 +5,10 @@
 			<div class="thumbnails">
 		  	<div class="span4">
 		    	<div class="thumbnail">
-		      	<%= image_tag media.images.low_resolution.url.to_s, title: media.caption.to_a.flatten[3] %>
+		      	<%= 
+		      		link_to image_tag(media.images.low_resolution.url.to_s),
+		      		media.images.standard_resolution.url.to_s, "rel" => "lightbox", remote: true
+		      	%>
 		      	<div class="captions"><h3><%= media.user.username %></h3></div>
 		      	<div class="captions"><%= media.caption.to_a.flatten[3] %></div>
 		      	<br /><br />
