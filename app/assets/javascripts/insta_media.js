@@ -1,16 +1,16 @@
-$(function() {
-  $('.modal').modal("show");
+$("#about-modal").click(function(){
+  $("#about-modal").modal("show");
 });
 
 $(function () {
-	var $container = $('.container');
-	$container.imagesLoaded(function(){
-	  $container.masonry({
-	    itemSelector : '.thumbnail',
-	    gutterWidth : 15,
-	    isFitWidth: true
-	  });
-	});
+  var $container = $('.container');
+  $container.imagesLoaded(function(){
+    $container.masonry({
+      itemSelector : '.thumbnail',
+      gutterWidth : 15,
+      isFitWidth: true
+    });
+  });
 });
 
 
@@ -53,7 +53,7 @@ function showPosition(position) {
   var longitude = position.coords.longitude;
   var myLatlng = new google.maps.LatLng(latitude, longitude);
   var mapOptions = {
-    zoom: 10,
+    zoom: 8,
     center: myLatlng,
     styles: styles,
     mapTypeId: google.maps.MapTypeId.ROADMAP
@@ -61,31 +61,38 @@ function showPosition(position) {
   
   map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
 
+  var panoramioLayer = new google.maps.panoramio.PanoramioLayer();
+
+  panoramioLayer.setMap(map);
+
   google.maps.event.addListener(map, 'click', function(event) {
-  	placeMarker(event.latLng);
+    placeMarker(event.latLng);
     pingInstagram(map, event);
     setTimeout(function(){
-    	markersArray[markersArray.length-1].setMap(null);
+      markersArray[markersArray.length-1].setMap(null);
     }, 3000);
   });
 
   $(map).on('ajax:success', function(event, data) {
-  	if(data.instagram == ""){
-  		$(".container").html('<div class="center alert alert-danger"><strong>Unfortunately no images where found for this geolocation.</strong></div>');
-  	} else {
-		  $(".container").html(data.instagram);
-			$(".container").imagesLoaded(function(){
-		  	$(".container").masonry({
-		    	itemSelector : '.thumbnail',
-		    	gutterWidth : 15,
-		    	isFitWidth: true
-		  	});
-		  });
-  	}
-	});
+    if(data.instagram == ""){
+      $(".container").html('<div class="center alert alert-danger"><strong>Unfortunately no images where found for this geolocation.</strong></div>');
+    } else {
+      $(".container").html(data.instagram);
+      $(".container").imagesLoaded(function(){
+        $(".container").masonry({
+          itemSelector : '.thumbnail',
+          gutterWidth : 15,
+          isFitWidth: true
+        });
+      });
+      $(".container").masonry("reload");
+    }
+  });
+
 };
 
 function placeMarker(location) {
+  debugger
   var marker = new google.maps.Marker({
     position: location,
     map: map,
@@ -97,13 +104,13 @@ function placeMarker(location) {
 };
 
 function pingInstagram(map, event) {
-	var $self = $(map);
+  var $self = $(map);
   $.ajax({
-		type: 'get',
-		url: '/places',
-		dataType: 'json',
-		data: { lng: event.latLng.$a, lat: event.latLng.ab },
-		success: function(data, status, xhr) {
+    type: 'get',
+    url: '/places',
+    dataType: 'json',
+    data: { lng: event.latLng.$a, lat: event.latLng.ab },
+    success: function(data, status, xhr) {
       $self.trigger('ajax:success', [data, status, xhr]);
     },
     error: function(xhr, status, error) {
@@ -112,5 +119,5 @@ function pingInstagram(map, event) {
     complete: function(xhr, status) {
       $self.trigger('ajax:complete', [xhr, status]);
     }
-	});
+  });
 };

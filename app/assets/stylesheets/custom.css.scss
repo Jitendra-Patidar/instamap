@@ -1,5 +1,3 @@
-$inputBorderRadius: 8px;
-
 /* import bootstrap and google font */
 
 @import "bootstrap";
@@ -14,18 +12,8 @@ body { height: 40%; margin: 0; padding: 0; background-image:url("furley_bg.png")
 .center { text-align: center; h1 { margin-bottom: 10px; } }
 .nav { padding-top: 12px; font-size: 16px; letter-spacing: -1px; li:hover { text-decoration: underline; } }
 .navbar-inner { height: 30px; line-height: 30px; background-color: #063540; background-image: none; background-repeat: no-repeat; border-bottom: 1px solid #000; ul li { display: inline; a { color: white; margin-right: 25px; text-decoration: none; } } }
-.create-btn-home { margin-bottom: 25px; margin-right: 50px; }
-.poll-edit-badge { margin-bottom: 25px; }
 .thumbnail { background-color: white; width: 225px; margin: 0 2px 15px; padding: 15px; box-shadow: 3px 3px 8px #999; img { border-radius: 3px; } a { &:hover { text-decoration: none; background-color: #E5D9CF; } } }
-table { background-color: white; }
-#chart_div { box-shadow: 4px 4px 8px #999; }
-#show_photo { border-radius: 15px; box-shadow: -5px 6px 6px #999; }
-.progress { width: 700px; }
-.breadcrumb { background-color: #E5D9CF; height: 20px; a { color: #403D3A; } }
-.comment_area { background-color: #E5D9CF; padding: 5px; }
 .captions { width: 220px; }
-.media-object { border-radius: 8px; }
-.insta_user { margin-top: 41px; }
 
 /* typography */
 

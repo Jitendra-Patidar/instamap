@@ -1,7 +1,7 @@
 <div id="map_canvas"></div>
 <div class="container">
 	<div class="row">
-		<% @medias.each do |media| %>
+		<% @medias.data.each do |media| %>
 			<div class="thumbnails">
 		  	<div class="span4">
 		    	<div class="thumbnail">
@@ -21,19 +21,4 @@
 			</div>
 		<% end %>
 	</div>
-</div>
-
-<div class="modal hide fade">
-  <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-    <h3>What is InstaMap?</h3>
-  </div>
-  <div class="modal-body">
-    <p>
-    	Good quesiton... InstaMap is a new and fun way to view recent photos that are geolocated. When you firist visit InstaMap, the most popular images from Instagram at the time is presented on your page.
-    </p>
-    <p>
-    	To help you navigate the map quicker, it should already be close to your location. So go ahead and move the map around, clicking onto the map where you would like to place a marker. Once a marker has been set, the images will auto update and you will be presented with the most recent geolocated photos from the area which you clicked.
-    </p>
-  </div>
 </div>

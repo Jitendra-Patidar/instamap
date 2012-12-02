@@ -1,7 +1,7 @@
 class InstaMediaController < ApplicationController
 
 	def index
-		@medias = Instagram.media_popular(count: 200)
+		@medias = Instagram.media_search(37.4283, -121.9056)
 	end
 
 	def places
