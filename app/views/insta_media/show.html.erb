@@ -1,7 +1,5 @@
-<div class="span6">
-  <%= image_tag @media.images.standard_resolution.url.to_s,
-        id: "fixed-image", height: 500, width: 500 %>
-
+<div class="span12">
+  <%= image_tag @media.images.standard_resolution.url.to_s, id: "fixed-image", height: 500, width: 500 %>
   <div class="span2">
     <%= image_tag @user["profile_picture"], id: "profile-picture" %>
   </div>
@@ -11,13 +9,10 @@
     <%= comma_number(@user["counts"]["follows"]) %> following<br />
     <%= @user["bio"] %>
   </div>
-</div>
-<div class="span6 comments">
+  <div class="comments offset6">
   <% @comments.each do |comment| %>
     <div class="media">
-      <a class="pull-left" href="#">
-        <%= image_tag comment.from.profile_picture.to_s, height: 64, width: 64 %>
-      </a>
+      <%= image_tag comment.from.profile_picture.to_s, height: 64, width: 64, class: "pull-right" %>
       <div class="media-body">
         <h4 class="media-heading"><%= comment.from.username %></h4>
         <%= comment.text %>
