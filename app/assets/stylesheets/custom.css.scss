@@ -8,6 +8,10 @@ html { height: 100%; }
 body { height: 40%; margin: 0; padding: 0; background-image:url("furley_bg.png"); }
 .container { margin-top: 15px; }
 #map_canvas { margin-top: 41px; height: 100%; }
+#fixed-image { position: fixed; margin-top: 60px; margin-bottom: 25px; }
+#profile-picture { margin-top: 581px; margin-left: -30px; position: fixed; }
+#bio { margin-top: 581px; position: fixed; margin-left: 185px; }
+.comments { margin-top: 60px; }
 
 .center { text-align: center; h1 { margin-bottom: 10px; } }
 .nav { padding-top: 12px; font-size: 16px; letter-spacing: -1px; li:hover { text-decoration: underline; } }

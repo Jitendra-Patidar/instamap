@@ -9,7 +9,15 @@ gem 'masonry-rails'
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
 group :development, :test, :production do
-	gem 'pg'
+  gem 'pg'
+end
+
+group :development do
+  platform :ruby_19 do
+    gem 'linecache19', :git => 'git://github.com/mark-moseley/linecache'
+    gem 'ruby-debug-base19x', '~> 0.11.30.pre4'
+    gem "ruby-debug19"
+  end
 end
 
 # Gems used only for assets and not required

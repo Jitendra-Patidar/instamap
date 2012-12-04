@@ -1,24 +1,26 @@
 <div id="map_canvas"></div>
 <div class="container">
-	<div class="row">
-		<% @medias.data.each do |media| %>
-			<div class="thumbnails">
-		  	<div class="span4">
-		    	<div class="thumbnail">
-		      	<%= 
-		      		link_to image_tag(media.images.low_resolution.url.to_s),
-		      		media.images.standard_resolution.url.to_s, "rel" => "lightbox", remote: true
-		      	%>
-		      	<div class="captions"><h3><%= media.user.username %></h3></div>
-		      	<div class="captions"><%= media.caption.to_a.flatten[3] %></div>
-		      	<br /><br />
-		      	<%= media.link %>
-		      	<br /><br />
-		      	<div class="comment_area pull-left"><%= media.likes.to_a.flatten[1] %> likes</div>
-		      	<div class="comment_area pull-right"><%= media.comments.to_a.flatten[1] %> comments</div>
-		    	</div>
-		  	</div>
-			</div>
-		<% end %>
-	</div>
+  <div class="row">
+    <% @medias.each do |media| %>
+      <div class="thumbnails">
+        <div class="span4">
+          <div class="thumbnail">
+            <%=
+              link_to image_tag(media.images.low_resolution.url.to_s),
+              media.images.standard_resolution.url.to_s, "rel" => "lightbox"
+            %>
+            <div class="captions"><h3><%= link_to media.user.username, show_path(media.id) %></h3></div>
+            <div class="captions"><%= media.caption["text"] if media.caption %></div>
+            <br /><br />
+            <div class="comment_area pull-left">
+              <%= comma_number(media.likes["count"]) %> likes
+            </div>
+            <div class="comment_area pull-right">
+              <%= comma_number(media.comments["count"]) %> comments
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
 </div>
