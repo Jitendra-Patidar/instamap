@@ -1,24 +1,18 @@
-<<<<<<< HEAD
+<div id="map_canvas"></div>
 <div class="span12">
-=======
-<div class="span6">
->>>>>>> Added an images overlay to the maps and ability to click on the map markers to display the images
-  <%= image_tag @media.images.standard_resolution.url.to_s, id: "fixed-image", height: 500, width: 500 %>
+  <div class="span6">
+    <%= image_tag @media.images.standard_resolution.url.to_s, id: "fixed-image", height: 500, width: 500 %>
   <div class="span2">
     <%= image_tag @user["profile_picture"], id: "profile-picture" %>
   </div>
-  <div class="span3" id="bio">
+  <div class="span3">
     <strong><%= @media.user.username %></strong><br />
     <%= comma_number(@user["counts"]["followed_by"]) %> followers<br />
     <%= comma_number(@user["counts"]["follows"]) %> following<br />
     <%= @user["bio"] %>
   </div>
-<<<<<<< HEAD
-  <div class="comments offset6">
-=======
 </div>
-<div class="span5 comments">
->>>>>>> Added an images overlay to the maps and ability to click on the map markers to display the images
+<div class="offset6 comments">
   <% @comments.each do |comment| %>
     <div class="media">
       <%= image_tag comment.from.profile_picture.to_s, height: 64, width: 64, class: "pull-right" %>
@@ -29,3 +23,41 @@
     </div>
   <% end %>
 </div>
+<script type="text/javascript">
+  $(document).ready(function() { Instamedia.init(); });
+
+  var Instamedia = {
+    panorama: null,
+    markersArray: [],
+    init: function() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(Instamedia.showPosition);
+      } else {
+        alert("Geolocation is not supported by this browser");
+      };
+    },
+
+    showPosition: function (position) {
+      var latitude = parseFloat("<%= @media.location['latitude'] %>");
+      var longitude = parseFloat("<%= @media.location['longitude'] %>");
+      var panoramaOptions = {
+        addressControl: true,
+        addressControlOptions: {
+          style: { backgroundColor: 'grey', color: 'yellow' }
+        },
+        position: new google.maps.LatLng(latitude,longitude),
+        pov: {
+          heading: 140,
+          pitch: 0,
+          zoom: 0
+        }
+      };
+
+      Instamedia.panorama = new google.maps.StreetViewPanorama(document.getElementById("map_canvas"), panoramaOptions);
+
+      Instamedia.map.setStreetView(Instamedia.panorama);
+    }
+  };
+
+
+</script>

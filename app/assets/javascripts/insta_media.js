@@ -52,7 +52,7 @@ var Instamedia = {
     var longitude = position.coords.longitude;
     var myLatlng = new google.maps.LatLng(latitude, longitude);
     var mapOptions = {
-      zoom: 8,
+      zoom: 12,
       center: myLatlng,
       styles: Instamedia.styles,
       mapTypeId: google.maps.MapTypeId.ROADMAP
@@ -105,14 +105,14 @@ var Instamedia = {
         map: Instamedia.map
       });//end marker
       var infoWindow = new google.maps.InfoWindow;
-      var contentString = "<div class='infowindow'><img src='" + $(this).find("img").attr("src") + "'</div>";
-      Instamedia.bindInfoW(marker, contentString, infoWindow);
+      var content = "<div class='infowindow'><img src='" + $(this).find("img").attr("src") + "'</div>";
+      Instamedia.addToWindow(marker, content, infoWindow);
     });
   },
 
-  bindInfoW: function(marker, contentString, infowindow){
+  addToWindow: function(marker, content, infowindow){
     google.maps.event.addListener(marker, 'click', function() {
-        infowindow.setContent(contentString);
+        infowindow.setContent(content);
         infowindow.open(Instamedia.map, marker);
     });
   },
