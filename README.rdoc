@@ -1,9 +1,10 @@
 Current ongoing Rails app. Instamap will be the first featured side project I am currently building out. Currently the app uses Google maps and Instagram API.
 
-Things to do
--------------
+Things to do ( Not in any particular order )
+-------------------------------------------
 1. Look into FB, Twitter, Four Square, Yelp API to see if it is possible to extract geolocations to create heat maps for a particular user.
 2. Build out profile pages for each Instagram user.
 3. Clean up code base and learn more JavaScript/jQuery.
 4. Commit to the inital goal of 1k FB likes.
+5. Build out search functionality 
 5. Future planning....
