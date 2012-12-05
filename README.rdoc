@@ -7,4 +7,6 @@ Things to do ( Not in any particular order )
 3. Clean up code base and learn more JavaScript/jQuery.
 4. Commit to the inital goal of 1k FB likes.
 5. Build out search functionality 
-5. Future planning....
+6. Add additional info to image overlays on maps - homepage.
+7. Add additional info to lightbox popups
+8. Future planning....
