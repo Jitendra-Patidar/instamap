@@ -33,10 +33,10 @@ var Instamedia = {
       alert("Geolocation is not supported by this browser");
     };
 
-    Instamedia.pimpMyPic();
+    Instamedia.myPic();
   },
 
-  pimpMyPic: function () {
+  myPic: function () {
     var $container = $('.container');
     $container.imagesLoaded(function(){
       $container.masonry({
@@ -94,8 +94,33 @@ var Instamedia = {
     }
 
     Instamedia.markersArray.push(marker);
-
     Instamedia.map.setCenter(location);
+  },
+
+  placeImage: function() {
+    var locations = $(".thumbnail");
+    $.each(locations, function(){
+      var marker = new google.maps.Marker({
+        position: new google.maps.LatLng($(this).attr("data-lat"), $(this).attr("data-long")),
+        map: Instamedia.map
+      });//end marker
+      var infoWindow = new google.maps.InfoWindow;
+      var contentString = "<div class='infowindow'><img src='" + $(this).find("img").attr("src") + "'</div>";
+      Instamedia.bindInfoW(marker, contentString, infoWindow);
+    });
+  },
+
+  bindInfoW: function(marker, contentString, infowindow){
+    google.maps.event.addListener(marker, 'click', function() {
+        infowindow.setContent(contentString);
+        infowindow.open(Instamedia.map, marker);
+    });
+  },
+
+  openWindow: function(marker) {
+    google.maps.event.addListener(marker, 'click', function(event) {
+      Instamedia.infoWindow.open(Instamedia.map, marker);
+    });
   },
 
   pingInstagram: function(map, event) {
@@ -107,6 +132,7 @@ var Instamedia = {
       data: { lng: event.latLng.$a, lat: event.latLng.ab },
       success: function(data, status, xhr) {
         $self.trigger('ajax:success', [data, status, xhr]);
+        Instamedia.placeImage();
       },
       error: function(xhr, status, error) {
         $self.trigger('ajax:error', [xhr, status, error]);

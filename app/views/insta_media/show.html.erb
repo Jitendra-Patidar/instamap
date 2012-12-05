@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 <div class="span12">
+=======
+<div class="span6">
+>>>>>>> Added an images overlay to the maps and ability to click on the map markers to display the images
   <%= image_tag @media.images.standard_resolution.url.to_s, id: "fixed-image", height: 500, width: 500 %>
   <div class="span2">
     <%= image_tag @user["profile_picture"], id: "profile-picture" %>
@@ -9,7 +13,12 @@
     <%= comma_number(@user["counts"]["follows"]) %> following<br />
     <%= @user["bio"] %>
   </div>
+<<<<<<< HEAD
   <div class="comments offset6">
+=======
+</div>
+<div class="span5 comments">
+>>>>>>> Added an images overlay to the maps and ability to click on the map markers to display the images
   <% @comments.each do |comment| %>
     <div class="media">
       <%= image_tag comment.from.profile_picture.to_s, height: 64, width: 64, class: "pull-right" %>
