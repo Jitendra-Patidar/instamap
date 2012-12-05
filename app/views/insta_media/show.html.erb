@@ -29,15 +29,7 @@
   var Instamedia = {
     panorama: null,
     markersArray: [],
-    init: function() {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(Instamedia.showPosition);
-      } else {
-        alert("Geolocation is not supported by this browser");
-      };
-    },
-
-    showPosition: function (position) {
+    init: function (position) {
       var latitude = parseFloat("<%= @media.location['latitude'] %>");
       var longitude = parseFloat("<%= @media.location['longitude'] %>");
       var panoramaOptions = {
