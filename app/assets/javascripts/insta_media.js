@@ -89,6 +89,9 @@ var Instamedia = {
       animation: google.maps.Animation.DROP
     });
 
+    Instamedia.map.setZoom(15);
+    Instamedia.map.setCenter(marker.getPosition());
+
     if(Instamedia.markersArray.length >= 1) {
       Instamedia.markersArray[Instamedia.markersArray.length-1].setMap(null);
     }
@@ -109,23 +112,18 @@ var Instamedia = {
         "<div class='infowindow'>" +
           "<img src='" + $(this).find("img").attr("src") +
           "'<div class='span5'>" +
-            "<h3><a href='" + $(this).attr("data-show-link") + "'>" + $(this).attr("data-username") + "</a></h3>" +
+            "<h3 class='infoUser'><a href='" + $(this).attr("data-show-link") + "'>" + $(this).attr("data-username") + "</a></h3>" +
+            "<br />" + $(this).attr("data-caption") +
           "</div>" +
         "</div>";
-      Instamedia.addToWindow(marker, content, infoWindow);
+      Instamedia.openWindow(marker, content, infoWindow);
     });
   },
 
-  addToWindow: function(marker, content, infowindow){
+  openWindow: function(marker, content, infowindow){
     google.maps.event.addListener(marker, 'click', function() {
         infowindow.setContent(content);
         infowindow.open(Instamedia.map, marker);
-    });
-  },
-
-  openWindow: function(marker) {
-    google.maps.event.addListener(marker, 'click', function(event) {
-      Instamedia.infoWindow.open(Instamedia.map, marker);
     });
   },
 
