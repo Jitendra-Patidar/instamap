@@ -105,7 +105,13 @@ var Instamedia = {
         map: Instamedia.map
       });//end marker
       var infoWindow = new google.maps.InfoWindow;
-      var content = "<div class='infowindow'><img src='" + $(this).find("img").attr("src") + "'</div>";
+      var content =
+        "<div class='infowindow'>" +
+          "<img src='" + $(this).find("img").attr("src") +
+          "'<div class='span5'>" +
+            "<h3><a href='" + $(this).attr("data-show-link") + "'>" + $(this).attr("data-username") + "</a></h3>" +
+          "</div>" +
+        "</div>";
       Instamedia.addToWindow(marker, content, infoWindow);
     });
   },
