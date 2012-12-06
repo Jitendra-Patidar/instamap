@@ -1,0 +1,30 @@
+<script type="text/javascript">
+  $(document).ready(function() { Instamedia.init(); });
+
+  var Instamedia = {
+    panorama: null,
+    markersArray: [],
+    init: function (position) {
+      var latitude = parseFloat("<%= @media.location['latitude'] %>");
+      var longitude = parseFloat("<%= @media.location['longitude'] %>");
+      var panoramaOptions = {
+        addressControl: true,
+        addressControlOptions: {
+          style: { backgroundColor: 'grey', color: 'yellow' }
+        },
+        position: new google.maps.LatLng(latitude,longitude),
+        pov: {
+          heading: 140,
+          pitch: 0,
+          zoom: 0
+        }
+      };
+
+      Instamedia.panorama = new google.maps.StreetViewPanorama(document.getElementById("show_canvas"), panoramaOptions);
+
+      Instamedia.map.setStreetView(Instamedia.panorama);
+    }
+  };
+
+
+</script>
