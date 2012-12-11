@@ -27,7 +27,6 @@ var Instamedia = {
   ],
 
   init: function() {
-    alert("Fuck")
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(Instamedia.showPosition);
     } else {
