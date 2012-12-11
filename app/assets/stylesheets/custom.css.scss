@@ -4,20 +4,45 @@
 
 /* universal */
 
-html { height: 100%; }
-body { height: 45%; margin: 0; padding: 0; background-image:url("furley_bg.png"); }
-.container { margin-top: 15px; }
-#map_canvas { margin-top: 41px; height: 100%; }
-#show_canvas { margin-top: 41px; height: 100%; }
+body {
+  background-image: url("classy_fabric.png");
+}
+
+#map_canvas { 
+	margin-bottom: 25px;
+	height: 450px;
+	margin-top: 66px;
+	border: 10px solid #9EBEA6;
+	border-radius: 10px;
+}
+
+.row {
+  margin: 0 auto;
+}
+
+#show_canvas { 
+	margin-bottom: 25px;
+	height: 450px;
+	margin-top: 66px;
+	border: 10px solid #9EBEA6;
+	border-radius: 10px;
+}
+
+.span2, .span3 {
+	color: white;
+}
+
+.span6 {
+	margin: 0px;
+}
+
 #fixed-image { margin-top: 30px; margin-bottom: 25px; }
 #profile-picture { margin-left: -30px; margin-bottom: 25px; }
 #bio { margin-top: 25px; }
-.comments { margin-top: 30px; height: 480px; overflow: auto; }
+.comments { margin-top: 30px; margin-left: 25px; height: 480px; overflow: auto; color: white; }
 .infowindow { height: 178px; width: 500px; img { margin-left: -30px; margin-right: 10px; height: 178px; width: 200px; } }
 
 .center { text-align: center; h1 { margin-bottom: 10px; } }
-.nav { padding-top: 12px; font-size: 16px; letter-spacing: -1px; li:hover { text-decoration: underline; } }
-.navbar-inner { height: 30px; line-height: 30px; background-color: #063540; background-image: none; background-repeat: no-repeat; border-bottom: 1px solid #000; ul li { display: inline; a { color: white; margin-right: 25px; text-decoration: none; } } }
 .thumbnail { background-color: white; width: 225px; margin: 0 2px 15px; padding: 15px; box-shadow: 3px 3px 8px #999; img { border-radius: 3px; } a { &:hover { text-decoration: none; background-color: #E5D9CF; } } }
 .captions { width: 220px; }
 
@@ -27,4 +52,4 @@ h1, h2, h3, h4, h5, h6 { line-height: 1; }
 h1 { font-size: 3em; letter-spacing: -2px; margin-bottom: 30px; text-align: center; }
 h2 { font-size: 1.7em; letter-spacing: -1px; margin-bottom: 30px; text-align: normal; color: #999; }
 p { font-size: 1.1em; line-height: 1.7em; text-align: justify; img { float: left; height: 200px; width: 180px; border-radius: 8px; margin-right: 10px; box-shadow: -5px 5px 5px #888; } }
-#logo { font-family: 'Faster One', cursive; float: left; margin-left: 50px; font-size: 35px; color: #FFF; text-transform: uppercase; letter-spacing: -1px; font-weight: bold; line-height: 35px; &:hover { color: #FFF; text-decoration: none; } }
+#logo { font-family: 'Faster One', cursive; float: left; margin-top: 10px; margin-left: 10px; font-size: 35px; color: #EFDFBB; text-transform: uppercase; letter-spacing: -1px; font-weight: bold; line-height: 35px; &:hover { color: #EFDFBB; text-decoration: none; } }

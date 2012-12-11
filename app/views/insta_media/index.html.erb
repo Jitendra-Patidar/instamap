@@ -1,26 +1,12 @@
 <div id="map_canvas"></div>
-<div class="container">
-  <div class="row">
-    <% @medias.each do |media| %>
-      <div class="thumbnails">
-        <div class="span4">
-          <div class="thumbnail">
-            <%=
-              link_to image_tag(media.images.low_resolution.url.to_s),
-              media.images.standard_resolution.url.to_s, "rel" => "lightbox"
-            %>
-            <div class="captions"><h3><%= link_to media.user.username, show_path(media.id) %></h3></div>
-            <div class="captions"><%= media.caption["text"] if media.caption %></div>
-            <br /><br />
-            <div class="comment_area pull-left">
-              <%= comma_number(media.likes["count"]) %> likes
-            </div>
-            <div class="comment_area pull-right">
-              <%= comma_number(media.comments["count"]) %> comments
-            </div>
-          </div>
-        </div>
-      </div>
-    <% end %>
+<div class="imageSlider">
+  <div class="flexslider">
+    <ul class="slides">
+      <% @medias.each do |media| %>
+        <li>
+          <%= link_to image_tag(media.images.thumbnail.url), media.images.standard_resolution.url, rel: "lightbox" %>
+        </li>
+      <% end %>
+    </ul>
   </div>
 </div>

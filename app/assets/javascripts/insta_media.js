@@ -36,14 +36,12 @@ var Instamedia = {
     Instamedia.myPic();
   },
 
-  myPic: function () {
-    var $container = $('.container');
-    $container.imagesLoaded(function(){
-      $container.masonry({
-        itemSelector : '.thumbnail',
-        gutterWidth : 15,
-        isFitWidth: true
-      });
+  myPic: function() {
+    $(".flexslider").flexslider({
+      animation: "slide",
+      animationLoop: true,
+      itemWidth: 160,
+      itemMargin: 5
     });
   },
 
@@ -63,22 +61,14 @@ var Instamedia = {
     google.maps.event.addListener(Instamedia.map, 'click', function(event) {
       Instamedia.placeMarker(event.latLng);
       Instamedia.pingInstagram(Instamedia.map, event);
-    });
-
-    $(Instamedia.map).on('ajax:success', function(event, data) {
-      if(data.instagram == ""){
-        $(".container").html('<div class="center alert alert-danger"><strong>Unfortunately no images where found for this geolocation.</strong></div>');
-      } else {
-        $(".container").html(data.instagram);
-        $(".container").imagesLoaded(function(){
-          $(".container").masonry({
-            itemSelector : '.thumbnail',
-            gutterWidth : 15,
-            isFitWidth: true
-          });
-        });
-        $(".container").masonry("reload");
-      }
+      $(Instamedia.map).on('ajax:success', function(event, data) {
+        if(data.instagram == ""){
+          $(".container").html('<div class="center alert alert-danger"><strong>Unfortunately no images where found for this geolocation.</strong></div>');
+        } else {
+          $(".imageSlider").html(data.instagram);
+          Instamedia.myPic();   
+        }
+      });
     });
   },
 
@@ -101,7 +91,7 @@ var Instamedia = {
   },
 
   placeImage: function() {
-    var locations = $(".thumbnail");
+    var locations = $(".thumb");
     $.each(locations, function(){
       var marker = new google.maps.Marker({
         position: new google.maps.LatLng($(this).attr("data-lat"), $(this).attr("data-long")),
@@ -114,6 +104,7 @@ var Instamedia = {
           "'<div class='span5'>" +
             "<h3 class='infoUser'><a href='" + $(this).attr("data-show-link") + "'>" + $(this).attr("data-username") + "</a></h3>" +
             "<br />" + $(this).attr("data-caption") +
+            "<br />" + $(this).attr("data-comments") +
           "</div>" +
         "</div>";
       Instamedia.openWindow(marker, content, infoWindow);

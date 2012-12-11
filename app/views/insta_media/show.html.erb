@@ -1,7 +1,6 @@
 <div id="show_canvas"></div>
-<div class="span12">
-  <div class="span6">
-    <%= image_tag @media.images.standard_resolution.url.to_s, id: "fixed-image", height: 500, width: 500 %>
+<div class="span6">
+  <%= image_tag @media.images.standard_resolution.url.to_s, id: "fixed-image", height: 500, width: 500 %>
   <div class="span2">
     <%= image_tag @user["profile_picture"], id: "profile-picture" %>
   </div>
@@ -12,7 +11,7 @@
     <%= @user["bio"] %>
   </div>
 </div>
-<div class="offset6 comments">
+<div class="span6 comments">
   <% @comments.each do |comment| %>
     <div class="media">
       <%= image_tag comment.from.profile_picture.to_s, height: 64, width: 64, class: "pull-right" %>
