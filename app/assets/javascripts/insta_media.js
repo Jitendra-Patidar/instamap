@@ -21,12 +21,13 @@ var Instamedia = {
       featureType: "poi.business",
       elementType: "labels",
       stylers: [
-        { visibility: "off" }
+        { visibility: "on" }
       ]
     }
   ],
 
   init: function() {
+    alert("Fuck")
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(Instamedia.showPosition);
     } else {
@@ -124,7 +125,7 @@ var Instamedia = {
       type: 'get',
       url: '/places',
       dataType: 'json',
-      data: { lng: event.latLng.$a, lat: event.latLng.ab },
+      data: { lng: event.latLng.Ya, lat: event.latLng.Za },
       success: function(data, status, xhr) {
         $self.trigger('ajax:success', [data, status, xhr]);
         Instamedia.placeImage();
