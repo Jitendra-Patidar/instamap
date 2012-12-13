@@ -20,9 +20,18 @@ body {
   margin: 0 auto;
 }
 
+#fb-root {
+	margin-top: 20px;
+}
+
+#loader {
+	margin-left: 480px;
+	margin-top: 225px;
+}
+
 #show_canvas { 
 	margin-bottom: 25px;
-	height: 450px;
+	height: 400px;
 	margin-top: 66px;
 	border: 10px solid #9EBEA6;
 	border-radius: 10px;

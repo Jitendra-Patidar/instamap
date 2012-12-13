@@ -1,4 +1,6 @@
-$(document).ready(function() { Instamedia.init(); });
+$(document).ready(function() {
+  Instamedia.init();
+});
 
 var Instamedia = {
   map: null,
@@ -32,8 +34,6 @@ var Instamedia = {
     } else {
       alert("Geolocation is not supported by this browser");
     };
-
-    Instamedia.myPic();
   },
 
   myPic: function() {
@@ -57,6 +57,24 @@ var Instamedia = {
     }
 
     Instamedia.map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
+
+    $("#map_canvas").append("<img id=\"loader\" src=\"assets/ajax-loader.gif\" />");
+
+    $.ajax({
+      type: 'get',
+      url: '/places',
+      dataType: 'json',
+      data: { lng: myLatlng.Ya, lat: myLatlng.Za },
+      success: function(data) {
+        Instamedia.placeMarker(myLatlng);
+        $(".imageSlider").html(data.instagram);
+        Instamedia.myPic(); 
+        Instamedia.placeImage();
+      },
+      error: function() {
+        alert("Please refresh the page");
+      }
+    });
 
     google.maps.event.addListener(Instamedia.map, 'click', function(event) {
       Instamedia.placeMarker(event.latLng);
@@ -113,8 +131,8 @@ var Instamedia = {
 
   openWindow: function(marker, content, infowindow){
     google.maps.event.addListener(marker, 'click', function() {
-        infowindow.setContent(content);
-        infowindow.open(Instamedia.map, marker);
+      infowindow.setContent(content);
+      infowindow.open(Instamedia.map, marker);
     });
   },
 
