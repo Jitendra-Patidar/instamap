@@ -58,7 +58,7 @@ var Instamedia = {
 
     Instamedia.map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
 
-    $("#map_canvas").append("<img id=\"loader\" src=\"assets/ajax-loader.gif\" />");
+    $(".container").append("<img id=\"loader\" src=\"assets/ajax-loader.gif\" />");
 
     $.ajax({
       type: 'get',
@@ -66,6 +66,7 @@ var Instamedia = {
       dataType: 'json',
       data: { lng: myLatlng.Ya, lat: myLatlng.Za },
       success: function(data) {
+        $("#loader").remove();
         Instamedia.placeMarker(myLatlng);
         $(".imageSlider").html(data.instagram);
         Instamedia.myPic(); 
@@ -77,6 +78,7 @@ var Instamedia = {
     });
 
     google.maps.event.addListener(Instamedia.map, 'click', function(event) {
+      $(".container").append("<img id=\"loader\" src=\"assets/ajax-loader.gif\" />");
       Instamedia.placeMarker(event.latLng);
       Instamedia.pingInstagram(Instamedia.map, event);
       $(Instamedia.map).on('ajax:success', function(event, data) {
@@ -146,6 +148,7 @@ var Instamedia = {
       success: function(data, status, xhr) {
         $self.trigger('ajax:success', [data, status, xhr]);
         Instamedia.placeImage();
+        $("#loader").remove();
       },
       error: function(xhr, status, error) {
         $self.trigger('ajax:error', [xhr, status, error]);
