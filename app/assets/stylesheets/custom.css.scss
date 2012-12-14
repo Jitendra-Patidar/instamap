@@ -16,6 +16,11 @@ body {
 	border-radius: 10px;
 }
 
+.fancybox-title iframe {
+    min-height: 30px;
+    vertical-align: middle;
+}
+
 .row {
   margin: 0 auto;
 }

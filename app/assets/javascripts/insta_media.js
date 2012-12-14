@@ -1,4 +1,30 @@
 $(document).ready(function() {
+  $(".fancybox")
+    .attr('rel', 'gallery')
+    .fancybox({
+      beforeShow: function () {
+        if (this.title) {
+          // New line
+          this.title += '<br />';
+                
+          // Add FaceBook like button
+          this.title += '<iframe src="//www.facebook.com/plugins/like.php?href=' + this.href + '&amp;layout=button_count&amp;show_faces=true&amp;width=500&amp;action=like&amp;font&amp;colorscheme=light&amp;height=23" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:110px; height:23px;" allowTransparency="true"></iframe>';
+        }
+        /* Disable right click */
+        $.fancybox.wrap.bind("contextmenu", function (e) {
+          return false; 
+        });
+      },
+      afterShow: function() {
+        // Render tweet button
+        twttr.widgets.load();
+      },
+      helpers : {
+        title : {
+          type: 'inside'
+        }
+      } 
+    });
   Instamedia.init();
 });
 
@@ -40,6 +66,7 @@ var Instamedia = {
     $(".flexslider").flexslider({
       animation: "slide",
       animationLoop: true,
+      slideshow: false,
       itemWidth: 160,
       itemMargin: 5
     });
@@ -69,7 +96,7 @@ var Instamedia = {
         $("#loader").remove();
         Instamedia.placeMarker(myLatlng);
         $(".imageSlider").html(data.instagram);
-        Instamedia.myPic(); 
+        Instamedia.myPic();
         Instamedia.placeImage();
       },
       error: function() {

@@ -213,6 +213,10 @@ lightbox = new Lightbox options
     };
 
     Lightbox.prototype.sizeContainer = function(imageWidth, imageHeight) {
+      if (imageWidth > 400) {
+        imageHeight = imageHeight / imageWidth * 400;
+        imageWidth = 400;
+      }
       var $container, $lightbox, $outerContainer, containerBottomPadding, containerLeftPadding, containerRightPadding, containerTopPadding, newHeight, newWidth, oldHeight, oldWidth,
         _this = this;
       $lightbox = $('#lightbox');
