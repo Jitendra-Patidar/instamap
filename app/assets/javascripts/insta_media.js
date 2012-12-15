@@ -6,9 +6,9 @@ $(document).ready(function() {
         if (this.title) {
           // New line
           this.title += '<br />';
-                
+
           // Add FaceBook like button
-          this.title += '<iframe src="//www.facebook.com/plugins/like.php?href=' + this.href + '&amp;layout=button_count&amp;show_faces=true&amp;width=500&amp;action=like&amp;font&amp;colorscheme=light&amp;height=23" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:110px; height:23px;" allowTransparency="true"></iframe>';
+          this.title += '<iframe src="//www.facebook.com/plugins/like.php?href=' + this.href + '&amp;send=false&amp;layout=button_count&amp;width=450&amp;show_faces=false&amp;font&amp;colorscheme=light&amp;action=like&amp;height=21&amp;appId=537874739558661" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:450px; height:21px;" allowTransparency="true"></iframe>';
         }
         /* Disable right click */
         $.fancybox.wrap.bind("contextmenu", function (e) {
