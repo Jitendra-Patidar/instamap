@@ -76,6 +76,7 @@ var Instamedia = {
 
   showPosition: function (position) {
     $(".search_btn").on("click", function(e) {
+      $(".container").append("<img id=\"loader\" src=\"assets/ajax-loader.gif\" />");
       geocoder = new google.maps.Geocoder();
       e.preventDefault();
       var geocode_addy = $("#geocode_address").val();

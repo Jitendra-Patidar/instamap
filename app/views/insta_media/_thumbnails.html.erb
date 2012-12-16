@@ -5,7 +5,7 @@
         data-show-link="<%= show_url(media.id) %>" data-lat="<%= media.location.latitude %>" 
         data-long="<%= media.location.longitude %>" data-caption="<%= media.caption.to_a.flatten[3] %>" data-comments="<%= media.comments.to_a.flatten[1] %>">
         <%= link_to image_tag(media.images.thumbnail.url), media.images.standard_resolution.url, 
-            title: media.caption.to_a.flatten[3], "data-url" => media.id, class: "fancybox"
+            title: media.caption.to_a.flatten[3], class: "fancybox"
         %>
       </li>
     <% end %>
