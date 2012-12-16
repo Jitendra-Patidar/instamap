@@ -7,10 +7,10 @@ $(document).ready(function() {
           this.title += '<br />';
 
           var url = this.href.split("/");
-          var image = url.pop();
+          var image = url.pop().split(".")[0];
 
           // Add FaceBook like button
-          this.title += '<iframe src="//www.facebook.com/plugins/like.php?href=http%3A%2F%2Flocalhost%3A3000%2Fimage%2F' + image + '&amp;send=false&amp;layout=standard&amp;width=450&amp;show_faces=false&amp;font&amp;colorscheme=light&amp;action=like&amp;height=35&amp;appId=537874739558661" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:450px; height:35px;" allowTransparency="true"></iframe>';
+          this.title += '<iframe src="//www.facebook.com/plugins/like.php?href=http%3A%2F%2Fintense-falls-2740.herokuapp.com%2Fimage%2F' + image + '&amp;send=false&amp;layout=standard&amp;width=450&amp;show_faces=false&amp;font&amp;colorscheme=light&amp;action=like&amp;height=35&amp;appId=537874739558661" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:450px; height:35px;" allowTransparency="true"></iframe>';
         }
         /* Disable right click */
         $.fancybox.wrap.bind("contextmenu", function (e) {
