@@ -1,1 +1,5 @@
 <%= link_to "InstaMap", root_path, id: "logo" %>
+<%= form_tag "", class: "search pull-right" do %>
+	<%= text_field_tag "geocode_address" %>
+	<%= submit_tag "Search", class: "search_btn btn btn-mini btn-danger" %>
+<% end %>

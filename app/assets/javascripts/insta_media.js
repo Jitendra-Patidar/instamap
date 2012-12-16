@@ -75,6 +75,37 @@ var Instamedia = {
   },
 
   showPosition: function (position) {
+    $(".search_btn").on("click", function(e) {
+      geocoder = new google.maps.Geocoder();
+      e.preventDefault();
+      var geocode_addy = $("#geocode_address").val();
+      geocoder.geocode( { 'address': geocode_addy }, function(results, status) {
+        if (status == google.maps.GeocoderStatus.OK) {
+          Instamedia.map.setCenter(results[0].geometry.location);
+          var marker = new google.maps.Marker({
+              map: Instamedia.map,
+              position: results[0].geometry.location
+          });
+          $.ajax({
+            type: 'get',
+            url: '/places',
+            dataType: 'json',
+            data: { lng: results[0].geometry.location.Ya, lat: results[0].geometry.location.Za },
+            success: function(data) {
+              $("#loader").remove();
+              $(".imageSlider").html(data.instagram);
+              Instamedia.myPic();
+              Instamedia.placeImage();
+            },
+            error: function() {
+              alert("Please refresh the page");
+            }
+          });
+        } else {
+          alert("Geocode was not successful for the following reason: " + status);
+        }
+      });
+    });
     var latitude  = position.coords.latitude;
     var longitude = position.coords.longitude;
     var myLatlng = new google.maps.LatLng(latitude, longitude);
