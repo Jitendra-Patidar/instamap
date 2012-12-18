@@ -5,5 +5,7 @@ Instamedia::Application.routes.draw do
   match "/image/:id", to: "insta_media#show", as: :show
 
   match "/places", to: "insta_media#places", as: :places
+
+  match "/comments", to: "insta_media#comments", as: :comments
   
 end

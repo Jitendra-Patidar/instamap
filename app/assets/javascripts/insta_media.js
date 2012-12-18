@@ -1,34 +1,4 @@
-$(document).ready(function() {
-  $(".fancybox").fancybox({
-      padding: 5,
-      beforeShow: function () {
-        if (this.title) {
-          // New line
-          this.title += '<br />';
-
-          var url = this.href.split("/");
-          var image = url.pop().split(".")[0];
-
-          // Add FaceBook like button
-          this.title += '<iframe src="//www.facebook.com/plugins/like.php?href=http%3A%2F%2Fintense-falls-2740.herokuapp.com%2Fimage%2F' + image + '&amp;send=false&amp;layout=standard&amp;width=450&amp;show_faces=false&amp;font&amp;colorscheme=light&amp;action=like&amp;height=35&amp;appId=537874739558661" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:450px; height:35px;" allowTransparency="true"></iframe>';
-        }
-        /* Disable right click */
-        $.fancybox.wrap.bind("contextmenu", function (e) {
-          return false; 
-        });
-      },
-      afterShow: function() {
-        // Render tweet button
-        twttr.widgets.load();
-      },
-      helpers : {
-        title : {
-          type: 'inside'
-        }
-      } 
-    });
-  Instamedia.init();
-});
+$(document).ready(function() { Instamedia.init(); });
 
 var Instamedia = {
   map: null,
@@ -58,13 +28,13 @@ var Instamedia = {
 
   init: function() {
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(Instamedia.showPosition);
+      navigator.geolocation.getCurrentPosition(Instamedia.geoPosition);
     } else {
       alert("Geolocation is not supported by this browser");
     };
   },
 
-  myPic: function() {
+  instagramPics: function() {
     $(".flexslider").flexslider({
       animation: "slide",
       animationLoop: true,
@@ -72,9 +42,57 @@ var Instamedia = {
       itemWidth: 160,
       itemMargin: 5
     });
+    
+    $(".thumb").on("click", function() {
+      var street;
+      var lat = $(this).attr("data-lat");
+      var lng = $(this).attr("data-long");
+      var pid = $(this).attr("data-show-link").split("/").pop();
+      var panoramaOptions = {
+        addressControl: true,
+        addressControlOptions: {
+          style: { backgroundColor: 'grey', color: 'yellow' }
+        },
+        position: new google.maps.LatLng(lat,lng),
+        pov: {
+          heading: 140,
+          pitch: 0,
+          zoom: 0
+        }
+      };
+
+      $(".fancybox").fancybox({
+        padding     : 5,
+        width       : '90%',
+        height      : '90%',
+        scrolling   : 'no',
+        openEffect  : 'none',
+        closeEffect : 'fade',
+        helpers : {
+          media : {}
+        },
+        beforeShow  : function() {
+          $(".fancybox-inner").prepend('<div id="street_view"></div>');
+          $(".fancybox-inner").prepend('<div class="com"></div>');
+          street = new google.maps.StreetViewPanorama(document.getElementById("street_view"), panoramaOptions);
+          Instamedia.map.setStreetView(street);
+          $.ajax({
+            type: 'get',
+            url: "/comments",
+            dataType: 'json',
+            data: { id: pid },
+            success: function(data) {
+              $.each(data, function() {
+                $(".com").append($(this)[0].text + "<br />");
+              });
+            }
+          });
+        }
+      });
+    });
   },
 
-  showPosition: function (position) {
+  geoPosition: function (position) {
     $(".search_btn").on("click", function(e) {
       $(".container").append("<img id=\"loader\" src=\"assets/ajax-loader.gif\" />");
       geocoder = new google.maps.Geocoder();
@@ -82,11 +100,16 @@ var Instamedia = {
       var geocode_addy = $("#geocode_address").val();
       geocoder.geocode( { 'address': geocode_addy }, function(results, status) {
         if (status == google.maps.GeocoderStatus.OK) {
+          Instamedia.map.setZoom(15);
           Instamedia.map.setCenter(results[0].geometry.location);
+          var image = "/assets/person.png";
           var marker = new google.maps.Marker({
               map: Instamedia.map,
-              position: results[0].geometry.location
+              position: results[0].geometry.location,
+              icon: image, 
+              title: "Your searched location - " + geocode_addy
           });
+          
           $.ajax({
             type: 'get',
             url: '/places',
@@ -95,18 +118,21 @@ var Instamedia = {
             success: function(data) {
               $("#loader").remove();
               $(".imageSlider").html(data.instagram);
-              Instamedia.myPic();
+              Instamedia.instagramPics();
               Instamedia.placeImage();
             },
             error: function() {
               alert("Please refresh the page");
+              $("#loader").remove();
             }
           });
         } else {
           alert("Geocode was not successful for the following reason: " + status);
+          $("#loader").remove();
         }
       });
     });
+
     var latitude  = position.coords.latitude;
     var longitude = position.coords.longitude;
     var myLatlng = new google.maps.LatLng(latitude, longitude);
@@ -130,11 +156,12 @@ var Instamedia = {
         $("#loader").remove();
         Instamedia.placeMarker(myLatlng);
         $(".imageSlider").html(data.instagram);
-        Instamedia.myPic();
+        Instamedia.instagramPics();
         Instamedia.placeImage();
       },
       error: function() {
         alert("Please refresh the page");
+        $("#loader").remove();
       }
     });
 
@@ -144,19 +171,23 @@ var Instamedia = {
       Instamedia.pingInstagram(Instamedia.map, event);
       $(Instamedia.map).on('ajax:success', function(event, data) {
         if(data.instagram == ""){
-          $(".container").html('<div class="center alert alert-danger"><strong>Unfortunately no images where found for this geolocation.</strong></div>');
+          $(".imageSlider").html('<div class="no_results center alert alert-danger"><strong>Unfortunately no images where found for this geolocation.</strong></div>');
+          $("#loader").remove();
         } else {
           $(".imageSlider").html(data.instagram);
-          Instamedia.myPic();   
+          Instamedia.instagramPics();   
         }
       });
     });
   },
 
   placeMarker: function(location) {
+    var image = "/assets/person.png";
     var marker = new google.maps.Marker({
       position: location,
       map: Instamedia.map,
+      title: "Your location",
+      icon: image,
       animation: google.maps.Animation.DROP
     });
 
@@ -172,13 +203,18 @@ var Instamedia = {
   },
 
   placeImage: function() {
+    var image = "/assets/camera.png";
     var locations = $(".thumb");
     $.each(locations, function(){
       var marker = new google.maps.Marker({
         position: new google.maps.LatLng($(this).attr("data-lat"), $(this).attr("data-long")),
-        map: Instamedia.map
+        map: Instamedia.map,
+        icon: image,
+        animation: google.maps.Animation.DROP
       });//end marker
-      var infoWindow = new google.maps.InfoWindow;
+      var infoWindow = new google.maps.InfoWindow({
+        maxWidth: 900
+      });
       var content =
         "<div class='infowindow'>" +
           "<img src='" + $(this).find("img").attr("src") +

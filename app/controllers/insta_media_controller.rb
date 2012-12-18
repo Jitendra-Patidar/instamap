@@ -12,6 +12,11 @@ class InstaMediaController < ApplicationController
     end
   end
 
+  def comments
+    @comments = Instagram.media_comments(params[:id], count: 200)
+    render :json => @comments
+  end
+
   def show
     @media     = Instagram.media_item(params[:id])
     @comments  = Instagram.media_comments(params[:id], count: 200)

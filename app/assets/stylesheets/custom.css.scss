@@ -12,18 +12,59 @@ body {
 	margin-bottom: 25px;
 	height: 450px;
 	margin-top: 66px;
-	border: 10px solid #9EBEA6;
-	border-radius: 10px;
-}
-
-.fancybox-title iframe {
-    min-height: 30px;
-    vertical-align: middle;
 }
 
 .search {
 	margin-top: 15px;
 	margin-bottom: 10px;
+}
+
+#pro {
+	position: absolute;
+	top: 0;
+	left: 0;
+	img {
+		height: 100px;
+		width: 100px;
+	}
+}
+
+.com {
+	position: absolute;
+	top: 325px;
+	left: 315px;
+	width: 400px;
+}
+
+#user {
+	position: absolute;
+	top: 325px;
+	left: 315px;
+}
+
+#user_caption {
+	position: absolute;
+	top: 340px;
+	left: 315px;
+}
+
+.no_results {
+	background-color: white;
+	height: 200px;
+}
+
+.white {
+	color: white;
+}
+
+#street_view {
+	height: 325px;
+	margin-bottom: 5px;
+}
+
+#static {
+	width: 100%;
+	margin-bottom: 5px;
 }
 
 .search_btn {
@@ -32,8 +73,8 @@ body {
 
 #beta {
 	position: absolute;
-	top: -35px;
-	left: -35px;
+	top: -40px;
+	left: -40px;
 	z-index: -1;
 }
 
@@ -67,11 +108,16 @@ body {
 	margin: 0px;
 }
 
+.accordion {
+	height: 400px;
+	width: 500px;
+}
+
 #fixed-image { margin-top: 30px; margin-bottom: 25px; }
 #profile-picture { margin-left: -30px; margin-bottom: 25px; }
 #bio { margin-top: 25px; }
 .comments { margin-top: 30px; margin-left: 25px; height: 480px; overflow: auto; color: white; }
-.infowindow { height: 178px; width: 1200px; img { margin-left: -30px; margin-right: 10px; height: 178px; width: 200px; } }
+.infowindow { height: auto; width: 800px; img { margin-left: -30px; margin-right: 10px; height: 178px; width: 200px; } }
 
 .center { text-align: center; h1 { margin-bottom: 10px; } }
 .thumbnail { background-color: white; width: 225px; margin: 0 2px 15px; padding: 15px; box-shadow: 3px 3px 8px #999; img { border-radius: 3px; } a { &:hover { text-decoration: none; background-color: #E5D9CF; } } }
