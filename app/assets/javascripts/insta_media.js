@@ -73,7 +73,7 @@ var Instamedia = {
         },
         beforeShow  : function() {
           $(".fancybox-inner").prepend('<div id="street_view"></div>');
-          $(".fancybox-inner").prepend('<div class="com"></div>');
+          $(".fancybox-inner").prepend('<div id="com"></div>');
           street = new google.maps.StreetViewPanorama(document.getElementById("street_view"), panoramaOptions);
           Instamedia.map.setStreetView(street);
           $.ajax({
@@ -82,9 +82,13 @@ var Instamedia = {
             dataType: 'json',
             data: { id: pid },
             success: function(data) {
-              $.each(data, function() {
-                $(".com").append($(this)[0].text + "<br />");
-              });
+              if (data == "") {
+                $("#com").append('<div class="span6 center alert alert-danger">No comments at this time...</div>');
+              } else {
+                $.each(data, function() {
+                  $("#com").append('<div class="span4">' + $(this)[0].text + "</div><div class=\"span2\"><img src=" + $(this)[0].from.profile_picture + " height=64 width=64 /><div></div><br /><br />");
+                });
+              }
             }
           });
         }

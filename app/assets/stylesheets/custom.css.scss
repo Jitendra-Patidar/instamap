@@ -29,17 +29,31 @@ body {
 	}
 }
 
-.com {
+#com {
 	position: absolute;
-	top: 325px;
-	left: 315px;
-	width: 400px;
+	top: 350px;
+	left: 400px;
+	margin-bottom: 15px;
+	overflow: auto;
+	width: auto;
+	height: 300px;
+	img {
+		margin-top: 0px;
+	}
+}
+
+.pcom img {
+	margin-left: 500px;
 }
 
 #user {
 	position: absolute;
 	top: 325px;
 	left: 315px;
+}
+
+.banner {
+	width: auto;
 }
 
 #user_caption {
@@ -59,7 +73,7 @@ body {
 
 #street_view {
 	height: 325px;
-	margin-bottom: 5px;
+	margin-bottom: 20px;
 }
 
 #static {
