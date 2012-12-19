@@ -1,11 +1,11 @@
-Instamedia::Application.routes.draw do
+Instamap::Application.routes.draw do
 
-  root to: "insta_media#index"
+  root to: "instamap#index"
 
-  match "/image/:id", to: "insta_media#show", as: :show
+  match "/image/:id", to: "instamap#show", as: :show
 
-  match "/places", to: "insta_media#places", as: :places
+  match "/places", to: "instamap#places", as: :places
 
-  match "/comments", to: "insta_media#comments", as: :comments
+  match "/comments", to: "instamap#comments", as: :comments
   
 end
