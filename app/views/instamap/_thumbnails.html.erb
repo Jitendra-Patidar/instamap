@@ -1,0 +1,12 @@
+<div class="flexslider">
+  <ul class="slides">
+    <% @instagram.each do |media| %>
+      <li class="thumb" data-username="<%= media.user.username %>" data-profile="<%= media.user.profile_picture %>"
+        data-show-link="<%= show_url(media.id) %>" data-lat="<%= media.location.latitude %>" 
+        data-long="<%= media.location.longitude %>" data-caption="<%= media.caption.to_a.flatten[3] %>">
+        <%= link_to image_tag(media.images.thumbnail.url), media.images.low_resolution.url, class: "fancybox fancybox.iframe" %>
+      </li>
+    <% end %>
+  	</div>
+  </ul>
+</div>

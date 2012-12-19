@@ -1,6 +1,6 @@
 <%= image_tag "beta.png", id: "beta" %>
-<%= link_to "InstaMap", root_path, id: "logo" %>
-<%= form_tag "/", class: "search pull-right" do %>
+<%= link_to "Instamap", root_path, id: "logo" %>
+<%= form_tag "/", id: "search", class: "pull-right" do %>
 	<%= text_field_tag "geocode_address", "", class: "input-xxlarge", placeholder: "Search by street address, a landmark, a city, etc" %>
-	<%= submit_tag "Search", class: "search_btn btn btn-small btn-danger" %>
+	<%= submit_tag "Search", id: "search_btn", class: "btn btn-small btn-danger" %>
 <% end %>

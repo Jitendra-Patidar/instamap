@@ -4,4 +4,4 @@
 
 require File.expand_path('../config/application', __FILE__)
 
-Instamedia::Application.load_tasks
+Instamap::Application.load_tasks
