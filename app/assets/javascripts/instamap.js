@@ -74,13 +74,7 @@ var Google = {
         "<div class='infowindow'>" +
           "<img src='" + $(this).find("img").attr("src") +
           "'<div class='span5'>" +
-<<<<<<< HEAD:app/assets/javascripts/instamap.js
             "<h3 class='infoUser'><a href='" + $(this).attr("data-username") + "</a></h3>" +
-=======
-            "<h3 class='infoUser'><a href='" + $(this).attr("data-show-link") + "'>" + $(this).attr("data-username") + "</a></h3>" +
-            "<br />" + $(this).attr("data-caption") +
-            "<br />" + $(this).attr("data-comments") +
->>>>>>> master:app/assets/javascripts/instamap.js
           "</div>" +
         "</div>";
       Google.openWindow(marker, content, infoWindow);
@@ -219,31 +213,12 @@ var Slider = {
     
     $(".thumb").on("click", function() {
       var street;
-<<<<<<< HEAD:app/assets/javascripts/instamap.js
       var lat    = $(this).attr("data-lat");
       var lng    = $(this).attr("data-long");
       var pid    = $(this).attr("data-show-link").split("/").pop();
       var latLng = new google.maps.LatLng(lat, lng);
       var view   = new google.maps.StreetViewService();
   
-=======
-      var lat = $(this).attr("data-lat");
-      var lng = $(this).attr("data-long");
-      var pid = $(this).attr("data-show-link").split("/").pop();
-      var panoramaOptions = {
-        addressControl: true,
-        addressControlOptions: {
-          style: { backgroundColor: 'grey', color: 'yellow' }
-        },
-        position: new google.maps.LatLng(lat,lng),
-        pov: {
-          heading: 0,
-          pitch: 0,
-          zoom: 0
-        }
-      };
-
->>>>>>> master:app/assets/javascripts/instamap.js
       $(".fancybox").fancybox({
         padding     : 5,
         width       : '90%',
@@ -255,7 +230,6 @@ var Slider = {
           media : {}
         },
         beforeShow  : function() {
-<<<<<<< HEAD:app/assets/javascripts/instamap.js
           view.getPanoramaByLocation(latLng, 100, function (streetViewPanoramaData, status) {
             if (status === google.maps.StreetViewStatus.OK) {
               var panoramaOptions = {
@@ -293,12 +267,6 @@ var Slider = {
             }
           });
 
-=======
-          $(".fancybox-inner").prepend('<div id="street_view"></div>');
-          $(".fancybox-inner").prepend('<div id="lightbox_comments"></div>');
-          street = new google.maps.StreetViewPanorama(document.getElementById("street_view"), panoramaOptions);
-          Google.map.setStreetView(street);
->>>>>>> master:app/assets/javascripts/instamap.js
           $.ajax({
             type: 'get',
             url: "/comments",
@@ -306,11 +274,7 @@ var Slider = {
             data: { id: pid },
             success: function(data) {
               if (data == "") {
-<<<<<<< HEAD:app/assets/javascripts/instamap.js
                 $("#lightbox_comments").append('<div class="span6 center alert alert-danger">No comments at this time...</div>');
-=======
-                $("#com").append('<div class="span6 center alert alert-danger">No comments at this time...</div>');
->>>>>>> master:app/assets/javascripts/instamap.js
               } else {
                 $.each(data, function() {
                   $("#lightbox_comments").append('<div class="span4">' + $(this)[0].text + "</div><div class=\"span2\"><img src=" + $(this)[0].from.profile_picture + " height=64 width=64 /><div></div><br /><br />");
