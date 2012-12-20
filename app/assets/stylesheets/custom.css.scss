@@ -69,6 +69,7 @@ body {
 /* logo */
 
 #logo { 
+	position: fixed;
 	font-family: 'Faster One', cursive; 
 	float: left; 
 	margin-top: 10px; 
@@ -101,6 +102,16 @@ body {
 
 .search_btn {
 	margin-top: -10px;
+}
+
+.facebook {
+	float: right;
+	margin-top: 22px;
+}
+
+.twitter {
+	float: right;
+	margin-top: 22px;
 }
 
 /* AJAX loader */
