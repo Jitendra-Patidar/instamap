@@ -47,6 +47,10 @@ body {
 	}
 }
 
+#not_available img {
+	width: 100%;
+}
+
 /* Fancybox */
 
 #lightbox_comments {
@@ -90,19 +94,18 @@ body {
 
 /* header */
 
-#search {
-	margin-top: 10px;
+.search {
+	margin-top: 15px;
 	margin-bottom: 10px;
 }
 
-#search_btn {
-	margin-top: 5px;
+.search_btn {
+	margin-top: -10px;
 }
 
 /* AJAX loader */
 
 #loader {
-	position: absolute;
-	top: 300px;
-	left: 50%;
+	margin-top: 10px;
+	margin-left: 480px;
 }

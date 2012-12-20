@@ -90,7 +90,7 @@ var Google = {
 
   geoPosition: function (position) {
     $(".search_btn").on("click", function(e) {
-      $(".container").append("<img id=\"loader\" src=\"assets/ajax-loader.gif\" />");
+      $(".container").prepend("<img id=\"loader\" src=\"assets/ajax-loader.gif\" />");
       geocoder = new google.maps.Geocoder();
       e.preventDefault();
       var geocode_addy = $("#geocode_address").val();
@@ -141,7 +141,7 @@ var Google = {
 
     Google.map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
 
-    $(".container").append("<img id=\"loader\" src=\"assets/ajax-loader.gif\" />");
+    $(".container").prepend("<img id=\"loader\" src=\"assets/ajax-loader.gif\" />");
 
     $.ajax({
       type: 'get',
@@ -213,22 +213,12 @@ var Slider = {
     
     $(".thumb").on("click", function() {
       var street;
-      var lat = $(this).attr("data-lat");
-      var lng = $(this).attr("data-long");
-      var pid = $(this).attr("data-show-link").split("/").pop();
-      var panoramaOptions = {
-        addressControl: true,
-        addressControlOptions: {
-          style: { backgroundColor: 'grey', color: 'yellow' }
-        },
-        position: new google.maps.LatLng(lat,lng),
-        pov: {
-          heading: 0,
-          pitch: 0,
-          zoom: 0
-        }
-      };
-
+      var lat    = $(this).attr("data-lat");
+      var lng    = $(this).attr("data-long");
+      var pid    = $(this).attr("data-show-link").split("/").pop();
+      var latLng = new google.maps.LatLng(lat, lng);
+      var view   = new google.maps.StreetViewService();
+  
       $(".fancybox").fancybox({
         padding     : 5,
         width       : '90%',
@@ -240,9 +230,43 @@ var Slider = {
           media : {}
         },
         beforeShow  : function() {
-          $(".fancybox-inner").prepend('<div id="street_view"></div>');
-          $(".fancybox-inner").prepend('<div id="lightbox_comments"></div>');
-          street = new google.maps.StreetViewPanorama(document.getElementById("street_view"), panoramaOptions);
+          view.getPanoramaByLocation(latLng, 100, function (streetViewPanoramaData, status) {
+            if (status === google.maps.StreetViewStatus.OK) {
+              var panoramaOptions = {
+                addressControl: true,
+                addressControlOptions: {
+                  style: { backgroundColor: 'grey', color: 'yellow' }
+                },
+                position: new google.maps.LatLng(streetViewPanoramaData.location.latLng.Ya, streetViewPanoramaData.location.latLng.Za),
+                pov: {
+                  heading: 0,
+                  pitch: 0,
+                  zoom: 0
+                }
+              };
+              $(".fancybox-inner").prepend('<div id="street_view"></div>');
+              $(".fancybox-inner").prepend('<div id="lightbox_comments"></div>');
+              street = new google.maps.StreetViewPanorama(document.getElementById("street_view"), panoramaOptions);
+            } else {
+              var panoramaOptions = {
+                addressControl: true,
+                addressControlOptions: {
+                  style: { backgroundColor: 'grey', color: 'yellow' }
+                },
+                position: new google.maps.LatLng(lat, lng),
+                pov: {
+                  heading: 0,
+                  pitch: 0,
+                  zoom: 0
+                }
+              };
+              $(".fancybox-inner").prepend('<div id="street_view"></div>');
+              $(".fancybox-inner").prepend('<div id="lightbox_comments"></div>');
+              street = new google.maps.StreetViewPanorama(document.getElementById("street_view"), panoramaOptions);
+              $("#street_view").html("<img id=\"not_available\" src=\"assets/not-available.jpeg\" />");
+            }
+          });
+
           $.ajax({
             type: 'get',
             url: "/comments",
