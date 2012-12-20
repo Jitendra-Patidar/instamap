@@ -5,4 +5,4 @@ Instamap::Application.config.session_store :cookie_store, key: '_instamedia_sess
 # Use the database for sessions instead of the cookie-based default,
 # which shouldn't be used to store highly confidential information
 # (create the session table with "rails generate session_migration")
-# Instamedia::Application.config.session_store :active_record_store
+# Instamap::Application.config.session_store :active_record_store
