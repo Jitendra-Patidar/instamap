@@ -110,9 +110,17 @@ var Google = {
             data: { lng: results[0].geometry.location.Ya, lat: results[0].geometry.location.Za },
             success: function(data) {
               $("#loader").remove();
-              $(".imageSlider").html(data.instagram);
-              Slider.flexi();
-              Google.placeIcon();
+              debugger;
+              if (data.instagram.length == 72) {
+                $(".container").prepend("<div id=\"sad_face\" class=\"center alert alert-danger\"><img src=\"/assets/sad-face.png\" /><strong>&nbsp;&nbsp;Oh no! There\'s no Instagram images found in this area, come back when this town gets up to speed with technology!</strong></div>");
+                setTimeout(function() {
+                  $("#sad_face").slideUp();
+                }, 7000);
+              } else {
+                $(".imageSlider").html(data.instagram);
+                Slider.flexi();
+                Google.placeIcon();
+              }
             },
             error: function() {
               alert("Please refresh the page");
@@ -177,7 +185,6 @@ var Google = {
 
 var Instagram = {
   ping: function(map, event) {
-    debugger;
     var $self = $(map);
     $.ajax({
       type: 'get',
