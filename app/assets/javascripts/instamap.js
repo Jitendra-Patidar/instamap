@@ -73,10 +73,7 @@ var Google = {
       var content =
         "<div class='infowindow'>" +
           "<img src='" + $(this).find("img").attr("src") +
-          "'<div class='span5'>" +
-            "<h3 class='infoUser'><a href='" + $(this).attr("data-username") + "</a></h3>" +
-          "</div>" +
-        "</div>";
+        "' /></div>";
       Google.openWindow(marker, content, infoWindow);
     });
   },
@@ -162,7 +159,7 @@ var Google = {
     });
 
     google.maps.event.addListener(Google.map, 'click', function(event) {
-      $(".container").append("<img id=\"loader\" src=\"assets/ajax-loader.gif\" />");
+      $(".container").prepend("<img id=\"loader\" src=\"assets/ajax-loader.gif\" />");
       Google.placeMarker(event.latLng);
       Instagram.ping(Google.map, event);
       $(Google.map).on('ajax:success', function(event, data) {
@@ -180,6 +177,7 @@ var Google = {
 
 var Instagram = {
   ping: function(map, event) {
+    debugger;
     var $self = $(map);
     $.ajax({
       type: 'get',
