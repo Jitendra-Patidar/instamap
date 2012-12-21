@@ -1,4 +1,4 @@
-$(document).ready(function() { var infowindow = null; $('#myModal').modal(); Instamap.init(); });
+$(document).ready(function() { $('#myModal').modal(); Instamap.init(); });
 
 var Instamap = {
   init: function() {
