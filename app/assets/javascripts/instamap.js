@@ -1,4 +1,4 @@
-$(document).ready(function() { $('#myModal').modal(); Instamap.init(); });
+$(document).ready(function() { var infowindow = null; $('#myModal').modal(); Instamap.init(); });
 
 var Instamap = {
   init: function() {
@@ -60,15 +60,13 @@ var Google = {
   placeIcon: function() {
     var image = "/assets/camera.png";
     var locations = $(".thumb");
-    $.each(locations, function(){
+    var infoWindow = new google.maps.InfoWindow();
+    $.each(locations, function() {
       var marker = new google.maps.Marker({
         position: new google.maps.LatLng($(this).attr("data-lat"), $(this).attr("data-long")),
         map: Google.map,
         icon: image,
         animation: google.maps.Animation.DROP
-      });
-      var infoWindow = new google.maps.InfoWindow({
-        maxWidth: 900
       });
       var content =
         "<div class='infowindow'>" +
@@ -78,8 +76,9 @@ var Google = {
     });
   },
 
-  openWindow: function(marker, content, infowindow){
+  openWindow: function(marker, content, infowindow) {
     google.maps.event.addListener(marker, 'click', function() {
+      infowindow.close();
       infowindow.setContent(content);
       infowindow.open(Google.map, marker);
     });
@@ -174,7 +173,7 @@ var Google = {
           $(".container").prepend("<div id=\"sad_face\" class=\"center alert alert-danger\"><img src=\"/assets/sad-face.png\" /><strong>&nbsp;&nbsp;Oh no! There\'s no Instagram images found in this area, come back when this town gets up to speed with technology!</strong></div>");
           setTimeout(function() {
             $("#sad_face").slideUp();
-          }, 7000);
+          }, 5000);
         } else {
           $(".imageSlider").html(data.instagram);
           Slider.flexi();
