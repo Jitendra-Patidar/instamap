@@ -107,7 +107,7 @@ var Google = {
             type: 'get',
             url: '/places',
             dataType: 'json',
-            data: { lng: results[0].geometry.location.Ya, lat: results[0].geometry.location.Za },
+            data: { lat: results[0].geometry.location.Ya, lng: results[0].geometry.location.Za },
             success: function(data) {
               $("#loader").remove();
               if (data.instagram.length == 72) {
@@ -151,7 +151,7 @@ var Google = {
       type: 'get',
       url: '/places',
       dataType: 'json',
-      data: { lng: myLatlng.Ya, lat: myLatlng.Za },
+      data: { lat: myLatlng.Ya, lng: myLatlng.Za },
       success: function(data) {
         $("#loader").remove();
         Google.placeMarker(myLatlng);
@@ -192,7 +192,7 @@ var Instagram = {
       type: 'get',
       url: '/places',
       dataType: 'json',
-      data: { lng: event.latLng.Ya, lat: event.latLng.Za },
+      data: { lat: event.latLng.Ya, lng: event.latLng.Za },
       success: function(data, status, xhr) {
         $self.trigger('ajax:success', [data, status, xhr]);
         Google.placeIcon();
