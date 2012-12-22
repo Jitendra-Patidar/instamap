@@ -15,6 +15,19 @@ var Instamap = {
   }
 };
 
+var Container = {
+  loader: function() {
+    $(".container").prepend("<img id=\"loader\" src=\"assets/ajax-loader.gif\" />")
+  },
+
+  sad_face: function() {
+    $(".container").prepend("<div id=\"sad_face\" class=\"center alert alert-danger\"><img src=\"/assets/sad-face.png\" /><strong>&nbsp;&nbsp;Oh no! There\'s no Instagram images found in this area, come back when this town gets up to speed with technology!</strong></div>");
+    setTimeout(function() {
+      $("#sad_face").slideUp();
+    }, 3000);
+  }
+};
+
 var Google = {
   map: null,
   // markersArray: [],
@@ -100,11 +113,11 @@ var Google = {
 
   geoPosition: function (position) {
     $(".search_btn").on("click", function(e) {
-      $(".container").prepend("<img id=\"loader\" src=\"assets/ajax-loader.gif\" />");
+      Container.loader();
       geocoder = new google.maps.Geocoder();
       e.preventDefault();
-      var geocode_addy = $("#geocode_address").val();
-      geocoder.geocode( { 'address': geocode_addy }, function(results, status) {
+      var address = $("#geocode_address").val();
+      geocoder.geocode( { 'address': address }, function(results, status) {
         if (status == google.maps.GeocoderStatus.OK) {
           Google.map.setZoom(15);
           Google.map.setCenter(results[0].geometry.location);
@@ -113,8 +126,8 @@ var Google = {
               map: Google.map,
               position: results[0].geometry.location,
               icon: image, 
-              title: "Your searched location - " + geocode_addy
-          });
+              title: "Your searched location - " + address
+          });//end Marker
           
           $.ajax({
             type: 'get',
@@ -124,27 +137,24 @@ var Google = {
             success: function(data) {
               $("#loader").remove();
               if (data.instagram.length == 72) {
-                $(".container").prepend("<div id=\"sad_face\" class=\"center alert alert-danger\"><img src=\"/assets/sad-face.png\" /><strong>&nbsp;&nbsp;Oh no! There\'s no Instagram images found in this area, come back when this town gets up to speed with technology!</strong></div>");
-                setTimeout(function() {
-                  $("#sad_face").slideUp();
-                }, 3000);
+                Container.sad_face();
               } else {
                 $(".imageSlider").html(data.instagram);
                 Slider.flexi();
                 Google.placeIcon();
-              }
-            },
+              }//end else
+            },//end success
             error: function() {
               alert("Please refresh the page");
               $("#loader").remove();
-            }
-          });
+            }//end error
+          });//end ajax
         } else {
           alert("Geocode was not successful for the following reason: " + status);
           $("#loader").remove();
-        }
-      });
-    });
+        }//end else
+      });//end geocoder
+    });//end on (search button click)
 
     var latitude  = position.coords.latitude;
     var longitude = position.coords.longitude;
@@ -154,11 +164,11 @@ var Google = {
       center: myLatlng,
       styles: Google.styles,
       mapTypeId: google.maps.MapTypeId.ROADMAP
-    }
+    }//end mapOptions
 
     Google.map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
 
-    $(".container").prepend("<img id=\"loader\" src=\"assets/ajax-loader.gif\" />");
+    Container.loader();
 
     $.ajax({
       type: 'get',
@@ -171,32 +181,29 @@ var Google = {
         $(".imageSlider").html(data.instagram);
         Slider.flexi();
         Google.placeIcon();
-      },
+      },//end success
       error: function() {
         alert("Please refresh the page");
         $("#loader").remove();
-      }
-    });
+      }//end error
+    });//end ajax
 
     google.maps.event.addListener(Google.map, 'click', function(event) {
-      $(".container").prepend("<img id=\"loader\" src=\"assets/ajax-loader.gif\" />");
+      Container.loader();
       Google.placeMarker(event.latLng);
       Instagram.ping(Google.map, event);
       $(Google.map).on('ajax:success', function(event, data) {
         if (data.instagram.length == 72) {
-          $(".container").prepend("<div id=\"sad_face\" class=\"center alert alert-danger\"><img src=\"/assets/sad-face.png\" /><strong>&nbsp;&nbsp;Oh no! There\'s no Instagram images found in this area, come back when this town gets up to speed with technology!</strong></div>");
-          setTimeout(function() {
-            $("#sad_face").slideUp();
-          }, 5000);
+          Container.sad_face();
         } else {
           $(".imageSlider").html(data.instagram);
           Slider.flexi();
           Google.placeIcon();
-        }
-      });
-    });
-  }
-};
+        }//end else
+      });//end on (for ajax success)
+    });//end addListener
+  }//end geoPosition
+};//end Google
 
 var Instagram = {
   ping: function(map, event) {
