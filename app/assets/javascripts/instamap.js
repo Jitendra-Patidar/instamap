@@ -1,4 +1,9 @@
-$(document).ready(function() { Instamap.init(); });
+$(document).ready(function() {
+  $("#about_us").on("mouseenter", function() {
+    $("#myModal").modal();
+  });
+  Instamap.init(); 
+});
 
 var Instamap = {
   init: function() {

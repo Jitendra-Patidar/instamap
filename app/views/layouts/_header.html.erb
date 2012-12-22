@@ -3,6 +3,7 @@
 <%= form_tag "/", class: "search pull-right" do %>
 	<%= text_field_tag "geocode_address", "", class: "input-xxlarge", placeholder: "Search by street address, a landmark, a city, etc" %>
 	<%= submit_tag "Search", class: "search_btn btn btn-small btn-danger" %>
+	<%= image_tag "about.png", height: 30, width: 30, id: "about_us", class: "pull-right" %>
 <% end %>
 <!-- AddThis Button BEGIN -->
 <a class="twitter addthis_button_tweet"></a>
