@@ -1,4 +1,4 @@
-$(document).ready(function() { $('#myModal').modal(); Instamap.init(); });
+$(document).ready(function() { Instamap.init(); });
 
 var Instamap = {
   init: function() {
@@ -49,7 +49,7 @@ var Google = {
     Google.map.setZoom(15);
     Google.map.setCenter(marker.getPosition());
 
-    if(Google.markersArray.length >= 1) {
+    if (Google.markersArray.length >= 1) {
       Google.markersArray[Google.markersArray.length-1].setMap(null);
     }
 
@@ -69,9 +69,9 @@ var Google = {
         animation: google.maps.Animation.DROP
       });
       var content =
-        "<div class='infowindow'>" +
-          "<img src='" + $(this).find("img").attr("src") +
-        "' /></div>";
+        "<div id=\"infowindow\">" +
+          "<img src=" + $(this).find("img").attr("src") + " />" +
+        "</div>";
       Google.openWindow(marker, content, infoWindow);
     });
   },
@@ -81,6 +81,15 @@ var Google = {
       infowindow.close();
       infowindow.setContent(content);
       infowindow.open(Google.map, marker);
+    });
+    $(".thumb").on("mouseenter", function() {
+      if ($(this).find("img").attr("src") == content.match(/([^<div id="infowindow"><img src=](.)+[^ \/><\/div>])/)[0]) {
+        infowindow.setContent(content);
+        infowindow.open(Google.map, marker);
+      }
+    });
+    $(".thumb").on("mouseleave", function() {
+      infowindow.close();
     });
   },
 
@@ -113,7 +122,7 @@ var Google = {
                 $(".container").prepend("<div id=\"sad_face\" class=\"center alert alert-danger\"><img src=\"/assets/sad-face.png\" /><strong>&nbsp;&nbsp;Oh no! There\'s no Instagram images found in this area, come back when this town gets up to speed with technology!</strong></div>");
                 setTimeout(function() {
                   $("#sad_face").slideUp();
-                }, 7000);
+                }, 3000);
               } else {
                 $(".imageSlider").html(data.instagram);
                 Slider.flexi();
@@ -216,7 +225,12 @@ var Slider = {
       itemWidth: 160,
       itemMargin: 5
     });
-    
+    Fancy.box();
+  }
+};
+
+var Fancy = {
+  box: function() {
     $(".thumb").on("click", function() {
       var street;
       var lat    = $(this).attr("data-lat");
@@ -224,7 +238,7 @@ var Slider = {
       var pid    = $(this).attr("data-show-link").split("/").pop();
       var latLng = new google.maps.LatLng(lat, lng);
       var view   = new google.maps.StreetViewService();
-  
+
       $(".fancybox").fancybox({
         padding     : 5,
         width       : '90%',
