@@ -10,14 +10,14 @@ var Instamap = {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(Google.geoPosition);
     } else {
-      alert("Geolocation is not supported by this browser");
+      alert("Get on a modern browser that supports geolocation like Chrome or Firefox to use this app");
     };
   }
 };
 
 var Google = {
   map: null,
-  markersArray: [],
+  // markersArray: [],
   styles: [
     {
       featureType: "all",
@@ -42,7 +42,7 @@ var Google = {
   ],
 
   placeMarker: function(location) {
-    var image = "/assets/person.png";
+    var image = "/assets/custom_marker.png";
     var marker = new google.maps.Marker({
       position: location,
       map: Google.map,
@@ -54,12 +54,12 @@ var Google = {
     Google.map.setZoom(15);
     Google.map.setCenter(marker.getPosition());
 
-    if (Google.markersArray.length >= 1) {
-      Google.markersArray[Google.markersArray.length-1].setMap(null);
-    }
+    // if (Google.markersArray.length >= 1) {
+    //   Google.markersArray[Google.markersArray.length-1].setMap(null);
+    // }
 
-    Google.markersArray.push(marker);
-    Google.map.setCenter(location);
+    // Google.markersArray.push(marker);
+    // Google.map.setCenter(location);
   },
 
   placeIcon: function() {
@@ -108,7 +108,7 @@ var Google = {
         if (status == google.maps.GeocoderStatus.OK) {
           Google.map.setZoom(15);
           Google.map.setCenter(results[0].geometry.location);
-          var image = "/assets/person.png";
+          var image = "/assets/custom_marker.png";
           var marker = new google.maps.Marker({
               map: Google.map,
               position: results[0].geometry.location,
