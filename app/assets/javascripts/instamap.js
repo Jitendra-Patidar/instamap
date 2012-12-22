@@ -30,7 +30,6 @@ var Container = {
 
 var Google = {
   map: null,
-  // markersArray: [],
   styles: [
     {
       featureType: "all",
@@ -63,16 +62,8 @@ var Google = {
       icon: image,
       animation: google.maps.Animation.DROP
     });
-
     Google.map.setZoom(15);
     Google.map.setCenter(marker.getPosition());
-
-    // if (Google.markersArray.length >= 1) {
-    //   Google.markersArray[Google.markersArray.length-1].setMap(null);
-    // }
-
-    // Google.markersArray.push(marker);
-    // Google.map.setCenter(location);
   },
 
   placeIcon: function() {
@@ -111,7 +102,7 @@ var Google = {
     });
   },
 
-  geoPosition: function (position) {
+  insta_geocode: function() {
     $(".search_btn").on("click", function(e) {
       Container.loader();
       geocoder = new google.maps.Geocoder();
@@ -129,33 +120,18 @@ var Google = {
               title: "Your searched location - " + address
           });//end Marker
           
-          $.ajax({
-            type: 'get',
-            url: '/places',
-            dataType: 'json',
-            data: { lat: results[0].geometry.location.Ya, lng: results[0].geometry.location.Za },
-            success: function(data) {
-              $("#loader").remove();
-              if (data.instagram.length == 72) {
-                Container.sad_face();
-              } else {
-                $(".imageSlider").html(data.instagram);
-                Slider.flexi();
-                Google.placeIcon();
-              }//end else
-            },//end success
-            error: function() {
-              alert("Please refresh the page");
-              $("#loader").remove();
-            }//end error
-          });//end ajax
+          Instagram.ping(results[0].geometry.location.Ya, results[0].geometry.location.Za);
+
         } else {
           alert("Geocode was not successful for the following reason: " + status);
           $("#loader").remove();
         }//end else
       });//end geocoder
     });//end on (search button click)
+  },
 
+  geoPosition: function (position) {
+    Google.insta_geocode();
     var latitude  = position.coords.latitude;
     var longitude = position.coords.longitude;
     var myLatlng = new google.maps.LatLng(latitude, longitude);
@@ -170,28 +146,12 @@ var Google = {
 
     Container.loader();
 
-    $.ajax({
-      type: 'get',
-      url: '/places',
-      dataType: 'json',
-      data: { lat: myLatlng.Ya, lng: myLatlng.Za },
-      success: function(data) {
-        $("#loader").remove();
-        Google.placeMarker(myLatlng);
-        $(".imageSlider").html(data.instagram);
-        Slider.flexi();
-        Google.placeIcon();
-      },//end success
-      error: function() {
-        alert("Please refresh the page");
-        $("#loader").remove();
-      }//end error
-    });//end ajax
+    Instagram.ping(myLatlng.Ya, myLatlng.Za);
 
     google.maps.event.addListener(Google.map, 'click', function(event) {
       Container.loader();
       Google.placeMarker(event.latLng);
-      Instagram.ping(Google.map, event);
+      Instagram.ping(event.latLng.Ya, event.latLng.Za);
       $(Google.map).on('ajax:success', function(event, data) {
         if (data.instagram.length == 72) {
           Container.sad_face();
@@ -206,25 +166,25 @@ var Google = {
 };//end Google
 
 var Instagram = {
-  ping: function(map, event) {
-    var $self = $(map);
+  ping: function(latitude, longitude) {
+    var myLatlng = new google.maps.LatLng(latitude, longitude);
     $.ajax({
       type: 'get',
       url: '/places',
       dataType: 'json',
-      data: { lat: event.latLng.Ya, lng: event.latLng.Za },
-      success: function(data, status, xhr) {
-        $self.trigger('ajax:success', [data, status, xhr]);
-        Google.placeIcon();
+      data: { lat: latitude, lng: longitude },
+      success: function(data) {
         $("#loader").remove();
-      },
-      error: function(xhr, status, error) {
-        $self.trigger('ajax:error', [xhr, status, error]);
-      },
-      complete: function(xhr, status) {
-        $self.trigger('ajax:complete', [xhr, status]);
-      }
-    });
+        Google.placeMarker(myLatlng);
+        $(".imageSlider").html(data.instagram);
+        Slider.flexi();
+        Google.placeIcon();
+      },//end success
+      error: function() {
+        alert("Please refresh the page");
+        $("#loader").remove();
+      }//end error
+    });//end ajax
   }
 };
 
