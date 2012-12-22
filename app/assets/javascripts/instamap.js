@@ -64,18 +64,18 @@ var Google = {
 
   placeIcon: function() {
     var image = "/assets/camera.png";
-    var locations = $(".thumb");
+    var instagrams = $('#instagrams').data('instagrams');
     var infoWindow = new google.maps.InfoWindow();
-    $.each(locations, function() {
+    $.each(instagrams, function(index, instagram) {
       var marker = new google.maps.Marker({
-        position: new google.maps.LatLng($(this).attr("data-lat"), $(this).attr("data-long")),
+        position: new google.maps.LatLng(instagram.location.latitude, instagram.location.longitude),
         map: Google.map,
         icon: image,
         animation: google.maps.Animation.DROP
       });
       var content =
         "<div id=\"infowindow\">" +
-          "<img src=" + $(this).find("img").attr("src") + " />" +
+          "<img src=" + instagram.images.thumbnail.url + " />" +
         "</div>";
       Google.openWindow(marker, content, infoWindow);
     });
@@ -238,9 +238,9 @@ var Fancy = {
   box: function() {
     $(".thumb").on("click", function() {
       var street;
-      var lat    = $(this).attr("data-lat");
-      var lng    = $(this).attr("data-long");
-      var pid    = $(this).attr("data-show-link").split("/").pop();
+      var lat    = $(this).data("lat");
+      var lng    = $(this).data("long");
+      var pid    = $(this).data("id");
       var latLng = new google.maps.LatLng(lat, lng);
       var view   = new google.maps.StreetViewService();
 
