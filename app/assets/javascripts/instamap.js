@@ -79,7 +79,7 @@ var Google = {
         animation: google.maps.Animation.DROP
       });
       var content =
-        "<div id=\"infowindow\">" +
+        "<div class=\"infowindow\">" +
           "<img src=" + instagram.images.thumbnail.url + " />" +
         "</div>";
       Google.openWindow(marker, content, infoWindow);
@@ -93,7 +93,7 @@ var Google = {
       infowindow.open(Google.map, marker);
     });
     $(".thumb").on("mouseenter", function() {
-      if ($(this).find("img").attr("src") == content.match(/([^<div id="infowindow"><img src=](.)+[^ \/><\/div>])/)[0]) {
+      if ($(this).data("thumb") == content.match(/([^<div class="infowindow"><img src=](.)+[^ \/><\/div>])/)[0]) {
         infowindow.setContent(content);
         infowindow.open(Google.map, marker);
       }
@@ -153,15 +153,6 @@ var Google = {
       Container.loader();
       Google.placeMarker(event.latLng);
       Instagram.ping(event.latLng.Ya, event.latLng.Za);
-      $(Google.map).on('ajax:success', function(event, data) {
-        if (data.instagram.length == 123) {
-          Container.sad_face();
-        } else {
-          $(".imageSlider").html(data.instagram);
-          Slider.flexi();
-          Google.placeIcon();
-        }//end else
-      });//end on (for ajax success)
     });//end addListener
   }//end geoPosition
 };//end Google
@@ -190,7 +181,7 @@ var Instagram = {
         $("#loader").remove();
       }//end error
     });//end ajax
-  }
+  }//end ping
 };
 
 var Slider = {
@@ -226,7 +217,8 @@ var Fancy = {
         helpers : {
           media : {}
         },
-        beforeShow  : function() {
+
+        beforeShow: function() {
           view.getPanoramaByLocation(latLng, 100, function (streetViewPanoramaData, status) {
             if (status === google.maps.StreetViewStatus.OK) {
               var panoramaOptions = {
@@ -239,8 +231,8 @@ var Fancy = {
                   heading: 0,
                   pitch: 0,
                   zoom: 0
-                }
-              };
+                }//end pov
+              };//end panoramaOptions
               $(".fancybox-inner").prepend('<div id="street_view"></div>');
               $(".fancybox-inner").prepend('<div id="lightbox_comments"></div>');
               street = new google.maps.StreetViewPanorama(document.getElementById("street_view"), panoramaOptions);
@@ -275,12 +267,12 @@ var Fancy = {
               } else {
                 $.each(data, function() {
                   $("#lightbox_comments").append('<div class="span4">' + $(this)[0].text + "</div><div class=\"span2\"><img src=" + $(this)[0].from.profile_picture + " height=64 width=64 /><div></div><br /><br />");
-                });
-              }
-            }
-          });
-        }
-      });
-    });
-  }
-};
+                }); //end each
+              }//end else
+            }//end success
+          });//end ajax
+        }//end beforeShow
+      });//end fancybox
+    });//end click
+  }//end box
+};//end Fancy
