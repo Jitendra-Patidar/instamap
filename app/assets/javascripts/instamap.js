@@ -22,7 +22,7 @@ var Container = {
   },
 
   sad_face: function() {
-    $(".container").prepend("<div id=\"sad_face\" class=\"center alert alert-danger\"><img src=\"/assets/sad-face.png\" /><strong>&nbsp;&nbsp;Oh no! There\'s no Instagram images found in this area, come back when this town gets up to speed with technology!</strong></div>");
+    $(".container").prepend("<div id=\"sad_face\" class=\"center alert alert-danger\"><img src=\"/assets/sad-face.png\" /><strong>&nbsp;&nbsp;Oh no! No Instagram images were found in this area, come back when this town gets up to speed with technology!</strong></div>");
     setTimeout(function() {
       $("#sad_face").slideUp();
     }, 3000);
@@ -154,7 +154,7 @@ var Google = {
       Google.placeMarker(event.latLng);
       Instagram.ping(event.latLng.Ya, event.latLng.Za);
       $(Google.map).on('ajax:success', function(event, data) {
-        if (data.instagram.length == 72) {
+        if (data.instagram.length == 123) {
           Container.sad_face();
         } else {
           $(".imageSlider").html(data.instagram);
@@ -176,10 +176,14 @@ var Instagram = {
       data: { lat: latitude, lng: longitude },
       success: function(data) {
         $("#loader").remove();
-        Google.placeMarker(myLatlng);
-        $(".imageSlider").html(data.instagram);
-        Slider.flexi();
-        Google.placeIcon();
+        if (data.instagram.length == 123) {
+          Container.sad_face();
+        } else {
+          Google.placeMarker(myLatlng);
+          $(".imageSlider").html(data.instagram);
+          Slider.flexi();
+          Google.placeIcon();
+        }
       },//end success
       error: function() {
         alert("Please refresh the page");
