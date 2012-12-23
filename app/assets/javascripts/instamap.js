@@ -1,5 +1,6 @@
 $(document).ready(function() {
-  $("#about_us").on("mouseenter", function() {
+  $("#about_us").on("click", function(event) {
+    event.preventDefault();
     $("#myModal").modal();
   });
   Instamap.init(); 
