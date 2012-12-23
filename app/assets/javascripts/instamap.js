@@ -82,18 +82,18 @@ var Google = {
         "<div class=\"infowindow\">" +
           "<img src=" + instagram.images.thumbnail.url + " />" +
         "</div>";
-      Google.openWindow(marker, content, infoWindow);
+      Google.infowindowListener(marker, content, infoWindow);
     });
   },
 
-  openWindow: function(marker, content, infowindow) {
+  infowindowListener: function(marker, content, infowindow) {
     google.maps.event.addListener(marker, 'click', function() {
       infowindow.close();
       infowindow.setContent(content);
       infowindow.open(Google.map, marker);
     });
     $(".thumb").on("mouseenter", function() {
-      if ($(this).data("thumb") == content.match(/([^<div class="infowindow"><img src=](.)+[^ \/><\/div>])/)[0]) {
+      if ($(this).data("thumb") == $(content).find('img').attr('src')) {
         infowindow.setContent(content);
         infowindow.open(Google.map, marker);
       }
