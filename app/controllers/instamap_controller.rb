@@ -4,7 +4,7 @@ class InstamapController < ApplicationController
   end
 
   def places
-    @instagram = Instagram.media_search(params[:lat], params[:lng], count: 200).data.sort { |x, y| y.likes["count"] <=> x.likes["count"] }
+    @instagrams = Instagram.media_search(params[:lat], params[:lng], count: 200).data.sort { |x, y| y.likes["count"] <=> x.likes["count"] }
 
     respond_to do |format|
       format.json { render :json => { :instagram => render_to_string(:partial => "thumbnails", :formats => [:html]) } }

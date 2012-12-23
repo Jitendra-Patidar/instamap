@@ -5,43 +5,5 @@
 	  </ul>
 	</div>
 </div>
-<!-- Modal -->
-<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-    <h3 id="myModalLabel">About Instamap</h3>
-  </div>
-  <div class="modal-body">
-    <p>
-    	<%= image_tag "homepage.png", id: "homepage", class: "pull-left", height: 200, width: 250 %>
-    	When first visiting Instamap, it finds your location and presents the most recent photos on Instagram within your location. See what others in your area are posting to Instagram.
-    </p>
-		<p>
-			The map is interactive. Allows for dragging to find an area of interest. Just drag it to a location you are interested in and click. A marker will be placed on that location and the images will auto update to that specific location.
-		</p>
-		<p>
-			Hovering over images in the image slider will open a pop up in the map for lighting quick reference to a marker!
-		</p>
-		<p>
-			In a hurry? Use the search bar. You can search for landmarks, cities, addresses, etc.
-		</p>
-		<p> 
-			Some examples of searches are:
-		</p>
-		<p>
-			1. Eiffel tower
-			<br />
-			2. 717 California St., San Francisco, CA
-			<br />
-			3. Mount Rushmore
-			<br />
-			4. Las Vegas
-			<br />
-			5. New York City, NY
-    </p>
-    <p>
-    	<%= image_tag "lightbox.png", id: "street_lightbox", class: "pull-right", height: 200, width: 250 %>
-    	Instamap gives you the street view panorama of where the photo was taken along with comments all in one convenient location. Just click on an image in the slider to activate this feature.
-    </p>
-  </div>
-</div>
+
+<%= render 'modal' %>
