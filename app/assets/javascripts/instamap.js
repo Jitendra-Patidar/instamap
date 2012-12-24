@@ -2,6 +2,14 @@ $(document).ready(function() {
   $("#about_us").on("click", function(event) {
     event.preventDefault();
     $("#myModal").modal();
+    $(".nav-tabs li").on("click", function() {
+      var selection = $(this).text();
+      if (selection == "About" || selection == "Contact") {
+        $("#myModalLabel").text(selection + " us");
+      } else {
+        $("#myModalLabel").text(selection + " use Instamap");
+      }
+    });
   });
   Instamap.init(); 
 });
