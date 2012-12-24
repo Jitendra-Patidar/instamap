@@ -8,11 +8,12 @@
       <ul class="nav nav-tabs">
         <li class="active"><a href="#about" data-toggle="tab">About</a></li>
         <li><a href="#how" data-toggle="tab">How to</a></li>
-        <!-- <li><a href="#contact" data-toggle="tab">Contact</a></li> -->
+        <li><a href="#contact" data-toggle="tab">Contact</a></li>
       </ul>
       <div class="tab-content">
+        <div id="modal-errors"></div>
         <div class="tab-pane active" id="about">
-          Instamap was founded in the Fall of 2012 by two Ruby on Rails developers in San Francisco, CA while attending the fall cohort of Dev Bootcamp. Richard VanBreemen and Matthew Powers graduated from Dev Bootcamp in December of 2012. Our vision for Instamap is simple... 
+          Our vision for Instamap is simple... 
           <br /><br />
           To create a new and fun interactive way to view recent Instagram photos that are located within your location or from around the world. You can click, drag, and search to your hearts desire. Viewing images and street view panoramas of the images location has never been easier. So what are you waiting for? Who knows what gems you may find near or from across the world. 
         </div>
@@ -24,15 +25,26 @@
             <li>Click on images below the map to see the street view where the image was taken</li>
           </ul>
         </div>
-        <!-- <div class="tab-pane" id="contact">
-          <%= form_tag "/contact" do %>
-            <%= text_field_tag "name", "", class: "input-xxlarge", placeholder: "Your name" %>
-            <%= text_field_tag "email", "", class: "input-xxlarge", placeholder: "Your email" %>
-            <%= text_area_tag "Name", "", class: "input-xxlarge", rows: 10, placeholder: "Your message..." %>
-            <br />
-            <%= submit_tag "Send", class: "btn btn-small btn-danger" %>
+        <div class="tab-pane" id="contact">
+          <%= form_tag "/" do %>
+            <div class="control-group">
+              <div class="controls">
+                <%= text_field_tag :name, @name, class: "input-xxlarge", placeholder: "Your name" %>
+              </div>
+            </div>
+            <div class="control-group">
+              <div class="controls">
+                <%= text_field_tag :email, @email, class: "input-xxlarge", placeholder: "Your email" %>
+              </div>
+            </div>
+            <div class="control-group">
+              <div class="controls">
+                <%= text_area_tag :message, @message, rows: 10, class: "input-xxlarge", placeholder: "Your message..." %>
+              </div>
+            </div>
+            <%= submit_tag "Send", class: "contact btn btn-small btn-danger" %>
           <% end %>
-        </div> -->
+        </div>
       </div>
     </div>
   </div>

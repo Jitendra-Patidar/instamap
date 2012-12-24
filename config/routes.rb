@@ -7,5 +7,7 @@ Instamap::Application.routes.draw do
   match "/places", to: "instamap#places", as: :places
 
   match "/comments", to: "instamap#comments", as: :comments
+
+  match "/contact", to: "instamap#contact", as: :contact
   
 end

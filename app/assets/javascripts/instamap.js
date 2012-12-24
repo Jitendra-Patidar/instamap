@@ -1,16 +1,5 @@
 $(document).ready(function() {
-  $("#about_us").on("click", function(event) {
-    event.preventDefault();
-    $("#myModal").modal();
-    $(".nav-tabs li").on("click", function() {
-      var selection = $(this).text();
-      if (selection == "About" || selection == "Contact") {
-        $("#myModalLabel").text(selection + " us");
-      } else {
-        $("#myModalLabel").text(selection + " use Instamap");
-      }
-    });
-  });
+  Modal.show();
   Instamap.init(); 
 });
 
@@ -24,6 +13,59 @@ var Instamap = {
   }
 };
 
+var Modal = {
+  show: function() {
+    $("#about_us").on("click", function(event) {
+      event.preventDefault();
+      $("#myModal").modal();
+      $(".contact").show();
+      $(".controls").show();
+      $("#name, #email, #message").val("");
+      $(".nav-tabs li").on("click", function() {
+        var selection = $(this).text();
+        if (selection == "About" || selection == "Contact") {
+          $("#myModalLabel").text(selection + " us");
+        } else {
+          $("#myModalLabel").text(selection + " use Instamap");
+        }
+      });
+      $(".contact").on("click", function(event) {
+        event.preventDefault();
+        var paths = ["#name", "#email", "#message"];
+        for (var index = 0; index < 3; index++) {
+          if ($(paths[index]).val().length == 0) {
+            $(paths[index]).closest("div.control-group").addClass("error");
+          } else {
+            $(paths[index]).closest("div.control-group").removeClass("error");
+          }
+        }
+        if ($("#name").val().length > 0 && $("#email").val().length > 0 && $("#message").val().length > 0) {
+          $(".contact").hide();
+          $(".modal-body").append("<img id=\"contact-loader\" src=\"assets/ajax-loader.gif\" />");
+          $.ajax({
+            type: "post",
+            url: "/contact",
+            dataType: "html",
+            data: { name: $("#name").val(), email: $("#email").val(), message: $("#message").val() },
+            success: function() {
+              $("#modal-errors").prepend("<div id=\"contact-success\" class=\"center alert alert-success\">Message successfully sent");
+              $(".controls").hide();
+              $("#contact-loader").remove();
+              setTimeout(function() {
+                $("#contact-success").remove();
+                $("#myModal").modal("hide");
+              }, 1050);
+            },
+            error: function() {
+              alert("Oops. Something weird happen. Please try submitting the contact form again.");
+            }
+          });
+        }
+      });
+    });
+  }
+};
+
 var Container = {
   loader: function() {
     $(".container").prepend("<img id=\"loader\" src=\"assets/ajax-loader.gif\" />")
@@ -33,7 +75,7 @@ var Container = {
     $(".container").prepend("<div id=\"sad_face\" class=\"center alert alert-danger\"><img src=\"/assets/sad-face.png\" /><strong>&nbsp;&nbsp;Oh no! No Instagram images were found in this area, come back when this town gets up to speed with technology!</strong></div>");
     setTimeout(function() {
       $("#sad_face").slideUp();
-    }, 3000);
+    }, 2050);
   }
 };
 
@@ -101,7 +143,7 @@ var Google = {
       infowindow.open(Google.map, marker);
     });
     $(".thumb").on("mouseenter", function() {
-      if ($(this).find("img").attr("src") == content.match(/([^<div id="infowindow"><img src=](.)+[^ \/><\/div>])/)[0]) {
+      if ($(this).data("thumb") == content.match(/([^<div id="infowindow"><img src=](.)+[^ \/><\/div>])/)[0]) {
         infowindow.setContent(content);
         infowindow.open(Google.map, marker);
       }
@@ -161,15 +203,6 @@ var Google = {
       Container.loader();
       Google.placeMarker(event.latLng);
       Instagram.ping(event.latLng.Ya, event.latLng.Za);
-      $(Google.map).on('ajax:success', function(event, data) {
-        if (data.instagram.length == 123) {
-          Container.sad_face();
-        } else {
-          $(".imageSlider").html(data.instagram);
-          Slider.flexi();
-          Google.placeIcon();
-        }//end else
-      });//end on (for ajax success)
     });//end addListener
   }//end geoPosition
 };//end Google
@@ -183,8 +216,9 @@ var Instagram = {
       dataType: 'json',
       data: { lat: latitude, lng: longitude },
       success: function(data) {
+        debugger
         $("#loader").remove();
-        if (data.instagram.length == 123) {
+        if (data.instagram.length == 122) {
           Container.sad_face();
         } else {
           Google.placeMarker(myLatlng);
@@ -198,7 +232,7 @@ var Instagram = {
         $("#loader").remove();
       }//end error
     });//end ajax
-  }
+  }//end ping
 };
 
 var Slider = {
@@ -234,7 +268,8 @@ var Fancy = {
         helpers : {
           media : {}
         },
-        beforeShow  : function() {
+
+        beforeShow: function() {
           view.getPanoramaByLocation(latLng, 100, function (streetViewPanoramaData, status) {
             if (status === google.maps.StreetViewStatus.OK) {
               var panoramaOptions = {
@@ -247,8 +282,8 @@ var Fancy = {
                   heading: 0,
                   pitch: 0,
                   zoom: 0
-                }
-              };
+                }//end pov
+              };//end panoramaOptions
               $(".fancybox-inner").prepend('<div id="street_view"></div>');
               $(".fancybox-inner").prepend('<div id="lightbox_comments"></div>');
               street = new google.maps.StreetViewPanorama(document.getElementById("street_view"), panoramaOptions);
@@ -283,12 +318,12 @@ var Fancy = {
               } else {
                 $.each(data, function() {
                   $("#lightbox_comments").append('<div class="span4">' + $(this)[0].text + "</div><div class=\"span2\"><img src=" + $(this)[0].from.profile_picture + " height=64 width=64 /><div></div><br /><br />");
-                });
-              }
-            }
-          });
-        }
-      });
-    });
-  }
-};
+                }); //end each
+              }//end else
+            }//end success
+          });//end ajax
+        }//end beforeShow
+      });//end fancybox
+    });//end click
+  }//end box
+};//end Fancy
