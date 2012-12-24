@@ -79,8 +79,8 @@ var Google = {
         animation: google.maps.Animation.DROP
       });
       var content =
-        "<div class=\"infowindow\">" +
-          "<img src=" + instagram.images.thumbnail.url + " />" +
+        "<div class=\"infowindow\" data-lat=" + instagram.location.latitude + " data-long=" + instagram.location.longitude + " data-id=" + instagram.id + ">" +
+          "<img src=" + instagram.images.thumbnail.url + " />"
         "</div>";
       Google.infowindowListener(marker, content, infoWindow);
     });
@@ -91,6 +91,7 @@ var Google = {
       infowindow.close();
       infowindow.setContent(content);
       infowindow.open(Google.map, marker);
+      Slider.flexi();
     });
     $(".thumb").on("mouseenter", function() {
       if ($(this).data("thumb") == $(content).find('img').attr('src')) {
@@ -103,25 +104,25 @@ var Google = {
     });
   },
 
-  insta_geocode: function() {
-    $(".search_btn").on("click", function(e) {
+  instaGeocode: function() {
+    $(".search_btn").on("click", function(event) {
       Container.loader();
-      geocoder = new google.maps.Geocoder();
-      e.preventDefault();
+      var geocoder = new google.maps.Geocoder();
+      event.preventDefault();
       var address = $("#geocode_address").val();
-      geocoder.geocode( { 'address': address }, function(results, status) {
+      geocoder.geocode( { 'address': address }, function(geocoded_data, status) {
         if (status == google.maps.GeocoderStatus.OK) {
           Google.map.setZoom(15);
-          Google.map.setCenter(results[0].geometry.location);
+          Google.map.setCenter(geocoded_data[0].geometry.location);
           var image = "/assets/custom_marker.png";
           var marker = new google.maps.Marker({
               map: Google.map,
-              position: results[0].geometry.location,
+              position: geocoded_data[0].geometry.location,
               icon: image, 
               title: "Your searched location - " + address
           });//end Marker
           
-          Instagram.ping(results[0].geometry.location.Ya, results[0].geometry.location.Za);
+          Instagram.ping(geocoded_data[0].geometry.location.Ya, geocoded_data[0].geometry.location.Za);
 
         } else {
           alert("Geocode was not successful for the following reason: " + status);
@@ -131,14 +132,14 @@ var Google = {
     });//end on (search button click)
   },
 
-  geoPosition: function (position) {
-    Google.insta_geocode();
+  geoPosition: function(position) {
+    Google.instaGeocode();
     var latitude  = position.coords.latitude;
     var longitude = position.coords.longitude;
-    var myLatlng = new google.maps.LatLng(latitude, longitude);
+    var latitude_longitude = new google.maps.LatLng(latitude, longitude);
     var mapOptions = {
       zoom: 12,
-      center: myLatlng,
+      center: latitude_longitude,
       styles: Google.styles,
       mapTypeId: google.maps.MapTypeId.ROADMAP
     }//end mapOptions
@@ -147,7 +148,7 @@ var Google = {
 
     Container.loader();
 
-    Instagram.ping(myLatlng.Ya, myLatlng.Za);
+    Instagram.ping(latitude_longitude.Ya, latitude_longitude.Za);
 
     google.maps.event.addListener(Google.map, 'click', function(event) {
       Container.loader();
@@ -193,17 +194,13 @@ var Slider = {
       itemWidth: 160,
       itemMargin: 5
     });
-    Fancy.box();
+    Fancy.run();
   }
 };
 
 var Fancy = {
-  box: function() {
-    $(".thumb").on("click", function() {
+  box: function(lat, lng, pid) {
       var street;
-      var lat    = $(this).data("lat");
-      var lng    = $(this).data("long");
-      var pid    = $(this).data("id");
       var latLng = new google.maps.LatLng(lat, lng);
       var view   = new google.maps.StreetViewService();
 
@@ -273,6 +270,32 @@ var Fancy = {
           });//end ajax
         }//end beforeShow
       });//end fancybox
+    
+  },//end box
+
+  run: function() {
+    $(".thumb").on("click", function() {
+      var lat    = $(this).data("lat");
+      var lng    = $(this).data("long");
+      var pid    = $(this).data("id");
+      console.log(lat);
+      console.log(lng);
+      console.log(pid);
+      Fancy.box(lat, lng, pid);
     });//end click
-  }//end box
+
+    $(".infowindow").on("click", function() {
+      console.log("I am here");
+      var lat    = $(this).data("lat");
+      var lng    = $(this).data("long");
+      var pid    = $(this).data("id");
+      // console.log(lat);
+      // console.log(lng);
+      // console.log(pid);
+      debugger
+      Fancy.box(lat, lng, pid);
+    });//end click
+
+
+  }//end run
 };//end Fancy
