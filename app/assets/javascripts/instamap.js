@@ -1,6 +1,6 @@
 $(document).ready(function() {
   Modal.show();
-  Instamap.init(); 
+  Instamap.init();
 });
 
 var Instamap = {
@@ -232,7 +232,13 @@ var Instagram = {
         $("#loader").remove();
       }//end error
     });//end ajax
-  }//end ping
+  },//end ping
+
+  post: function() {
+    $("#post_comment").on("click", function() {
+      alert($("#user_comment").val());
+    });
+  }
 };
 
 var Slider = {
@@ -285,8 +291,16 @@ var Fancy = {
                 }//end pov
               };//end panoramaOptions
               $(".fancybox-inner").prepend('<div id="street_view"></div>');
-              $(".fancybox-inner").prepend('<div id="lightbox_comments"></div>');
+              $(".fancybox-inner").prepend(
+                '<div id="lightbox_comments"></div>' +
+                '<div id="comment_box" class="span6">' + 
+                  '<textarea id="user_comment"></textarea>' +
+                  '<br />' +
+                  '<div id="post_comment" class="btn btn-small btn-success">Post comment</div>' +
+                '</div>'
+              );
               street = new google.maps.StreetViewPanorama(document.getElementById("street_view"), panoramaOptions);
+              Instagram.post();
             } else {
               var panoramaOptions = {
                 addressControl: true,

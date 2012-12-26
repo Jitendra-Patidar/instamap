@@ -1,5 +1,10 @@
 <%= image_tag "beta.png", id: "beta" %>
 <%= link_to "Instamap", root_path, id: "logo" %>
+<% if session[:user] %>
+	<%= image_tag session[:user].profile_picture, id: "login", class: "pull-right", height: 30, width: 30 %>
+<% else %>
+	<%= link_to image_tag("login.png", height: 30, width: 30, id: "login", class: "pull-right"), login_path %>
+<% end %>
 <%= link_to image_tag("about.png", height: 30, width: 30, id: "about_us", class: "pull-right"), "#" %>
 <%= form_tag "/", class: "search pull-right" do %>
 	<%= text_field_tag "geocode_address", "", class: "input-xxlarge", placeholder: "Search by street address, a landmark, a city, etc" %>
