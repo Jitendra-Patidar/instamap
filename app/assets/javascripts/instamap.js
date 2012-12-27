@@ -129,8 +129,9 @@ var Google = {
         animation: google.maps.Animation.DROP
       });
       var content =
-        "<div id=\"infowindow\">" +
+        "<div class=\"infowindow\">" +
           "<img src=" + instagram.images.thumbnail.url + " />" +
+          "<p class='street_view'>Show street view</p>" +
         "</div>";
       Google.openWindow(marker, content, infoWindow);
     });
@@ -141,6 +142,7 @@ var Google = {
       infowindow.close();
       infowindow.setContent(content);
       infowindow.open(Google.map, marker);
+      Google.infowindowLightbox();
     });
     $(".thumb").on("mouseenter", function() {
       // if ($(this).data("thumb") == content.match(/([^<div id="infowindow"><img src=](.)+[^ \/><\/div>])/)[0]) {
@@ -182,7 +184,7 @@ var Google = {
     });//end on (search button click)
   },
 
-  geoPosition: function (position) {
+  geoPosition: function(position) {
     Google.instaGeocode();
     var latitude  = position.coords.latitude;
     var longitude = position.coords.longitude;
@@ -205,7 +207,27 @@ var Google = {
       Google.placeMarker(event.latLng);
       Instagram.ping(event.latLng.Ya, event.latLng.Za);
     });//end addListener
-  }//end geoPosition
+  },//end geoPosition
+
+  infowindowLightbox: function() {
+    $('.street_view').click(function(){
+      var infowindow_pic = $(this).parent().find('img').attr('src');
+      var thumbs = $('.thumb');
+      $.each(thumbs, function() {
+        if ($(this).data("thumb") == infowindow_pic) {
+          Fancy.run(this);
+          // console.log(this);
+          // console.log(infowindow_pic);
+          // console.log(this);
+          // console.log($(this));
+          // var lat = $(this).data("lat")
+          // var lng = $(this).data("long")
+          // var pid = $(this).data("id")
+          // Fancy.box(lat, lng, pid);
+        }
+      });//end each
+    });//end click
+  }//end infowindowLightbox
 };//end Google
 
 var Instagram = {
@@ -217,7 +239,6 @@ var Instagram = {
       dataType: 'json',
       data: { lat: latitude, lng: longitude },
       success: function(data) {
-        debugger
         $("#loader").remove();
         if (data.instagram.length == 122) {
           Container.sad_face();
@@ -225,6 +246,9 @@ var Instagram = {
           Google.placeMarker(myLatlng);
           $(".imageSlider").html(data.instagram);
           Slider.flexi();
+          $(".thumb").on("click", function() {
+            Fancy.run(this);
+          });//end on click
           Google.placeIcon();
         }
       },//end success
@@ -251,94 +275,99 @@ var Slider = {
       itemWidth: 160,
       itemMargin: 5
     });
-    Fancy.box();
   }
 };
 
 var Fancy = {
-  box: function() {
-    $(".thumb").on("click", function() {
-      var street;
-      var lat    = $(this).data("lat");
-      var lng    = $(this).data("long");
-      var pid    = $(this).data("id");
-      var latLng = new google.maps.LatLng(lat, lng);
-      var view   = new google.maps.StreetViewService();
+  box: function(lat, lng, pid) {
+    var street;
+    var latLng = new google.maps.LatLng(lat, lng);
+    var view   = new google.maps.StreetViewService();
 
-      $(".fancybox").fancybox({
-        padding     : 5,
-        width       : '90%',
-        height      : '95%',
-        scrolling   : 'no',
-        openEffect  : 'none',
-        closeEffect : 'fade',
-        helpers : {
-          media : {}
-        },
+    $(".fancybox").fancybox({
+      padding     : 5,
+      width       : '90%',
+      height      : '95%',
+      scrolling   : 'no',
+      openEffect  : 'none',
+      closeEffect : 'fade',
+      helpers : {
+        media : {}
+      },
 
-        beforeShow: function() {
-          view.getPanoramaByLocation(latLng, 100, function (streetViewPanoramaData, status) {
-            if (status === google.maps.StreetViewStatus.OK) {
-              var panoramaOptions = {
-                addressControl: true,
-                addressControlOptions: {
-                  style: { backgroundColor: 'grey', color: 'yellow' }
-                },
-                position: new google.maps.LatLng(streetViewPanoramaData.location.latLng.Ya, streetViewPanoramaData.location.latLng.Za),
-                pov: {
-                  heading: 0,
-                  pitch: 0,
-                  zoom: 0
-                }//end pov
-              };//end panoramaOptions
-              $(".fancybox-inner").prepend('<div id="street_view"></div>');
-              $(".fancybox-inner").prepend(
-                '<div id="lightbox_comments"></div>' +
-                '<div id="comment_box" class="span6">' + 
-                  '<textarea id="user_comment"></textarea>' +
-                  '<br />' +
-                  '<div id="post_comment" class="btn btn-small btn-success">Post comment</div>' +
-                '</div>'
-              );
-              street = new google.maps.StreetViewPanorama(document.getElementById("street_view"), panoramaOptions);
-              Instagram.post();
+      beforeShow: function() {
+        view.getPanoramaByLocation(latLng, 100, function (streetViewPanoramaData, status) {
+          if (status === google.maps.StreetViewStatus.OK) {
+            var panoramaOptions = {
+              addressControl: true,
+              addressControlOptions: {
+                style: { backgroundColor: 'grey', color: 'yellow' }
+              },
+              position: new google.maps.LatLng(streetViewPanoramaData.location.latLng.Ya, streetViewPanoramaData.location.latLng.Za),
+              pov: {
+                heading: 0,
+                pitch: 0,
+                zoom: 0
+              }//end pov
+            };//end panoramaOptions
+            $(".fancybox-inner").prepend('<div id="street_view"></div>');
+            $(".fancybox-inner").prepend(
+              '<div id="lightbox_comments"></div>' +
+              '<div id="comment_box" class="span6">' + 
+                '<textarea id="user_comment"></textarea>' +
+                '<br />' +
+                '<div id="post_comment" class="btn btn-small btn-success">Post comment</div>' +
+              '</div>'
+            );
+            street = new google.maps.StreetViewPanorama(document.getElementById("street_view"), panoramaOptions);
+            Instagram.post();
+          } else {
+            var panoramaOptions = {
+              addressControl: true,
+              addressControlOptions: {
+                style: { backgroundColor: 'grey', color: 'yellow' }
+              },
+              position: new google.maps.LatLng(lat, lng),
+              pov: {
+                heading: 0,
+                pitch: 0,
+                zoom: 0
+              }
+            };
+            $(".fancybox-inner").prepend('<div id="street_view"></div>');
+            $(".fancybox-inner").prepend('<div id="lightbox_comments"></div>');
+            street = new google.maps.StreetViewPanorama(document.getElementById("street_view"), panoramaOptions);
+            $("#street_view").html("<img id=\"not_available\" src=\"assets/not-available.jpeg\" />");
+          }
+        });
+
+        $.ajax({
+          type: 'get',
+          url: "/comments",
+          dataType: 'json',
+          data: { id: pid },
+          success: function(data) {
+            if (data == "") {
+              $("#lightbox_comments").append('<div class="span6 center alert alert-danger">No comments at this time...</div>');
             } else {
-              var panoramaOptions = {
-                addressControl: true,
-                addressControlOptions: {
-                  style: { backgroundColor: 'grey', color: 'yellow' }
-                },
-                position: new google.maps.LatLng(lat, lng),
-                pov: {
-                  heading: 0,
-                  pitch: 0,
-                  zoom: 0
-                }
-              };
-              $(".fancybox-inner").prepend('<div id="street_view"></div>');
-              $(".fancybox-inner").prepend('<div id="lightbox_comments"></div>');
-              street = new google.maps.StreetViewPanorama(document.getElementById("street_view"), panoramaOptions);
-              $("#street_view").html("<img id=\"not_available\" src=\"assets/not-available.jpeg\" />");
-            }
-          });
+              $.each(data, function() {
+                $("#lightbox_comments").append('<div class="span4">' + $(this)[0].text + "</div><div class=\"span2\"><img src=" + $(this)[0].from.profile_picture + " height=64 width=64 /><div></div><br /><br />");
+              }); //end each
+            }//end else
+          }//end success
+        });//end ajax
+      }//end beforeShow
+    });//end fancybox
+  },//end box
 
-          $.ajax({
-            type: 'get',
-            url: "/comments",
-            dataType: 'json',
-            data: { id: pid },
-            success: function(data) {
-              if (data == "") {
-                $("#lightbox_comments").append('<div class="span6 center alert alert-danger">No comments at this time...</div>');
-              } else {
-                $.each(data, function() {
-                  $("#lightbox_comments").append('<div class="span4">' + $(this)[0].text + "</div><div class=\"span2\"><img src=" + $(this)[0].from.profile_picture + " height=64 width=64 /><div></div><br /><br />");
-                }); //end each
-              }//end else
-            }//end success
-          });//end ajax
-        }//end beforeShow
-      });//end fancybox
-    });//end click
-  }//end box
+  run: function(object) {
+      var lat    = $(object).data("lat");
+      var lng    = $(object).data("long");
+      var pid    = $(object).data("id");
+      // console.log($(object))
+      // console.log(lat);
+      // console.log(lng);
+      // console.log(pid);
+      Fancy.box(lat, lng, pid);
+  }//end run
 };//end Fancy
