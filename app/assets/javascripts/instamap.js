@@ -74,8 +74,8 @@ var Container = {
   sad_face: function() {
     $(".container").prepend("<div id=\"sad_face\" class=\"center alert alert-danger\"><img src=\"/assets/sad-face.png\" /><strong>&nbsp;&nbsp;Oh no! No Instagram images were found in this area, come back when this town gets up to speed with technology!</strong></div>");
     setTimeout(function() {
-      $("#sad_face").slideUp();
-    }, 2050);
+      $("#sad_face").slideUp(500);
+    }, 5000);
   }
 };
 
@@ -143,7 +143,8 @@ var Google = {
       infowindow.open(Google.map, marker);
     });
     $(".thumb").on("mouseenter", function() {
-      if ($(this).data("thumb") == content.match(/([^<div id="infowindow"><img src=](.)+[^ \/><\/div>])/)[0]) {
+      // if ($(this).data("thumb") == content.match(/([^<div id="infowindow"><img src=](.)+[^ \/><\/div>])/)[0]) {
+      if ($(this).data("thumb") == $(content).find('img').attr('src')) {  
         infowindow.setContent(content);
         infowindow.open(Google.map, marker);
       }
@@ -153,7 +154,7 @@ var Google = {
     });
   },
 
-  insta_geocode: function() {
+  instaGeocode: function() {
     $(".search_btn").on("click", function(e) {
       Container.loader();
       geocoder = new google.maps.Geocoder();
@@ -182,7 +183,7 @@ var Google = {
   },
 
   geoPosition: function (position) {
-    Google.insta_geocode();
+    Google.instaGeocode();
     var latitude  = position.coords.latitude;
     var longitude = position.coords.longitude;
     var myLatlng = new google.maps.LatLng(latitude, longitude);
