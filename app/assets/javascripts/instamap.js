@@ -216,7 +216,6 @@ var Instagram = {
       dataType: 'json',
       data: { lat: latitude, lng: longitude },
       success: function(data) {
-        debugger
         $("#loader").remove();
         if (data.instagram.length == 122) {
           Container.sad_face();

@@ -1,12 +1,32 @@
-<div id="user_profile">
-	<div class="span4">
-		<%= image_tag @current_user.profile_picture %>
-	</div>
-	<div class="span7">
-		<div id="image_slider">
-			<% @images.each do |image| %>
-				<%= image_tag image.images.thumbnail.url %>
-			<% end %>
+<div id="map_canvas"></div>
+	<div id="user_profile">
+		<div class="span2">
+			<%= image_tag @current_user.profile_picture %>
+		</div>
+		<div class="span9">
+			<%= @current_user.username %>
+		</div>
+		<div class="profile_slider span12">
+			<div class="flexslider">
+				<ul class="slides">
+				  <% @images.each do |media| %>
+				    <li>
+				      <%= link_to image_tag(media.images.thumbnail.url), media.images.low_resolution.url, class: "fancybox fancybox.iframe" %>
+				    </li>
+				  <% end %>
+				</ul>
+			</div>
+		</div>
+		<div class="profile_slider span12">
+			<div class="flexslider">
+				<ul class="slides">
+				  <% @follows.each do |follow| %>
+				    <li>
+				      <%= image_tag follow.profile_picture, class: "fancybox" %>
+				    </li>
+				  <% end %>
+				</ul>
+			</div>
 		</div>
 	</div>
 </div>
