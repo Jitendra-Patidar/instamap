@@ -20,28 +20,18 @@ class UsersController < ApplicationController
     @user = User.find_by_username(@instagram_user["user"]["username"])
     
     if @user.nil?
-      new_user
+      @user         = User.new.new_user(@instagram_user)
+      @current_user = User.find_by_username(@user.username)
+      redirect_to show_path(@current_user.username)
     else
       redirect_to show_path(@user.username)
     end
   end
 
-  def new_user
-    @user = User.create(
-      access_token:    @instagram_user["access_token"],
-      instagram_id:    @instagram_user["user"]["id"],
-      username:        @instagram_user["user"]["username"],
-      full_name:       @instagram_user["user"]["full_name"],
-      profile_picture: @instagram_user["user"]["profile_picture"]
-    )
-
-    @current_user = User.find_by_username(@user.username)
-    redirect_to show_path(@current_user.username)
-  end
-
   def show
     @current_user = User.find_by_username(params[:username])
-    @images = Instagram.user_recent_media(@current_user.instagram_id, options = { access_token: @current_user.access_token })
+    @images       = Instagram.user_recent_media(@current_user.instagram_id, options = { access_token: @current_user.access_token })
+    @follows      = Instagram.user_follows(@current_user.instagram_id, options = { access_token: @current_user.access_token })
   end
 
   def logout
