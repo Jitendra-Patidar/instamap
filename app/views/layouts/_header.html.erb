@@ -1,5 +1,27 @@
 <%= image_tag "beta.png", id: "beta" %>
 <%= link_to "Instamap", root_path, id: "logo" %>
+<% if session[:user] %>
+	<div id="login" class="btn-group pull-right">
+		<a class="btn btn-mini dropdown-toggle" data-toggle="dropdown" href="#">
+	    Logout
+	    <span class="caret"></span>
+	  </a>	  
+	  <ul class="dropdown-menu">
+	  	<li><%= link_to "Profile", show_path(session[:user].username) %></li>
+	    <li><%= link_to "Logout via Instagram", logout_path %></li>
+	  </ul>
+	</div>
+<% else %>
+	<div id="login" class="btn-group pull-right">
+	  <a class="btn btn-mini dropdown-toggle" data-toggle="dropdown" href="#">
+	    Login
+	    <span class="caret"></span>
+	  </a>
+	  <ul class="dropdown-menu">
+	    <li><%= link_to "Login via Instagram", login_path %></li>
+	  </ul>
+	</div>
+<% end %>
 <%= link_to image_tag("about.png", height: 30, width: 30, id: "about_us", class: "pull-right"), "#" %>
 <%= form_tag "/", class: "search pull-right" do %>
 	<%= text_field_tag "geocode_address", "", class: "input-xxlarge", placeholder: "Search by street address, a landmark, a city, etc" %>

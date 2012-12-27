@@ -8,6 +8,16 @@ body {
   background-image: url("classy_fabric.png");
 }
 
+#user_profile {
+	color: white;
+	margin-top: 70px;
+}
+
+#image_slider {
+	height: 400px;
+	overflow: auto;
+}
+
 .row {
   margin: 0 auto;
 }
@@ -38,7 +48,8 @@ body {
 /* login */
 
 #login {
-	margin-top: 15px;
+	color: white;
+	margin-top: 18px;
 }
 
 /* Google */
@@ -78,12 +89,21 @@ body {
 	position: absolute;
 	top: 350px;
 	left: 400px;
-	margin-bottom: 15px;
+	margin-bottom: 5px;
 	overflow: auto;
 	width: auto;
-	height: 300px;
+	height: 200px;
 	img {
 		margin-top: 0px;
+	}
+}
+
+#comment_box {
+	position: absolute;
+	top: 560px;
+	left: 400px;
+	textarea {
+		width: 460px;
 	}
 }
 

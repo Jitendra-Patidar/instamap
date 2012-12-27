@@ -9,5 +9,13 @@ Instamap::Application.routes.draw do
   match "/comments", to: "instamap#comments", as: :comments
 
   match "/contact", to: "instamap#contact", as: :contact
+
+  match "/login", to: "users#login", as: :login
+
+  match "/logout", to: "users#logout", as: :logout
+
+  match "/generate_token", to: "users#generate_token", as: :generate_token
+
+  match "/:username", to: "users#show", as: :show
   
 end
