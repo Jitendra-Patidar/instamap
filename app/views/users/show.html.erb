@@ -1,9 +1,12 @@
-<div id="profile">
-	<%= image_tag @current_user.profile_picture %>
-	<br /><br />
-	<%= @current_user.username %>
-	<br /><br />
-	<% @images.each do |image| %>
-		<%= image_tag image.images.thumbnail.url %>
-	<% end %>
+<div id="user_profile">
+	<div class="span4">
+		<%= image_tag @current_user.profile_picture %>
+	</div>
+	<div class="span7">
+		<div id="image_slider">
+			<% @images.each do |image| %>
+				<%= image_tag image.images.thumbnail.url %>
+			<% end %>
+		</div>
+	</div>
 </div>

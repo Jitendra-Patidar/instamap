@@ -12,6 +12,8 @@ Instamap::Application.routes.draw do
 
   match "/login", to: "users#login", as: :login
 
+  match "/logout", to: "users#logout", as: :logout
+
   match "/generate_token", to: "users#generate_token", as: :generate_token
 
   match "/:username", to: "users#show", as: :show

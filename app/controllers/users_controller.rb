@@ -1,8 +1,8 @@
 class UsersController < ApplicationController
 
-  before_filter :get_user, except: [:login, :generate_token]
+  after_filter :get_user, only: :generate_token
 
-	def login
+  def login
     redirect_to "https://api.instagram.com/oauth/authorize/?client_id=b3d509571728426b92a190d4057debc9&redirect_uri=" + 
                 root_url + "generate_token&response_type=code&scope=comments+relationships+likes"
   end
@@ -44,9 +44,14 @@ class UsersController < ApplicationController
     @images = Instagram.user_recent_media(@current_user.instagram_id, options = { access_token: @current_user.access_token })
   end
 
+  def logout
+    session[:user] = nil
+    redirect_to root_path
+  end
+
 private
 
   def get_user
-    session[:user] = @current_user
+    session[:user] = @user
   end
 end

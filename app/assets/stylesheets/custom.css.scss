@@ -8,10 +8,14 @@ body {
   background-image: url("classy_fabric.png");
 }
 
-#profile {
+#user_profile {
 	color: white;
-	margin-top: 100px;
-	margin-left: 50px;
+	margin-top: 70px;
+}
+
+#image_slider {
+	height: 400px;
+	overflow: auto;
 }
 
 .row {
@@ -45,7 +49,7 @@ body {
 
 #login {
 	color: white;
-	margin-top: 15px;
+	margin-top: 18px;
 }
 
 /* Google */
