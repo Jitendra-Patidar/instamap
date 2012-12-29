@@ -31,7 +31,9 @@ class UsersController < ApplicationController
   def show
     @current_user = User.find_by_username(params[:username])
     @images       = Instagram.user_recent_media(@current_user.instagram_id, options = { access_token: @current_user.access_token })
-    @follows      = Instagram.user_follows(@current_user.instagram_id, options = { access_token: @current_user.access_token })
+    @stats        = Instagram.user(@current_user.instagram_id, options = { access_token: @current_user.access_token })
+    @following    = Instagram.user_follows(@current_user.instagram_id, options = { access_token: @current_user.access_token })
+    @follows      = Instagram.user_followed_by(@current_user.instagram_id, options = { access_token: @current_user.access_token })
   end
 
   def logout

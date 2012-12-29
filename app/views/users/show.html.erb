@@ -1,32 +1,52 @@
-<div id="map_canvas"></div>
-	<div id="user_profile">
-		<div class="span2">
-			<%= image_tag @current_user.profile_picture %>
+<div id="user_profile">
+	<div class="span2">
+		<%= image_tag @current_user.profile_picture, class: "img-rounded" %>
+		<br />
+		<div id="followers" class="span6">
+			<% @follows.each do |follow| %>
+				<%= image_tag follow.profile_picture, height: 60, width: 60, rel: "tooltip", title: follow.username, class: "img-circle" %>
+			<% end %>
 		</div>
-		<div class="span9">
-			<%= @current_user.username %>
+		<div id="following" class="span6">
+			<% @following.each do |follow| %>
+				<%= image_tag follow.profile_picture, height: 60, width: 60, rel: "tooltip", title: follow.username, class: "img-circle" %>
+			<% end %>
 		</div>
-		<div class="profile_slider span12">
-			<div class="flexslider">
-				<ul class="slides">
-				  <% @images.each do |media| %>
-				    <li>
-				      <%= link_to image_tag(media.images.thumbnail.url), media.images.low_resolution.url, class: "fancybox fancybox.iframe" %>
-				    </li>
-				  <% end %>
-				</ul>
-			</div>
-		</div>
-		<div class="profile_slider span12">
-			<div class="flexslider">
-				<ul class="slides">
-				  <% @follows.each do |follow| %>
-				    <li>
-				      <%= image_tag follow.profile_picture, class: "fancybox" %>
-				    </li>
-				  <% end %>
-				</ul>
-			</div>
+	</div>
+	<div class="span3">
+		<span class="label label-important"><%= @current_user.username %></span>
+		<br />
+		<i class="icon-eye-open icon-white"></i> 
+			<%= link_to "#{@stats.counts.followed_by} followers", "#", rel: "tooltip", title: "Click to see my followers", id: "followers_link" %>
+		<br />
+		<i class="icon-eye-close icon-white"></i> 
+			<%= link_to "#{@stats.counts.follows} following", "#", rel: "tooltip", title: "Click to see who I follow", id: "following_link" %> 
+		<br />
+		<i class="icon-map-marker icon-white"></i> 
+			<%= link_to @stats.website %>
+		<br />
+		<i class="icon-comment icon-white"></i> <%= @stats.bio %>
+	</div>
+	<div id="profile_map" class="span6">
+		<div id="map_canvas"></div>
+	</div>
+	<div class="profile_slider span12">
+		<div class="flexslider">
+			<ul class="slides">
+				<% @images.each do |media| %>
+					<% if media.location.nil? %>
+						<li class="thumb" data-profile="<%= media.user.profile_picture %>" data-show-link="<%= show_url(media.id) %>" data-lat="37.4283" data-long="-121.9056" data-id="<%= media.id %>" data-thumb="<%= media.images.thumbnail.url %>">
+				    	<%= link_to image_tag(media.images.thumbnail.url), media.images.low_resolution.url, class: "fancybox fancybox.iframe" %>
+				   	</li>
+					<% else %>
+						<li class="thumb" data-profile="<%= media.user.profile_picture %>" data-show-link="<%= show_url(media.id) %>" data-lat="<%= media.location.latitude %>" data-long="<%= media.location.longitude %>" data-id="<%= media.id %>" data-thumb="<%= media.images.thumbnail.url %>">
+				    	<%= link_to image_tag(media.images.thumbnail.url), media.images.low_resolution.url, class: "fancybox fancybox.iframe" %>
+				   	</li>
+					<% end %>
+			 	<% end %>
+			</ul>
 		</div>
 	</div>
 </div>
+<%= content_tag "div", :id => "instagrams", :data => { :instagrams => @images } do %>
+<% end %>

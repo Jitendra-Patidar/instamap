@@ -1,5 +1,6 @@
 $(document).ready(function() {
   Modal.show();
+  Tooltip.show();
   Instamap.init();
 });
 
@@ -66,6 +67,25 @@ var Modal = {
   }
 };
 
+var Tooltip = {
+  show: function() {
+    $("#following").hide();
+    $("#followers_link").tooltip({ placement: "right" });
+    $("#following_link").tooltip({ placement: "right" });
+    $(".img-circle").tooltip({ placement: "top" });
+    if ($("#following_link").on("click", function(event) {
+      event.preventDefault();
+      $("#followers").slideUp(1050);
+      $("#following").show();
+    }));
+    if ($("#followers_link").on("click", function(event) {
+      event.preventDefault();
+      $("#following").slideUp(1050);
+      $("#followers").show();
+    }));
+  }
+};
+
 var Container = {
   loader: function() {
     $(".container").prepend("<img id=\"loader\" src=\"assets/ajax-loader.gif\" />")
@@ -113,7 +133,7 @@ var Google = {
       icon: image,
       animation: google.maps.Animation.DROP
     });
-    Google.map.setZoom(15);
+    Google.map.setZoom(13);
     Google.map.setCenter(marker.getPosition());
   },
 
@@ -122,12 +142,21 @@ var Google = {
     var instagrams = $('#instagrams').data('instagrams');
     var infoWindow = new google.maps.InfoWindow();
     $.each(instagrams, function(index, instagram) {
-      var marker = new google.maps.Marker({
-        position: new google.maps.LatLng(instagram.location.latitude, instagram.location.longitude),
-        map: Google.map,
-        icon: image,
-        animation: google.maps.Animation.DROP
-      });
+      if (instagram.location != null) {
+        var marker = new google.maps.Marker({
+          position: new google.maps.LatLng(instagram.location.latitude, instagram.location.longitude),
+          map: Google.map,
+          icon: image,
+          animation: google.maps.Animation.DROP
+        });
+      } else {
+        var marker = new google.maps.Marker({
+          position: new google.maps.LatLng(37.4283, -121.9056),
+          map: Google.map,
+          icon: image,
+          animation: google.maps.Animation.DROP
+        });
+      }
       var content =
         "<div id=\"infowindow\">" +
           "<img src=" + instagram.images.thumbnail.url + " />" +
@@ -235,7 +264,7 @@ var Instagram = {
 
   post: function() {
     $("#post_comment").on("click", function() {
-      alert($("#user_comment").val());
+      alert("Posting comments is currently disable while we wait for approval from Instagram");
     });
   }
 };
