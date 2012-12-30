@@ -6,11 +6,17 @@ $(document).ready(function() {
 var Instamap = {
   init: function() {
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(Google.geoPosition);
+      navigator.geolocation.getCurrentPosition(function(position){
+        var latitude  = position.coords.latitude;
+        var longitude = position.coords.longitude;
+        Google.geoPosition(latitude, longitude);
+      }, function(){
+        Google.geoPosition(40.69847032728747, -73.9514422416687);
+      });
     } else {
-      alert("Get on a modern browser that supports geolocation like Chrome or Firefox to use this app");
-    };
-  }
+      Google.geoPosition(40.69847032728747, -73.9514422416687);
+    };//end else
+  },//end init
 };
 
 var Modal = {
@@ -81,6 +87,8 @@ var Container = {
 
 var Google = {
   map: null,
+  iconsArray: [],
+  placeMarkerArray: [],
   styles: [
     {
       featureType: "all",
@@ -105,6 +113,7 @@ var Google = {
   ],
 
   placeMarker: function(location) {
+    Google.deleteIcons(Google.placeMarkerArray);
     var image = "/assets/custom_marker.png";
     var marker = new google.maps.Marker({
       position: location,
@@ -113,11 +122,13 @@ var Google = {
       icon: image,
       animation: google.maps.Animation.DROP
     });
+    Google.placeMarkerArray.push(marker);
     Google.map.setZoom(15);
     Google.map.setCenter(marker.getPosition());
   },
 
   placeIcon: function() {
+    Google.deleteIcons(Google.iconsArray);
     var image = "/assets/camera.png";
     var instagrams = $('#instagrams').data('instagrams');
     var infoWindow = new google.maps.InfoWindow();
@@ -128,6 +139,7 @@ var Google = {
         icon: image,
         animation: google.maps.Animation.DROP
       });
+      Google.iconsArray.push(marker);
       var content =
         "<div class=\"infowindow\">" +
           "<img src=" + instagram.images.thumbnail.url + " />" +
@@ -135,6 +147,15 @@ var Google = {
         "</div>";
       Google.openWindow(marker, content, infoWindow);
     });
+  },
+
+  deleteIcons: function(array){
+    if (array) {
+      for (var counter = 0; counter < array.length; counter++) {
+        array[counter].setMap(null);
+      }
+      array.length = 0;
+    }
   },
 
   openWindow: function(marker, content, infowindow) {
@@ -159,7 +180,7 @@ var Google = {
   instaGeocode: function() {
     $(".search_btn").on("click", function(e) {
       Container.loader();
-      geocoder = new google.maps.Geocoder();
+      var geocoder = new google.maps.Geocoder();
       e.preventDefault();
       var address = $("#geocode_address").val();
       geocoder.geocode( { 'address': address }, function(results, status) {
@@ -184,10 +205,8 @@ var Google = {
     });//end on (search button click)
   },
 
-  geoPosition: function(position) {
+  geoPosition: function(latitude, longitude) {
     Google.instaGeocode();
-    var latitude  = position.coords.latitude;
-    var longitude = position.coords.longitude;
     var myLatlng = new google.maps.LatLng(latitude, longitude);
     var mapOptions = {
       zoom: 12,
@@ -197,7 +216,6 @@ var Google = {
     }//end mapOptions
 
     Google.map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
-
     Container.loader();
 
     Instagram.ping(myLatlng.Ya, myLatlng.Za);
