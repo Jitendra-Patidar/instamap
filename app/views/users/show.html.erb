@@ -1,6 +1,10 @@
 <div id="user_profile">
 	<div class="span2">
-		<%= image_tag @current_user.profile_picture, class: "img-rounded" %>
+		<% if @instamap_user.nil? %>
+			<%= image_tag @instagram_user.profile_picture, class: "img-rounded" %>
+		<% else %>
+			<%= image_tag @instamap_user.profile_picture, class: "img-rounded" %>
+		<% end %>
 		<br />
 		<div id="followers" class="span6">
 			<% @follows.each do |follow| %>
@@ -14,7 +18,11 @@
 		</div>
 	</div>
 	<div class="span3">
-		<span class="label label-important"><%= @current_user.username %></span>
+		<% if @instamap_user.nil? %>
+			<span class="label label-important"><%= @instagram_user.username %></span>
+		<% else %>
+			<span class="label label-important"><%= @instamap_user.username %></span>
+		<% end %>
 		<br />
 		<i class="icon-eye-open icon-white"></i> 
 			<%= link_to "#{@stats.counts.followed_by} followers", "#", rel: "tooltip", title: "Click to see my followers", id: "followers_link" %>
@@ -35,7 +43,7 @@
 			<ul class="slides">
 				<% @images.each do |media| %>
 					<% if media.location.nil? %>
-						<li class="thumb" data-profile="<%= media.user.profile_picture %>" data-show-link="<%= show_url(media.id) %>" data-lat="37.4283" data-long="-121.9056" data-id="<%= media.id %>" data-thumb="<%= media.images.thumbnail.url %>">
+						<li class="thumb" data-profile="<%= media.user.profile_picture %>" data-show-link="<%= show_url(media.id) %>" data-lat="0" data-long="0" data-id="<%= media.id %>" data-thumb="<%= media.images.thumbnail.url %>">
 				    	<%= link_to image_tag(media.images.thumbnail.url), media.images.low_resolution.url, class: "fancybox fancybox.iframe" %>
 				   	</li>
 					<% else %>

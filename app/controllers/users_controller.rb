@@ -29,11 +29,19 @@ class UsersController < ApplicationController
   end
 
   def show
-    @current_user = User.find_by_username(params[:username])
-    @images       = Instagram.user_recent_media(@current_user.instagram_id, options = { access_token: @current_user.access_token })
-    @stats        = Instagram.user(@current_user.instagram_id, options = { access_token: @current_user.access_token })
-    @following    = Instagram.user_follows(@current_user.instagram_id, options = { access_token: @current_user.access_token })
-    @follows      = Instagram.user_followed_by(@current_user.instagram_id, options = { access_token: @current_user.access_token })
+    @instamap_user     = User.find_by_username(params[:username])
+    if @instamap_user.nil?
+      @instagram_user = Instagram.user_search(params[:username]).first
+      @images         = Instagram.user_recent_media(@instagram_user.id, options = { access_token: User.first.access_token })
+      @stats          = Instagram.user(@instagram_user.id, options = { access_token: User.first.access_token })
+      @following      = Instagram.user_follows(@instagram_user.id, options = { access_token: User.first.access_token })
+      @follows        = Instagram.user_followed_by(@instagram_user.id, options = { access_token: User.first.access_token })
+    else
+      @images         = Instagram.user_recent_media(@instamap_user.instagram_id, options = { access_token: @instamap_user.access_token })
+      @stats          = Instagram.user(@instamap_user.instagram_id, options = { access_token: @instamap_user.access_token })
+      @following      = Instagram.user_follows(@instamap_user.instagram_id, options = { access_token: @instamap_user.access_token })
+      @follows        = Instagram.user_followed_by(@instamap_user.instagram_id, options = { access_token: @instamap_user.access_token })
+    end
   end
 
   def logout
