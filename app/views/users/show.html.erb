@@ -1,3 +1,8 @@
+<% if @instamap_user.nil? %>
+	<% title @instagram_user.username %>
+<% else %>
+	<% title @instamap_user.username %>
+<% end %>
 <div id="user_profile">
 	<div class="span2">
 		<% if @instamap_user.nil? %>
