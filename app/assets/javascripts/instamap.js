@@ -126,42 +126,58 @@ var Google = {
 
   placeMarker: function(location) {
     var image = "/assets/custom_marker.png";
-    var marker = new google.maps.Marker({
-      position: location,
-      map: Google.map,
-      title: "Your location",
-      icon: image,
-      animation: google.maps.Animation.DROP
-    });
-    Google.map.setZoom(13);
-    Google.map.setCenter(marker.getPosition());
+    if (window.location.pathname == "/") {
+      var marker = new google.maps.Marker({
+        position: location,
+        map: Google.map,
+        title: "Your location",
+        icon: image,
+        animation: google.maps.Animation.DROP
+      });
+      Google.map.setZoom(13);
+      Google.map.setCenter(marker.getPosition());
+    } else {
+      var find_location = $("#instagrams").data("instagrams");
+      var location;
+      $.each(find_location, function() {
+        if ($(this).attr("location") != null) {
+          location = $(this).attr("location");
+        }
+      });
+      if (location.latitude && location.longitude != null) {
+        var marker = new google.maps.Marker({
+          position: new google.maps.LatLng(location.latitude - .01, location.longitude),
+          map: Google.map,
+          title: $(".label.label-important").text() + " location",
+          icon: image,
+          animation: google.maps.Animation.DROP
+        });
+        Google.map.setZoom(8);
+        Google.map.setCenter(marker.getPosition());
+      } else {
+        Google.map.setZoom(4);
+      }
+    }
   },
 
   placeIcon: function() {
     var image = "/assets/camera.png";
     var instagrams = $('#instagrams').data('instagrams');
     var infoWindow = new google.maps.InfoWindow();
-    $.each(instagrams, function(index, instagram) {
-      if (instagram.location != null) {
+    $.each(instagrams, function() {
+      if ($(this).attr("location") != null) {
         var marker = new google.maps.Marker({
-          position: new google.maps.LatLng(instagram.location.latitude, instagram.location.longitude),
+          position: new google.maps.LatLng($(this).attr("location").latitude, $(this).attr("location").longitude),
           map: Google.map,
           icon: image,
           animation: google.maps.Animation.DROP
         });
-      } else {
-        var marker = new google.maps.Marker({
-          position: new google.maps.LatLng(37.4283, -121.9056),
-          map: Google.map,
-          icon: image,
-          animation: google.maps.Animation.DROP
-        });
+        var content =
+          "<div id=\"infowindow\">" +
+            "<img src=" + $(this).attr("images").thumbnail.url + " />" +
+          "</div>";
+        Google.openWindow(marker, content, infoWindow);
       }
-      var content =
-        "<div id=\"infowindow\">" +
-          "<img src=" + instagram.images.thumbnail.url + " />" +
-        "</div>";
-      Google.openWindow(marker, content, infoWindow);
     });
   },
 
