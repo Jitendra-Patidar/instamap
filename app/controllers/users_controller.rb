@@ -3,15 +3,15 @@ class UsersController < ApplicationController
   after_filter :get_user, only: :generate_token
 
   def login
-    redirect_to "https://api.instagram.com/oauth/authorize/?client_id=12ffc303a02944f2a42f552ebf8502cd&redirect_uri=" + 
+    redirect_to "https://api.instagram.com/oauth/authorize/?client_id=b3d509571728426b92a190d4057debc9&redirect_uri=" + 
                 root_url + "generate_token&response_type=code&scope=comments+relationships+likes"
   end
 
   def generate_token
     @instagram_user = HTTParty.post("https://api.instagram.com/oauth/access_token",
                     body: {
-                          client_id:      "12ffc303a02944f2a42f552ebf8502cd",
-                          client_secret:  "2192596a2c174ec68291b6842119b722",
+                          client_id:      "b3d509571728426b92a190d4057debc9",
+                          client_secret:  "2e514b30a2384d16b5916aefe6b85812",
                           grant_type:     "authorization_code",
                           redirect_uri:   root_url + "generate_token",
                           code:           params[:code]
