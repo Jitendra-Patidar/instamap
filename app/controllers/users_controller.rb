@@ -3,15 +3,15 @@ class UsersController < ApplicationController
   after_filter :get_user, only: :generate_token
 
   def login
-    redirect_to "https://api.instagram.com/oauth/authorize/?client_id=b3d509571728426b92a190d4057debc9&redirect_uri=" + 
+    redirect_to "https://api.instagram.com/oauth/authorize/?client_id=" + ENV["client_id"] + "&redirect_uri=" + 
                 root_url + "generate_token&response_type=code&scope=comments+relationships+likes"
   end
 
   def generate_token
     @instagram_user = HTTParty.post("https://api.instagram.com/oauth/access_token",
                     body: {
-                          client_id:      "b3d509571728426b92a190d4057debc9",
-                          client_secret:  "2e514b30a2384d16b5916aefe6b85812",
+                          client_id:      ENV["client_id"],
+                          client_secret:  ENV["client_secret"],
                           grant_type:     "authorization_code",
                           redirect_uri:   root_url + "generate_token",
                           code:           params[:code]
@@ -33,7 +33,7 @@ class UsersController < ApplicationController
     if @instamap_user.nil?
       begin
         @instagram_user = Instagram.user_search(params[:username]).first
-        @images         = Instagram.user_recent_media(@instagram_user.id, options = { access_token: User.first.access_token })
+        @images         = Instagram.user_recent_media(@instagram_user.id, options = { access_token: User.first.access_token, count: 200 })
         @stats          = Instagram.user(@instagram_user.id, options = { access_token: User.first.access_token })
         @following      = Instagram.user_follows(@instagram_user.id, options = { access_token: User.first.access_token })
         @follows        = Instagram.user_followed_by(@instagram_user.id, options = { access_token: User.first.access_token })
@@ -41,7 +41,7 @@ class UsersController < ApplicationController
         redirect_to     root_path, notice: "You are trying to access a private user"
       end
     else
-      @images         = Instagram.user_recent_media(@instamap_user.instagram_id, options = { access_token: @instamap_user.access_token })
+      @images         = Instagram.user_recent_media(@instamap_user.instagram_id, options = { access_token: @instamap_user.access_token, count: 200 })
       @stats          = Instagram.user(@instamap_user.instagram_id, options = { access_token: @instamap_user.access_token })
       @following      = Instagram.user_follows(@instamap_user.instagram_id, options = { access_token: @instamap_user.access_token })
       @follows        = Instagram.user_followed_by(@instamap_user.instagram_id, options = { access_token: @instamap_user.access_token })

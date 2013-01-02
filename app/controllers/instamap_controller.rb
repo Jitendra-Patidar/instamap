@@ -12,7 +12,7 @@ class InstamapController < ApplicationController
   end
 
   def comments
-    @comments = Instagram.media_comments(params[:id], count: 200)
+    @comments = Instagram.media_comments(params[:id], options = { count: 200 })
     render :json => @comments
   end
 

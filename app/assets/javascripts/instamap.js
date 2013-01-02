@@ -384,7 +384,6 @@ var Fancy = {
             dataType: 'json',
             data: { id: pid },
             success: function(data) {
-              debugger
               if (data == "") {
                 $("#lightbox_comments").append('<div id="no_comments" class="center alert alert-info span8">Be the first to leave a comment</div>');
               } else {
