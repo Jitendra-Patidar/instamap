@@ -389,7 +389,7 @@ var Fancy = {
                 $("#lightbox_comments").append('<div id="no_comments" class="center alert alert-info span8">Be the first to leave a comment</div>');
               } else {
                 $.each(data, function() {
-                  $("#lightbox_comments").append('<a href="http://localhost:3000/' + $(this)[0].from.username + '">' + $(this)[0].from.username + '</a> says: <br />' + $(this)[0].text + '<img src=' + $(this)[0].from.profile_picture + ' height=64 width=64 /><br /><br /><br />');
+                  $("#lightbox_comments").append('<a href="' + window.location.origin + '/' + $(this)[0].from.username + '">' + $(this)[0].from.username + '</a> says: <br />' + $(this)[0].text + '<img src=' + $(this)[0].from.profile_picture + ' height=64 width=64 /><br /><br /><br />');
                 }); //end each
               }// if/else
             }//end success
