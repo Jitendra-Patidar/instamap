@@ -3,6 +3,9 @@
 <% else %>
 	<% title @instamap_user.username %>
 <% end %>
+<% if flash[:notice] %>
+  <div class="alert alert-success"><%= flash[:notice] %></div>
+<% end %>
 <div id="user_profile">
 	<div class="span2">
 		<% if @instamap_user.nil? %>
@@ -13,12 +16,12 @@
 		<br />
 		<div id="followers" class="span6">
 			<% @follows.each do |follow| %>
-				<%= image_tag follow.profile_picture, height: 60, width: 60, rel: "tooltip", title: follow.username, class: "img-circle" %>
+				<%= link_to image_tag(follow.profile_picture, height: 60, width: 60, rel: "tooltip", title: follow.username, class: "img-circle"), show_path(follow.username) %>
 			<% end %>
 		</div>
 		<div id="following" class="span6">
 			<% @following.each do |follow| %>
-				<%= image_tag follow.profile_picture, height: 60, width: 60, rel: "tooltip", title: follow.username, class: "img-circle" %>
+				<%= link_to image_tag(follow.profile_picture, height: 60, width: 60, rel: "tooltip", title: follow.username, class: "img-circle"), show_path(follow.username) %>
 			<% end %>
 		</div>
 	</div>
@@ -30,13 +33,13 @@
 		<% end %>
 		<br />
 		<i class="icon-eye-open icon-white"></i> 
-			<%= link_to "#{@stats.counts.followed_by} followers", "#", rel: "tooltip", title: "Click to see my followers", id: "followers_link" %>
+		<%= link_to "#{@stats.counts.followed_by} followers", "#", rel: "tooltip", title: "Click to see my followers", id: "followers_link" %>
 		<br />
 		<i class="icon-eye-close icon-white"></i> 
-			<%= link_to "#{@stats.counts.follows} following", "#", rel: "tooltip", title: "Click to see who I follow", id: "following_link" %> 
+		<%= link_to "#{@stats.counts.follows} following", "#", rel: "tooltip", title: "Click to see who I follow", id: "following_link" %> 
 		<br />
 		<i class="icon-map-marker icon-white"></i> 
-			<%= link_to @stats.website %>
+		<%= link_to @stats.website %>
 		<br />
 		<i class="icon-comment icon-white"></i> <%= @stats.bio %>
 	</div>
@@ -49,14 +52,14 @@
 				<% @images.each do |media| %>
 					<% if media.location.nil? %>
 						<li class="thumb" data-profile="<%= media.user.profile_picture %>" data-show-link="<%= show_url(media.id) %>" data-lat="0" data-long="0" data-id="<%= media.id %>" data-thumb="<%= media.images.thumbnail.url %>">
-				    	<%= link_to image_tag(media.images.thumbnail.url), media.images.low_resolution.url, class: "fancybox fancybox.iframe" %>
-				   	</li>
+   						<%= link_to image_tag(media.images.thumbnail.url), media.images.low_resolution.url, class: "fancybox fancybox.iframe" %>
+  					</li>
 					<% else %>
 						<li class="thumb" data-profile="<%= media.user.profile_picture %>" data-show-link="<%= show_url(media.id) %>" data-lat="<%= media.location.latitude %>" data-long="<%= media.location.longitude %>" data-id="<%= media.id %>" data-thumb="<%= media.images.thumbnail.url %>">
-				    	<%= link_to image_tag(media.images.thumbnail.url), media.images.low_resolution.url, class: "fancybox fancybox.iframe" %>
-				   	</li>
+   						<%= link_to image_tag(media.images.thumbnail.url), media.images.low_resolution.url, class: "fancybox fancybox.iframe" %>
+  					</li>
 					<% end %>
-			 	<% end %>
+				<% end %>
 			</ul>
 		</div>
 	</div>

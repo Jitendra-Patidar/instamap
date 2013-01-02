@@ -29,13 +29,17 @@ class UsersController < ApplicationController
   end
 
   def show
-    @instamap_user     = User.find_by_username(params[:username])
+    @instamap_user      = User.find_by_username(params[:username])
     if @instamap_user.nil?
-      @instagram_user = Instagram.user_search(params[:username]).first
-      @images         = Instagram.user_recent_media(@instagram_user.id, options = { access_token: User.first.access_token })
-      @stats          = Instagram.user(@instagram_user.id, options = { access_token: User.first.access_token })
-      @following      = Instagram.user_follows(@instagram_user.id, options = { access_token: User.first.access_token })
-      @follows        = Instagram.user_followed_by(@instagram_user.id, options = { access_token: User.first.access_token })
+      begin
+        @instagram_user = Instagram.user_search(params[:username]).first
+        @images         = Instagram.user_recent_media(@instagram_user.id, options = { access_token: User.first.access_token })
+        @stats          = Instagram.user(@instagram_user.id, options = { access_token: User.first.access_token })
+        @following      = Instagram.user_follows(@instagram_user.id, options = { access_token: User.first.access_token })
+        @follows        = Instagram.user_followed_by(@instagram_user.id, options = { access_token: User.first.access_token })
+      rescue Instagram::BadRequest
+        redirect_to     root_path, notice: "You are trying to access a private user"
+      end
     else
       @images         = Instagram.user_recent_media(@instamap_user.instagram_id, options = { access_token: @instamap_user.access_token })
       @stats          = Instagram.user(@instamap_user.instagram_id, options = { access_token: @instamap_user.access_token })

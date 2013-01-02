@@ -16,6 +16,11 @@
 <body>
 	<div class="container">
 		<div class="row">
+      <% if flash[:notice] %>
+        <div id="flash" class="center alert alert-error">
+          <%= flash[:notice] %>
+        </div>
+      <% end %>
 			<%= render "layouts/header" %>
   		<%= yield %>
   	</div>

@@ -8,6 +8,10 @@ body {
   background-image: url("classy_fabric.png");
 }
 
+#flash {
+	margin-bottom: -5px;
+}
+
 #image_slider {
 	margin-left: -30px;
 	height: 400px;
@@ -69,6 +73,7 @@ body {
 
 #street_view {
 	height: 325px;
+	width: 1150px;
 	margin-bottom: 20px;
 	img {
   	border: none !important;
@@ -82,26 +87,41 @@ body {
 
 /* Fancybox */
 
+iframe.fancybox-iframe {
+	height: 306px;
+	width: 1150px;
+}
+
 #lightbox_comments {
 	position: absolute;
-	top: 350px;
-	left: 400px;
+	top: 345px;
+	left: 326px;
 	margin-bottom: 5px;
 	overflow: auto;
-	width: auto;
-	height: 200px;
+	height: 210px;
+	width: 825px;
 	img {
-		margin-top: 0px;
+		margin-top: -20px;
+		margin-bottom: 10px;
+		float: right;
 	}
+}
+
+#no_comments {
+	margin-left: 0;
 }
 
 #comment_box {
 	position: absolute;
-	top: 560px;
-	left: 400px;
+	top: 565px;
+	left: 325px;
 	textarea {
-		width: 460px;
+		width: 812px;
 	}
+}
+
+#post_comment {
+	margin-top: 0;
 }
 
 /* logo */
@@ -189,6 +209,7 @@ body {
 	img {
 		margin-left: -10px;
 		margin-right: 40px;
+		float: right;
 	}
 }
 

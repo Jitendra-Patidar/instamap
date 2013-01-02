@@ -1,6 +1,7 @@
 $(document).ready(function() {
   Modal.show();
   Tooltip.show();
+  Flash.show();
   Instamap.init();
 });
 
@@ -83,6 +84,14 @@ var Tooltip = {
       $("#following").slideUp(1050);
       $("#followers").show();
     }));
+  }
+};
+
+var Flash = {
+  show: function() {
+    setTimeout(function() {
+      $("#flash").slideUp("slow");
+    }, 4000);
   }
 };
 
@@ -309,13 +318,17 @@ var Fancy = {
       var view   = new google.maps.StreetViewService();
 
       $(".fancybox").fancybox({
-        padding     : 5,
-        width       : '90%',
+        width       : 1155, 
         height      : '95%',
-        scrolling   : 'no',
+        maxWidth    : '95%',
+        maxHeight   : '95%',
         openEffect  : 'none',
+        autoSize    : true,
+        autoResize  : false,
         closeEffect : 'fade',
-        helpers : {
+        scrolling   : 'auto',
+        type        : 'iframe',
+        helpers     : {
           media : {}
         },
 
@@ -337,8 +350,8 @@ var Fancy = {
               $(".fancybox-inner").prepend('<div id="street_view"></div>');
               $(".fancybox-inner").prepend(
                 '<div id="lightbox_comments"></div>' +
-                '<div id="comment_box" class="span6">' + 
-                  '<textarea id="user_comment"></textarea>' +
+                '<div id="comment_box">' + 
+                  '<textarea id="user_comment" class="span7 offset1"></textarea>' +
                   '<br />' +
                   '<div id="post_comment" class="btn btn-small btn-success">Post comment</div>' +
                 '</div>'
@@ -371,13 +384,14 @@ var Fancy = {
             dataType: 'json',
             data: { id: pid },
             success: function(data) {
+              debugger
               if (data == "") {
-                $("#lightbox_comments").append('<div class="span6 center alert alert-danger">No comments at this time...</div>');
+                $("#lightbox_comments").append('<div id="no_comments" class="center alert alert-info span8">Be the first to leave a comment</div>');
               } else {
                 $.each(data, function() {
-                  $("#lightbox_comments").append('<div class="span4">' + $(this)[0].text + "</div><div class=\"span2\"><img src=" + $(this)[0].from.profile_picture + " height=64 width=64 /><div></div><br /><br />");
+                  $("#lightbox_comments").append('<a href="http://localhost:3000/' + $(this)[0].from.username + '">' + $(this)[0].from.username + '</a> says: <br />' + $(this)[0].text + '<img src=' + $(this)[0].from.profile_picture + ' height=64 width=64 /><br /><br /><br />');
                 }); //end each
-              }//end else
+              }// if/else
             }//end success
           });//end ajax
         }//end beforeShow
