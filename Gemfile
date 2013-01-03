@@ -4,6 +4,7 @@ gem 'rails', '3.2.9'
 gem 'instagram'
 gem 'bootstrap-sass'
 gem 'httparty'
+gem 'haml-rails'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'

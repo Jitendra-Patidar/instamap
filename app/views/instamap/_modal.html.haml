@@ -1,0 +1,39 @@
+#myModal.modal.hide.fade{ tabindex: "-1", role: "dialog", :"aria-labelledby" => "myModalLabel", :"aria-hidden" => "true" }
+  .modal-header
+    %button{ type: "button", class: "close", :"data-dismiss" => "modal", :"aria-hidden" => "true" }x
+    %h3#myModalLabel About us
+  .modal-body
+    .tabble.tabs-left
+      %ul.nav.nav-tabs
+        %li.active
+          %a{ href: "#about", :"data-toggle" => "tab" } About
+        %li
+          %a{ href: "#how", :"data-toggle" => "tab" } How to
+        %li
+          %a{ href: "#contact", :"data-toggle" => "tab" } Contact
+      .tab-content
+        #modal-errors
+        .tab-pane.active#about
+          Our vision for Instamap is simple...
+          %br
+          %br
+          To create a new and fun interactive way to view recent Instagram photos that are located within your location or from around the world. You can click, drag, and search to your hearts desire. Viewing images and street view panoramas of the images location has never been easier. So what are you waiting for? Who knows what gems you may find near or from across the world.
+        .tab-pane#how
+          %ul
+            %li Single-click on the map to find all recent Instagram pictures near that location
+            %li Type a landmark, city, or address in the search bar
+            (i.e. Eiffel Tower, Huntington Beach, etc.)
+            %li Hovering over an image below the map will open a pop up in the map for lightning quick reference to a marker!
+            %li Click on images below the map to see the street view where the image was taken
+        .tab-pane#contact
+          = form_tag "/" do
+            .control-group
+              .controls
+                = text_field_tag :name, @name, class: "input-xxlarge", placeholder: "Your name"
+            .control-group
+              .controls
+                = text_field_tag :email, @email, class: "input-xxlarge", placeholder: "Your email"
+            .control-group
+              .controls
+                = text_area_tag :message, @message, rows: 10, class: "input-xxlarge", placeholder: "Your message..."
+            = submit_tag "Send", class: "contact btn btn-small btn-danger"

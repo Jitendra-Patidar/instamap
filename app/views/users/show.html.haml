@@ -1,0 +1,47 @@
+- if @instamap_user.nil?
+	- title @instagram_user.username
+- else
+	- title @instamap_user.username
+#user_profile
+	.span2
+		- if @instamap_user.nil?
+			= image_tag @instagram_user.profile_picture, class: "img-rounded"
+		- else
+			= image_tag @instamap_user.profile_picture,  class: "img-rounded"
+		%br
+		#followers.span6
+			- @follows.each do |follow|
+				= link_to image_tag(follow.profile_picture, height: 60, width: 60, rel: "tooltip", title: follow.username, class: "img-circle"), show_path(follow.username)
+		#following.span6
+			- @following.each do |follow|
+				= link_to image_tag(follow.profile_picture, height: 60, width: 60, rel: "tooltip", title: follow.username, class: "img-circle"), show_path(follow.username)
+	.span3
+		- if @instamap_user.nil?
+			%span.label.label-important= @instagram_user.username
+		- else
+			%span.label.label-important= @instamap_user.username
+		%br
+		%i.icon-eye-open.icon-white
+		= link_to "#{@stats.counts.followed_by} followers", "#", rel: "tooltip", title: "Click to see my followers", id: "followers_link"
+		%br
+		%i.icon-eye-close.icon-white
+		= link_to "#{@stats.counts.follows} following", "#", rel: "tooltip", title: "Click to see who I follow", id: "following_link"
+		%br
+		%i.icon-map-marker.icon-white
+		= link_to @stats.website
+		%br
+		%i.icon-comment.icon-white
+		= @stats.bio
+	#profile_map.span6
+		#map_canvas
+	.profile_slider.span12
+		.flexslider
+			%ul.slides
+				- @images.each do |media|
+					- if media.location.nil?
+						%li.thumb{ data: { profile: media.user.profile_picture, :"show-link" => show_url(media.id), lat: "0", long: "0", id: media.id, thumb: media.images.thumbnail.url } }
+							= link_to image_tag(media.images.thumbnail.url), media.images.low_resolution.url, class: "fancybox fancybox.iframe"
+					- else
+						%li.thumb{ data: { profile: media.user.profile_picture, :"show-link" => show_url(media.id), lat: media.location.latitude, long: media.location.longitude, id: media.id, thumb: media.images.thumbnail.url } }
+							= link_to image_tag(media.images.thumbnail.url), media.images.low_resolution.url, class: "fancybox fancybox.iframe"
+#instagrams{ data: { instagrams: @images.to_json } }

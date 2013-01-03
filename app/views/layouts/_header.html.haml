@@ -1,0 +1,34 @@
+.navbar.navbar-static-top
+= image_tag "beta.png", id: "beta"
+= link_to "Instamap", root_path, id: "logo"
+- if session[:user]
+	#login.btn-group.pull-right
+		= image_tag "about.png", id: "about_us", height: 30, width: 30, class: "pull-right"
+		%a.btn.btn-small.btn-info.dropdown-toggle{ data: { toggle: "dropdown", href: "#" } }
+			%i.icon-user.icon-white
+			= session[:user].username
+			%span.caret
+		%ul.dropdown-menu
+			%li
+				= link_to raw("<i class=\"icon-book\"></i>") + " Profile", show_path(session[:user].username)
+			%li
+				= link_to raw("<i class=\"icon-eject\"></i>") + " Logout", logout_path
+- else
+	#login.btn-group.pull-right
+		= image_tag "about.png", id: "about_us", height: 30, width: 30, class: "pull-right"
+		%a.btn.btn-small.btn-info.dropdown-toggle{ data: { toggle: "dropdown", href: "#" } }
+			%i.icon-user.icon-white 
+			Account
+			%span.caret
+		%ul.dropdown-menu
+			%li
+				= link_to raw("<i class=\"icon-bookmark\"></i>") + " Login", login_path
+= form_tag "/", class: "search pull-right" do
+	= text_field_tag "geocode_address", "", class: "input-xxlarge", placeholder: "Search by street address, a landmark, a city, etc"
+	= submit_tag "Search", class: "search_btn btn btn-small btn-danger"
+%a.twitter.addthis_button_tweet
+%a.facebook.addthis_button_facebook_like{ "fb:like:layout" => "button_count" }
+%script{ type: "text/javascript" }
+	:plain
+		var addthis_config = { "data_track_addressbar" : false };
+%script{ type: "text/javascript", src: "//s7.addthis.com/js/300/addthis_widget.js#pubid=rvb80" }
