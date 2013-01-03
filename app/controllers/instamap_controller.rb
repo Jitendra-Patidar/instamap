@@ -7,7 +7,6 @@ class InstamapController < ApplicationController
     @instagrams = Instagram.media_search(params[:lat], params[:lng], options = { count: 200, distance: 750 }).data.sort { |x, y| y.likes["count"] <=> x.likes["count"] }
     if @instagrams.count < 16
       @instagrams = Instagram.media_search(params[:lat], params[:lng], options = { count: 200, distance: 5000 }).data.sort { |x, y| y.likes["count"] <=> x.likes["count"] }
-      puts "Second search performed."
     end  
 
     respond_to do |format|
