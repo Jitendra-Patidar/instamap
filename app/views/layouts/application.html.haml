@@ -1,7 +1,7 @@
 !!!
 %html
   %head
-    %title Instamap
+    %title= "Instamap | #{yield(:title)}"
     = favicon_link_tag "/favicon.ico"
     %meta{ name: "author", content: "Richard VanBreemen, Matthew Powers" }/
     %meta{ name: "description", content: "Instamap is a new and fun way to view recent photos that are geolocated. When you firist visit Instamap, the most recent images from Instagram based on your location is shown..." }/
