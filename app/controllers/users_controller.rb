@@ -29,22 +29,31 @@ class UsersController < ApplicationController
   end
 
   def show
-    @instamap_user      = User.find_by_username(params[:username])
-    if @instamap_user.nil?
+    if session[:user].nil?
       begin
         @instagram_user = Instagram.user_search(params[:username]).first
         @images         = Instagram.user_recent_media(@instagram_user.id, options = { access_token: User.first.access_token, count: 200 })
         @stats          = Instagram.user(@instagram_user.id, options = { access_token: User.first.access_token })
-        @following      = Instagram.user_follows(@instagram_user.id, options = { access_token: User.first.access_token })
-        @follows        = Instagram.user_followed_by(@instagram_user.id, options = { access_token: User.first.access_token })
+        @following      = Instagram.user_follows(@instagram_user.id, options = { access_token: User.first.access_token , count: 200 })
+        @follows        = Instagram.user_followed_by(@instagram_user.id, options = { access_token: User.first.access_token, count: 200 })
       rescue Instagram::BadRequest
-        redirect_to     root_path, notice: "You are trying to access a private user"
+        redirect_to     root_path, notice: "You do not have the proper permissions to view this user"
+      end
+    elsif session[:user].username != params[:username]
+      begin
+        @user           = Instagram.user_search(params[:username]).first
+        @images         = Instagram.user_recent_media(@user.id, options = { access_token: session[:user].access_token, count: 200 })
+        @stats          = HTTParty.get("https://api.instagram.com/v1/users/" + @user.id + "/?access_token=" + session[:user].access_token)
+        @following      = Instagram.user_follows(@user.id, options = { access_token: session[:user].access_token, count: 200 })
+        @follows        = Instagram.user_followed_by(@user.id, options = { access_token: session[:user].access_token, count: 200 })
+      rescue Instagram::BadRequest
+        redirect_to   root_path, notice: "You do not have the proper permissions to view this user"
       end
     else
-      @images         = Instagram.user_recent_media(@instamap_user.instagram_id, options = { access_token: @instamap_user.access_token, count: 200 })
-      @stats          = Instagram.user(@instamap_user.instagram_id, options = { access_token: @instamap_user.access_token })
-      @following      = Instagram.user_follows(@instamap_user.instagram_id, options = { access_token: @instamap_user.access_token })
-      @follows        = Instagram.user_followed_by(@instamap_user.instagram_id, options = { access_token: @instamap_user.access_token })
+      @images         = Instagram.user_recent_media(session[:user].instagram_id, options = { access_token: session[:user].access_token, count: 200 })
+      @stats          = Instagram.user(session[:user].instagram_id, options = { access_token: session[:user].access_token })
+      @following      = Instagram.user_follows(session[:user].instagram_id, options = { access_token: session[:user].access_token, count: 200 })
+      @follows        = Instagram.user_followed_by(session[:user].instagram_id, options = { access_token: session[:user].access_token, count: 200 }) 
     end
   end
 

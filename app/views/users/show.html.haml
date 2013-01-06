@@ -1,13 +1,17 @@
-- if @instamap_user.nil?
+- if session[:user].nil?
 	- title @instagram_user.username
+- elsif @user
+	- title @user.username
 - else
-	- title @instamap_user.username
+	- title session[:user].username
 #user_profile
 	.span2
-		- if @instamap_user.nil?
+		- if session[:user].nil?
 			= image_tag @instagram_user.profile_picture, class: "img-rounded"
+		- elsif @user
+			= image_tag @user.profile_picture, class: "img-rounded"
 		- else
-			= image_tag @instamap_user.profile_picture,  class: "img-rounded"
+			= image_tag session[:user].profile_picture,  class: "img-rounded"
 		%br
 		#followers.span6
 			- @follows.each do |follow|
@@ -16,22 +20,50 @@
 			- @following.each do |follow|
 				= link_to image_tag(follow.profile_picture, height: 60, width: 60, rel: "tooltip", title: follow.username, class: "img-circle"), show_path(follow.username)
 	.span3
-		- if @instamap_user.nil?
+		- if session[:user].nil?
 			%span.label.label-important= @instagram_user.username
+		- elsif @user
+			%span.label.label-important= @user.username
 		- else
-			%span.label.label-important= @instamap_user.username
+			%span.label.label-important= session[:user].username
 		%br
-		%i.icon-eye-open.icon-white
-		= link_to "#{@stats.counts.followed_by} followers", "#", rel: "tooltip", title: "Click to see my followers", id: "followers_link"
+		- if session[:user].nil?
+			%i.icon-eye-open.icon-white
+			= link_to "#{@stats.counts.followed_by} followers", "#", rel: "tooltip", title: "Click to see my followers", id: "followers_link"
+			%br
+			%i.icon-eye-close.icon-white
+			= link_to "#{@stats.counts.follows} following", "#", rel: "tooltip", title: "Click to see who I follow", id: "following_link"
+			%br
+			%i.icon-map-marker.icon-white
+			= link_to @stats.website
+			%br
+			%i.icon-comment.icon-white
+			= @stats.bio
+		- elsif @user
+			%i.icon-eye-open.icon-white
+			= link_to "#{@stats.parsed_response["data"]["counts"]["follows"]} followers", "#", rel: "tooltip", title: "Click to see my followers", id: "followers_link"
+			%br
+			%i.icon-eye-close.icon-white
+			= link_to "#{@stats.parsed_response["data"]["counts"]["followed_by"]} following", "#", rel: "tooltip", title: "Click to see who I follow", id: "following_link"
+			%br
+			%i.icon-map-marker.icon-white
+			= link_to @stats.parsed_response["data"]["website"]
+			%br
+			%i.icon-comment.icon-white
+			= @stats.parsed_response["data"]["bio"]
+		- else
+			%i.icon-eye-open.icon-white
+			= link_to "#{@stats.counts.followed_by} followers", "#", rel: "tooltip", title: "Click to see my followers", id: "followers_link"
+			%br
+			%i.icon-eye-close.icon-white
+			= link_to "#{@stats.counts.follows} following", "#", rel: "tooltip", title: "Click to see who I follow", id: "following_link"
+			%br
+			%i.icon-map-marker.icon-white
+			= link_to @stats.website
+			%br
+			%i.icon-comment.icon-white
+			= @stats.bio
 		%br
-		%i.icon-eye-close.icon-white
-		= link_to "#{@stats.counts.follows} following", "#", rel: "tooltip", title: "Click to see who I follow", id: "following_link"
-		%br
-		%i.icon-map-marker.icon-white
-		= link_to @stats.website
-		%br
-		%i.icon-comment.icon-white
-		= @stats.bio
 	#profile_map.span6
 		#map_canvas
 	.profile_slider.span12
