@@ -345,12 +345,11 @@ Fancy =
             data:
               id: pid
             success: (data) ->
-              debugger
               if data.length is 0
                 $("#lightbox_comments").append '<div id="no_comments" class="center alert alert-info span8">Be the first to leave a comment</div>'
               else
                 $.each data, ->
-                  $("#lightbox_comments").append '<a href="' + window.location.origin + '/' + $(this)[0].from.username + '">' + $(this)[0].from.username + '</a> says: <br />' + $(this)[0].text + '<img src=' + $(this)[0].from.profile_picture + ' height=64 width=64 /><br /><br /><br />'
+                  $("#lightbox_comments").append '<a href="http://www.instamap.it/' + $(this)[0].from.username + '">' + $(this)[0].from.username + '</a> says: <br />' + $(this)[0].text + '<img src=' + $(this)[0].from.profile_picture + ' height=64 width=64 /><br /><br /><br />'
           $.ajax
             type: "get"
             url: "/image"
@@ -358,7 +357,7 @@ Fancy =
             data: 
               id: pid
             success: (user) ->
-              $("#instagram_user_image").append '<a href="http://localhost:3000/' + user.data.user.username + '"><img id="profile_picture" class="img-polaroid" src="' + user.data.user.profile_picture + '" /></a>'
+              $("#instagram_user_image").append '<a href="http://www.instamap.it/' + user.data.user.username + '"><img id="profile_picture" class="img-polaroid" src="' + user.data.user.profile_picture + '" /></a>'
             error: ->
               alert "You do not have the proper permissions to view this users image"
 
