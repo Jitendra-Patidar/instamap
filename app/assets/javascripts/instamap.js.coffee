@@ -303,6 +303,13 @@ Fancy =
         media:{}
       
       beforeShow: ->
+        $(".fancybox-inner").prepend "<div id=\"street_view\"></div>"
+        $(".fancybox-inner").prepend "<div id=\"lightbox_comments\"></div>" + "<div id=\"comment_box\">" + "<textarea id=\"user_comment\" class=\"span7 offset1\"></textarea>" + "<br />" + "<div id=\"post_comment\" class=\"btn btn-small btn-success\">Post comment</div>" + "</div>"
+        $(".fancybox-inner").append "<div id=\"instagram_image\"></div>"
+        $(".fancybox-inner").append "<div id=\"instagram_user_image\"></div>"
+        $("#instagram_image").on "click", ->
+          Instagram.like pid
+        Instagram.post()
         view.getPanoramaByLocation latLng, 100, (streetViewPanoramaData, status) ->
           if status is google.maps.StreetViewStatus.OK
             panoramaOptions =
@@ -311,19 +318,12 @@ Fancy =
                 style:
                   backgroundColor: "grey"
                   color: "yellow"
-              
               position: new google.maps.LatLng streetViewPanoramaData.location.latLng.Ya, streetViewPanoramaData.location.latLng.Za
               pov:
                 heading: 0
                 pitch: 0
                 zoom: 0
-            $(".fancybox-inner").prepend "<div id=\"street_view\"></div>"
-            $(".fancybox-inner").prepend "<div id=\"lightbox_comments\"></div>" + "<div id=\"comment_box\">" + "<textarea id=\"user_comment\" class=\"span7 offset1\"></textarea>" + "<br />" + "<div id=\"post_comment\" class=\"btn btn-small btn-success\">Post comment</div>" + "</div>"
-            $(".fancybox-inner").append "<div id=\"instagram_image\"></div>"
-            $("#instagram_image").on "click", ->
-              Instagram.like pid
             street = new google.maps.StreetViewPanorama(document.getElementById("street_view"), panoramaOptions)
-            Instagram.post()
           else
             panoramaOptions =
               addressControl: true
@@ -336,22 +336,31 @@ Fancy =
                 heading: 0
                 pitch: 0
                 zoom: 0
-            $(".fancybox-inner").prepend "<div id=\"street_view\"></div>"
-            $(".fancybox-inner").prepend "<div id=\"lightbox_comments\"></div>"
-            street = new google.maps.StreetViewPanorama(document.getElementById("street_view"), panoramaOptions);
+            street = new google.maps.StreetViewPanorama(document.getElementById("street_view"), panoramaOptions)
             $("#street_view").html "<img id=\"not_available\" src=\"assets/not-available.jpeg\" />"
-        $.ajax
-          type: "get"
-          url: "/comments"
-          dataType: "json"
-          data:
-            id: pid
-          success: (data) ->
-            if data is ""
-              $("#lightbox_comments").append '<div id="no_comments" class="center alert alert-info span8">Be the first to leave a comment</div>'
-            else
-              $.each data, ->
-                $("#lightbox_comments").append '<a href="' + window.location.origin + '/' + $(this)[0].from.username + '">' + $(this)[0].from.username + '</a> says: <br />' + $(this)[0].text + '<img src=' + $(this)[0].from.profile_picture + ' height=64 width=64 /><br /><br /><br />'
+          $.ajax
+            type: "get"
+            url: "/comments"
+            dataType: "json"
+            data:
+              id: pid
+            success: (data) ->
+              debugger
+              if data.length is 0
+                $("#lightbox_comments").append '<div id="no_comments" class="center alert alert-info span8">Be the first to leave a comment</div>'
+              else
+                $.each data, ->
+                  $("#lightbox_comments").append '<a href="' + window.location.origin + '/' + $(this)[0].from.username + '">' + $(this)[0].from.username + '</a> says: <br />' + $(this)[0].text + '<img src=' + $(this)[0].from.profile_picture + ' height=64 width=64 /><br /><br /><br />'
+          $.ajax
+            type: "get"
+            url: "/image"
+            dataType: "json"
+            data: 
+              id: pid
+            success: (user) ->
+              $("#instagram_user_image").append '<a href="http://localhost:3000/' + user.data.user.username + '"><img id="profile_picture" class="img-polaroid" src="' + user.data.user.profile_picture + '" /></a>'
+            error: ->
+              alert "You do not have the proper permissions to view this users image"
 
   run: (object) ->
     lat = $(object).data("lat")

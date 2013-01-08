@@ -14,11 +14,6 @@ class InstamapController < ApplicationController
     end
   end
 
-  def comments
-    @comments = Instagram.media_comments(params[:id], options = { count: 200 })
-    render :json => @comments
-  end
-
   def contact
     @name    = params[:name]
     @email   = params[:email]

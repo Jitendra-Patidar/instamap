@@ -90,6 +90,11 @@ body {
 iframe.fancybox-iframe {
 	height: 306px;
 	width: 1150px;
+	overflow: hidden;
+}
+
+.fancybox-outer, .fancybox-inner {
+	overflow: hidden;
 }
 
 #instagram_image {
@@ -97,6 +102,15 @@ iframe.fancybox-iframe {
 	top: 344px;
 	height: 306px;
 	width: 306px;
+}
+
+#profile_picture {
+	z-index: 1;
+	position: absolute;
+	top: 210px;
+	left: 3px;
+	height: 100px;
+	width: 100px;
 }
 
 #lightbox_comments {
