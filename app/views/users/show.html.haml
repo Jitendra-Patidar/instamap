@@ -41,10 +41,10 @@
 			= @stats.bio
 		- elsif @user
 			%i.icon-eye-open.icon-white
-			= link_to "#{@stats.parsed_response["data"]["counts"]["follows"]} followers", "#", rel: "tooltip", title: "Click to see my followers", id: "followers_link"
+			= link_to "#{@stats.parsed_response["data"]["counts"]["followed_by"]} followers", "#", rel: "tooltip", title: "Click to see my followers", id: "followers_link"
 			%br
 			%i.icon-eye-close.icon-white
-			= link_to "#{@stats.parsed_response["data"]["counts"]["followed_by"]} following", "#", rel: "tooltip", title: "Click to see who I follow", id: "following_link"
+			= link_to "#{@stats.parsed_response["data"]["counts"]["follows"]} following", "#", rel: "tooltip", title: "Click to see who I follow", id: "following_link"
 			%br
 			%i.icon-map-marker.icon-white
 			= link_to @stats.parsed_response["data"]["website"]

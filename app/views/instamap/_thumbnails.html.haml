@@ -2,5 +2,5 @@
 	%ul.slides
 		- @instagrams.each do |media|
 			%li.thumb{ data: { profile: media.user.profile_picture, :"show-link" => show_url(media.id), lat: media.location.latitude, long: media.location.longitude, id: media.id, thumb: media.images.thumbnail.url } }
-				= link_to image_tag(media.images.thumbnail.url), media.images.low_resolution.url, class: "fancybox fancybox.iframe"
+				= link_to image_tag(media.images.thumbnail.url), media.images.low_resolution.url, class: "fancybox fancybox-iframe"
 #instagrams{ data: { instagrams: @instagrams.to_json } }

@@ -8,6 +8,8 @@ Instamap::Application.routes.draw do
 
   match "/comments", to: "instamap#comments", as: :comments
 
+  match "/like", to: "users#like", as: :like
+
   match "/contact", to: "instamap#contact", as: :contact
 
   match "/login", to: "users#login", as: :login

@@ -263,6 +263,17 @@ Instagram =
     $("#post_comment").on "click", ->
       alert "Posting comments is currently disable while we wait for approval from Instagram"
 
+  like: (pid) ->
+    $.ajax
+      type: "get"
+      url: "/like"
+      dataType: "json"
+      data: id: pid
+      success: (data) ->
+        alert "You've liked this photo"
+      error: ->
+        alert "Something happened... Try again later!"
+
 Slider =
   flexi: ->
     $(".flexslider").flexslider
@@ -289,7 +300,7 @@ Fancy =
       scrolling: "auto"
       type: "iframe"
       helpers:
-        media: {}
+        media:{}
       
       beforeShow: ->
         view.getPanoramaByLocation latLng, 100, (streetViewPanoramaData, status) ->
@@ -308,6 +319,9 @@ Fancy =
                 zoom: 0
             $(".fancybox-inner").prepend "<div id=\"street_view\"></div>"
             $(".fancybox-inner").prepend "<div id=\"lightbox_comments\"></div>" + "<div id=\"comment_box\">" + "<textarea id=\"user_comment\" class=\"span7 offset1\"></textarea>" + "<br />" + "<div id=\"post_comment\" class=\"btn btn-small btn-success\">Post comment</div>" + "</div>"
+            $(".fancybox-inner").append "<div id=\"instagram_image\"></div>"
+            $("#instagram_image").on "click", ->
+              Instagram.like pid
             street = new google.maps.StreetViewPanorama(document.getElementById("street_view"), panoramaOptions)
             Instagram.post()
           else
