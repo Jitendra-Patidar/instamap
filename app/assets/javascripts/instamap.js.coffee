@@ -135,7 +135,6 @@ Google =
       Google.map.setCenter marker.getPosition()
     else
       find_location = $("#instagrams").data("instagrams")
-      location = undefined
       $.each find_location, ->
         location = $(this).attr("location") if $(this).attr("location")?
       if location.latitude and location.longitude?
@@ -148,7 +147,7 @@ Google =
         Google.map.setZoom 8
         Google.map.setCenter marker.getPosition()
       else
-        Google.map.setZoom 4
+        Google.map.setZoom 2
 
   placeIcon: ->
     Google.deleteIcons Google.iconsArray
