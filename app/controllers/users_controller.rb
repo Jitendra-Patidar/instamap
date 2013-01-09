@@ -67,7 +67,7 @@ class UsersController < ApplicationController
       begin
         @user           = Instagram.user_search(params[:username]).first
         @images         = Instagram.user_recent_media(@user.id, options = { access_token: session[:user].access_token, count: 200 })
-        @stats          = HTTParty.get("https://api.instagram.com/v1/users/" + @user.id + "/?access_token=" + session[:user].access_token)
+        @stats          = HTTParty.get("https://api.instagram.com/v1/users/#{@user.id}/?access_token=#{session[:user].access_token}")
         @following      = Instagram.user_follows(@user.id, options = { access_token: session[:user].access_token, count: 200 })
         @follows        = Instagram.user_followed_by(@user.id, options = { access_token: session[:user].access_token, count: 200 })
       rescue Instagram::BadRequest
