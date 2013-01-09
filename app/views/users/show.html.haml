@@ -69,11 +69,11 @@
 	.profile_slider.span12
 		.flexslider
 			%ul.slides
-				- @images.data.each do |media|
+				- @images.each do |media|
 					- if media.location.nil?
 						%li.thumb{ data: { profile: media.user.profile_picture, lat: "0", long: "0", id: media.id, thumb: media.images.thumbnail.url } }
 							= link_to image_tag(media.images.thumbnail.url), media.images.low_resolution.url, class: "fancybox fancybox.iframe"
 					- else
 						%li.thumb{ data: { profile: media.user.profile_picture, lat: media.location.latitude, long: media.location.longitude, id: media.id, thumb: media.images.thumbnail.url } }
 							= link_to image_tag(media.images.thumbnail.url), media.images.low_resolution.url, class: "fancybox fancybox.iframe"
-#instagrams{ data: { instagrams: @images.data.to_json } }
+#instagrams{ data: { instagrams: @images.to_json } }
