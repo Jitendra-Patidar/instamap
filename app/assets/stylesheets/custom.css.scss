@@ -37,11 +37,18 @@
   img {
     border: none !important;
     max-width: none !important;
+    /*height: 250px;
+    width: 250px;
+    margin-top: 35px;
+    margin-left: 452.50px;*/
   }
 }
 
-#not_available img {
-  width: 100%;
+#not_available {
+  height: 250px;
+  width: 250px;
+  margin-top: 35px;
+  margin-left: 452.50px; 
 }
 
 /* Fancybox */
@@ -79,7 +86,7 @@ iframe.fancybox-iframe {
   margin-bottom: 5px;
   overflow: auto;
   height: 210px;
-  width: 825px;
+  width: 823px;
   img {
     margin-top: -20px;
     margin-bottom: 10px;
@@ -96,6 +103,7 @@ iframe.fancybox-iframe {
 
 #no_comments {
   margin-left: 0;
+  width: 100%;
 }
 
 #comment_box {
