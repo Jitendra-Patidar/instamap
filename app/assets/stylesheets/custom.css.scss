@@ -9,6 +9,14 @@
   width: 650px;
 }
 
+.addthis_toolbox.addthis_default_style {
+  width: 300px;
+  margin-left: 0;
+  .addthis_button_pinterest_pinit {
+    margin-left: -10px;
+  }
+}
+
 /* Google */
 
 #map_canvas {
