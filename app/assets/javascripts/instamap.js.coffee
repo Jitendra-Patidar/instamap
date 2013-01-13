@@ -108,11 +108,13 @@ Story =
       $('#instagram-user-profile').attr('src', $(this).data('profile'))
       $('#photo-text').html($(this).data('username') + '</a> says:<br />' + $(this).data('text'))
       $('#photo-stats').html("<br />Likes: " + $(this).data('likes') + '<br />Comments: ' + $(this).data('comments'))
-      if $(this).data("thumb") is $(content).find("img").attr("src")
-        infowindow.setContent content
-        infowindow.open Google.map, marker
+      if (marker and content and infowindow) isnt ''
+        if $(this).data("thumb") is $(content).find("img").attr("src")
+          infowindow.setContent content
+          infowindow.open Google.map, marker
     $(".thumb").on "mouseleave", ->
-      infowindow.close()
+      if (marker and content and infowindow) isnt ''
+        infowindow.close()
       $('#instagram-user-profile').attr('src', '/assets/sunglass_woman_green.png')
       $('#photo-text').html('Hover over photo for stats')
       $('#photo-stats').html('')
@@ -182,7 +184,6 @@ Google =
         $('#user-location').text results[0].formatted_address
     else
         $('#user-location').text 'Unknown'
-    Story.board '', '', ''
 
   placeIcon: (address) ->
     Google.deleteIcons Google.iconsArray
@@ -201,6 +202,8 @@ Google =
         $('#search_area').text('Location: ' + address) if address?
         $('#search_area #search-loader').remove()
         Google.openWindow marker, content, infoWindow
+      else
+        Story.board '', '', ''
 
   deleteIcons: (array) ->
     if array
@@ -380,7 +383,7 @@ Fancy =
                 pitch: 0
                 zoom: 0
             street = new google.maps.StreetViewPanorama(document.getElementById("street_view"), panoramaOptions)
-            $("#street_view").html "<img id=\"not_available\" src=\"assets/not-available.png\" />"
+            $("#street_view").html "<img id=\"not_available\" src=\"/assets/not-available.png\" />"
         $.ajax
           type: "get"
           url: "/comments"
