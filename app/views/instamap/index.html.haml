@@ -1,6 +1,27 @@
 = title "Browse Instagram photos on map"
-#map_canvas
-.imageSlider
-	.flexslider
-		.slides
-= render "modal"
+#container2
+	.row-fluid
+		.box.gradient
+			.title
+				.row-fluid
+					- if @popular.nil?
+						%h3#search_area
+					- else
+						%h3
+							Popular images on Instagram
+			#content
+				#map_canvas
+- if @popular.nil?
+	.imageSlider
+		.flexslider
+			%ul.slides
+- else
+	- @popular.each do |media|
+		- if media.location.nil?
+			%li.thumb{ data: { profile: media.user.profile_picture, lat: "0", long: "0", id: media.id, thumb: media.images.thumbnail.url, username: media.user.username, comments: media.comments['count'], likes: media.likes['count'], text: media.caption.to_a.flatten[3], link: media.link } }
+				= link_to image_tag(media.images.thumbnail.url), media.images.low_resolution.url, class: "fancybox fancybox.iframe"
+		- else
+			%li.thumb{ data: { profile: media.user.profile_picture, lat: media.location.latitude, long: media.location.longitude, id: media.id, thumb: media.images.thumbnail.url, username: media.user.username, comments: media.comments['count'], likes: media.likes['count'], text: media.caption.to_a.flatten[3], link: media.link} }
+				= link_to image_tag(media.images.thumbnail.url), media.images.low_resolution.url, class: "fancybox fancybox.iframe"
+	#footer
+#instagrams{ data: { instagrams: @popular.to_json } }

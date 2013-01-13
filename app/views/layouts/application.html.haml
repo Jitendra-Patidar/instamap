@@ -1,36 +1,136 @@
 !!!
-%html
+%html.no-js
   %head
+    %meta{ charset: 'utf-8' }
     %title= "Instamap | #{yield(:title)}"
-    = favicon_link_tag "/favicon.ico"
+    %meta{ name: 'vietport', content: 'width=device-with, initial-scale=1.0' }
+    = favicon_link_tag '/favicon.ico'
     %meta{ name: "author", content: "Richard VanBreemen, Matthew Powers" }/
     %meta{ name: "description", content: "Instamap is a new and fun way to view recent photos that are geolocated. When you firist visit Instamap, the most recent images from Instagram based on your location is shown..." }/
     %meta{ name: "keywords", content: "instagram photo views, instagram picture, display instagram photos, accessing instagram online, can i look at instagram online, how to go on instagram online, instagram picture search" }/
+    %script{ type: 'text/javascript', src: 'http://w.sharethis.com/button/buttons.js' }
+    %script{ type: 'text/javascript' }
+      :plain
+        stLight.options({publisher: "12ebfbd3-b227-471c-ad93-04492e23225d"});
+  %body
+    #loading
+      = image_tag 'ajax-loader.gif'
+    #responsive_part
+      %ul.nav.responsive
+        %li
+          %btn.btn.btn-la1rge.btn-i1nfo.responsive_menu.icon_item{ data: { toggle: 'collapse', target: '#sidebar' } }
+            %i.icon-reorder
+    #sidebar.collapse
+      .logo
+        %a{ href: root_path }= image_tag 'logo.png', alt: 'Instamap', title: 'Instamap'
+      %ul#sidebar_menu.navbar.nav.nav-list.sidebar_box
+        %li
+          %a{ href: root_path }
+            = image_tag 'menu_icons/widgets.png'
+            = 'Home'
+        %li
+          - if session[:user].nil?
+            %a{ href: login_path, id: 'feed' }
+              = image_tag 'menu_icons/gallery.png'
+              = 'Feed'
+          - else
+            %a{ href: show_path(session[:user].username) + '?feed=true' }
+              = image_tag 'menu_icons/gallery.png'
+              = 'Feed'
+        %li
+          %a{ href: popular_path }
+            = image_tag 'menu_icons/forms.png'
+            = 'Popular'
+        %li
+          - if session[:user].nil?
+            %a{ href: login_path }
+              = image_tag 'menu_icons/statistics.png'
+              = 'Likes'
+          - else
+            %a{ href: show_path(session[:user].username) + '?likes=true' }
+              = image_tag 'menu_icons/gallery.png'
+              = 'Likes'
+        %li
+          - if session[:user].nil?
+            %a{ href: login_path }
+              = image_tag 'menu_icons/dashboard.png'
+              = 'Profile'
+          - else
+            %a{ href: show_path(session[:user].username) }
+              = image_tag 'menu_icons/dashboard.png'
+              = 'Profile'
+        %li.active
+          = link_to '#' do
+            = image_tag 'sunglass_woman_green.png', height: 60, width: 60, id: 'instagram-user-profile', class: 'img-polaroid'
+            #photo-text= 'Hover over photo for stats'
+          #photo-stats
+    #main
+      .container
+        .container_top
+          .row-fluid
+            .top_bar_stats.to_hide_tablet
+              .stats
+                = image_tag 'beta.png', height: 30, width: 30
+                %span.st_fblike_hcount{ displayText: 'Facebook Like' }
+            .top_right
+              %ul.nav.search
+                %li
+                  = form_tag "/", class: 'form-search' do
+                    .input-append= text_field_tag "geocode_address", "", class: 'search-query', placeholder: 'Search...'
+              %ul.nav.nav_menu
+                %li.dropdown
+                  - if session[:user].nil?
+                    %a{ class: 'dropdown-toggle administrator', id: 'dLabel', role: 'button', data: { toggle: 'dropdown', target: '#', href: root_path } }
+                      %span.icon
+                        = image_tag 'menu_top/profile-avatar.png'
+                      %span.title
+                        = 'Login'
+                    %ul{ class: 'dropdown-menu', role: 'menu', :'aria-labelledby' => 'dLabel' }
+                      %li
+                        %a{ href: login_path }
+                          %i.icon-flag
+                          = 'Login'
+                  - else
+                    %a{ class: 'dropdown-toggle administrator', id: 'dLabel', role: 'button', data: { toggle: 'dropdown', target: '#', href: root_path } }
+                      %span.icon
+                        = image_tag 'menu_top/profile-avatar.png'
+                      %span.title
+                        = session[:user].username
+                    %ul{ class: 'dropdown-menu', role: 'menu', :'aria-labelledby' => 'dLabel' }
+                      %li
+                        %a{ href: show_path(session[:user].username) }
+                          %i.icon-user
+                          = 'My Profile'
+                      %li
+                        %a{ href: logout_path }
+                          %i.icon-unlock
+                          = 'Logout'
+                %li.dropdown
+                  %a{ id: 'dLabel', role: 'button', data: { toggle: 'dropdown', target: '#', href: '#' } }
+                    %span.icon
+                      = image_tag 'menu_top/profile-messages.png'
+                  %ul.dropdown-menu.messages{ :'aria-labelledby' => 'dLabel' }
+                    .container
+                      .heading
+                        %span.title
+                          %i.icon-comments
+                          = 'Messages'
+                        %span.link
+                          %a{ href: '#' }
+                            = 'Send new message'
+        = yield
     = stylesheet_link_tag    "application", media: "all"
     = javascript_include_tag "application"
     = csrf_meta_tags
     %script{ type: "text/javascript", src: "https://maps.googleapis.com/maps/api/js?key=AIzaSyDYT6jDAWu1MexLFKU6Ek-uBC2K7N2Hmb8&sensor=true" }
-  %body
-    .container
-      .row
-        - if flash[:notice]
-          #flash.center.alert.alert-error= flash[:notice]
-        = render "layouts/header"
-        = yield
     %script{ type: "text/javascript", charset: "utf-8" }
       :plain
         var is_ssl = ("https:" == document.location.protocol); 
         var asset_host = is_ssl ? "https://d3rdqalhjaisuu.cloudfront.net/" : "http://d3rdqalhjaisuu.cloudfront.net/"; 
         document.write(unescape("%3Cscript src='" + asset_host + "javascripts/feedback-v2.js' type='text/javascript'%3E%3C/script%3E"));
-    %script{ type: "text/javascript", charset: "utf-8" }
+    %script{ type: 'text/javascript' }
       :plain
-        var feedback_widget_options = {};
-        feedback_widget_options.display = "overlay";
-        feedback_widget_options.company = "instamap";
-        feedback_widget_options.placement = "right";
-        feedback_widget_options.color = "#F2385A";
-        feedback_widget_options.style = "idea";
-        var feedback_widget = new GSFN.feedback_widget(feedback_widget_options);
+        stLight.options({publisher: "12ebfbd3-b227-471c-ad93-04492e23225d"});
     %script{ type: "text/javascript" }
       :plain
         var _gaq = _gaq || [];

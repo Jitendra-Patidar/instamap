@@ -1,261 +1,124 @@
-/* import bootstrap */
+/* Import Twitter Bootstrap and Google fonts */
 
 @import "bootstrap";
+@import url(http://fonts.googleapis.com/css?family=Ubuntu:400,700|Wendy+One);
 
-/* universal */
+/* Header */
 
-body {
-  background-image: url("classy_fabric.png");
-}
-
-#flash {
-	margin-bottom: -5px;
-}
-
-#image_slider {
-	margin-left: -30px;
-	height: 400px;
-	overflow: auto;
-}
-
-.row {
-  margin: 0 auto;
-}
-
-.center { 
-	text-align: center; 
-	h1 { 
-		margin-bottom: 10px;
-	}
-}
-
-#sad_face {
-	z-index: 1;
-	img {
-		height: 30px;
-		width: 30px;
-	}
-}
-
-/* About */
-
-#about_us {
-	margin-top: -1px;
-	margin-left: 10px;
-	margin-right: 5px;
-}
-
-/* login */
-
-#login {
-	color: white;
-	margin-top: 17px;
-	margin-left: 5px;
+.location {
+  width: 650px;
 }
 
 /* Google */
 
-#map_canvas { 
-	margin-top: 70px;
-	margin-bottom: 25px;
-	height: 450px;
+#map_canvas {
+  height: 375px;
+}
+
+#map_canvas img,
+.google-maps img {
+  max-width: none;
 }
 
 #infowindow { 
-	height: auto; 
-	width: auto; 
-	img {
-		margin-right: 10px; 
-		height: 250px; 
-		width: 265px; 
-	}
+  height: auto; 
+  width: auto; 
+  img {
+    margin-right: 10px; 
+    height: 230; 
+    width: 245px; 
+  }
 }
 
 #street_view {
-	height: 325px;
-	width: 1150px;
-	margin-bottom: 20px;
-	img {
-  	border: none !important;
+  height: 325px;
+  width: 1150px;
+  margin-bottom: 20px;
+  img {
+    border: none !important;
     max-width: none !important;
-	}
+  }
 }
 
 #not_available img {
-	width: 100%;
+  width: 100%;
 }
 
 /* Fancybox */
 
 iframe.fancybox-iframe {
-	height: 306px;
-	width: 1150px;
-	overflow: hidden;
+  height: 306px;
+  width: 1150px;
+  overflow: hidden;
 }
 
 .fancybox-outer, .fancybox-inner {
-	overflow: hidden;
+  overflow: hidden;
 }
 
 #instagram_image {
-	position: absolute;
-	top: 344px;
-	height: 306px;
-	width: 306px;
+  position: absolute;
+  top: 344px;
+  height: 306px;
+  width: 306px;
 }
 
 #profile_picture {
-	z-index: 1;
-	position: absolute;
-	top: 210px;
-	left: 3px;
-	height: 100px;
-	width: 100px;
+  z-index: 1;
+  position: absolute;
+  top: 222px;
+  left: 3px;
+  height: 100px;
+  width: 100px;
 }
 
 #lightbox_comments {
-	position: absolute;
-	top: 345px;
-	left: 326px;
-	margin-bottom: 5px;
-	overflow: auto;
-	height: 210px;
-	width: 825px;
-	img {
-		margin-top: -20px;
-		margin-bottom: 10px;
-		float: right;
-	}
+  position: absolute;
+  top: 345px;
+  left: 326px;
+  margin-bottom: 5px;
+  overflow: auto;
+  height: 210px;
+  width: 825px;
+  img {
+    margin-top: -20px;
+    margin-bottom: 10px;
+    float: right;
+  }
 }
 
 #like_heart {
-	margin-top: -60px;
-	img {
-		opacity:0.4;
-	}
+  margin-top: -60px;
+  img {
+    opacity:0.4;
+  }
 }
 
 #no_comments {
-	margin-left: 0;
+  margin-left: 0;
 }
 
 #comment_box {
-	position: absolute;
-	top: 565px;
-	left: 325px;
-	textarea {
-		width: 812px;
-	}
+  position: absolute;
+  top: 565px;
+  left: 325px;
+  textarea {
+    width: 812px;
+  }
 }
 
 #post_comment {
-	margin-top: 0;
+  margin-top: 0;
 }
 
-/* logo */
-
-#logo { 
-	font-family: 'Chango', cursive;
-	float: left; 
-	margin-top: 13px; 
-	margin-left: 5px;
-	font-size: 35px; 
-	color: #EFDFBB; 
-	text-transform: uppercase; 
-	letter-spacing: -1px; 
-	font-weight: bold; 
-	line-height: 35px; 
-	&:hover { 
-		color: #EFDFBB; 
-		text-decoration: none;
-	}
+#photo-stats {
+  margin-left: 10px;
 }
 
-#beta {
-	position: absolute;
-	top: -40px;
-	left: -40px;
-	z-index: -1;
+.flexslider {
+	height: 130px;
 }
 
-/* header */
-
-.search {
-	margin-top: 15px;
-	margin-bottom: 10px;
-	.search_btn {
-		margin-top: -10px;
-	}
-}
-
-.facebook {
-	float: right;
-	margin-top: 22px;
-}
-
-.twitter {
-	float: right;
-	margin-top: 22px;
-}
-
-/* modal */
-
-#homepage {
-	margin-right: 10px;
-}
-
-#street_lightbox {
-	margin-left: 10px;
-}
-
-/* AJAX loader */
-
-#loader {
-	margin-top: 10px;
-	margin-left: 480px;
-}
-
-/* user profile */
-
-#user_profile {
-	margin-top: 70px;
-	color: white;
-	.profile_slider {
-		margin-left: 0;
-	}
-	img {
-		margin-left: -30px;
-		margin-bottom: 15px;
-	}
-}
-
-#followers {
-	margin-left: -30px;
-	height: 265px;
-	padding: 10px;
-	overflow: auto;
-	img {
-		margin-left: -10px;
-		margin-right: 40px;
-	}
-}
-
-#following {
-	margin-left: -30px;
-	height: 265px;
-	padding: 10px;
-	overflow: auto;
-	img {
-		margin-left: -10px;
-		margin-right: 40px;
-	}
-}
-
-#profile_map {
-	margin-top: -70px;
-	margin-left: 100px;
-}
-
-a:hover, .street_view {
-	cursor: pointer;
+.flex-control-nav.flex-control-paging {
+	margin-bottom: -23px;
 }

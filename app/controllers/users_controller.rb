@@ -43,6 +43,17 @@ class UsersController < ApplicationController
     render :json => @comments
   end
 
+  def follow
+    if session[:user].nil?
+      redirect_to login_path
+    else
+      user_to_follow = params[:username]
+      find_user = Instagram.user_search(user_to_follow).first
+      @following_usr = Instagram.follow_user(find_user.id, options = { access_token: session[:user].access_token })
+      render :json => @following_user
+    end
+  end
+
   def like
     if session[:user].nil?
       redirect_to login_path
@@ -70,11 +81,18 @@ class UsersController < ApplicationController
         @stats          = HTTParty.get("https://api.instagram.com/v1/users/#{@user.id}/?access_token=#{session[:user].access_token}")
         @following      = Instagram.user_follows(@user.id, options = { access_token: session[:user].access_token, count: 200 })
         @follows        = Instagram.user_followed_by(@user.id, options = { access_token: session[:user].access_token, count: 200 })
+        @is_following   = Instagram.user_relationship(@user.id, options = { access_token: session[:user].access_token })
       rescue Instagram::BadRequest
         redirect_to   root_path, notice: "You do not have the proper permissions to view this user"
       end
     else
-      @images           = Instagram.user_recent_media(session[:user].instagram_id, options = { access_token: session[:user].access_token, count: 200 })
+      if params[:feed]
+        @feed           = Instagram.user_media_feed(options = { access_token: session[:user].access_token, count: 200 })
+      elsif params[:likes]
+        @likes          = Instagram.user_liked_media(options = { access_token: session[:user].access_token, count: 200 })
+      else
+        @images         = Instagram.user_recent_media(session[:user].instagram_id, options = { access_token: session[:user].access_token, count: 200 })
+      end
       @stats            = Instagram.user(session[:user].instagram_id, options = { access_token: session[:user].access_token })
       @following        = Instagram.user_follows(session[:user].instagram_id, options = { access_token: session[:user].access_token, count: 200 })
       @follows          = Instagram.user_followed_by(session[:user].instagram_id, options = { access_token: session[:user].access_token, count: 200 }) 
