@@ -2,7 +2,11 @@ $(document).ready ->
   Modal.show()
   Tooltip.show()
   Flash.show()
+  Instagram.follow()
   Instamap.init()
+
+$(window).load ->
+  $('#loading').fadeOut(2000)
 
 Instamap = 
   init: ->
@@ -10,6 +14,12 @@ Instamap =
       navigator.geolocation.getCurrentPosition ((position) ->
         latitude = position.coords.latitude
         longitude = position.coords.longitude
+        city = [latitude, longitude].toString()
+        geocoder = new google.maps.Geocoder()
+        geocoder.geocode
+          address: city
+        , (results, status) ->
+          $('#search_area').text 'Location: ' + results[0].address_components[2].short_name + ', ' + results[0].address_components[4].short_name
         Google.geoPosition latitude, longitude
       ), ->
         Google.geoPosition 40.69847032728747, -73.9514422416687
@@ -86,14 +96,26 @@ Flash =
     , 4000
 
 Container = 
-  loader: ->
-    $(".container").prepend "<img id=\"loader\" src=\"assets/ajax-loader.gif\" />"
-
   sad_face: ->
     $(".container").prepend "<div id=\"sad_face\" class=\"center alert alert-danger\"><img src=\"/assets/sad-face.png\" /><strong>&nbsp;&nbsp;Oh no! No Instagram images were found in this area, come back when this town gets up to speed with technology!</strong></div>"
     setTimeout ->
       $("#sad_face").slideUp 500
     , 5000
+
+Story =
+  board: (marker, content, infowindow) ->
+    $('.thumb').on 'mouseenter', ->
+      $('#instagram-user-profile').attr('src', $(this).data('profile'))
+      $('#photo-text').html($(this).data('username') + '</a> says:<br />' + $(this).data('text'))
+      $('#photo-stats').html("<br />Likes: " + $(this).data('likes') + '<br />Comments: ' + $(this).data('comments'))
+      if $(this).data("thumb") is $(content).find("img").attr("src")
+        infowindow.setContent content
+        infowindow.open Google.map, marker
+    $(".thumb").on "mouseleave", ->
+      infowindow.close()
+      $('#instagram-user-profile').attr('src', '/assets/sunglass_woman_green.png')
+      $('#photo-text').html('Hover over photo for stats')
+      $('#photo-stats').html('')
 
 Google =
   map: null
@@ -121,6 +143,7 @@ Google =
   ]
 
   placeMarker: (location) ->
+    current_location = []
     Google.deleteIcons Google.placeMarkerArray
     image = "/assets/custom_marker.png"
     if window.location.pathname is "/"
@@ -135,21 +158,33 @@ Google =
       Google.map.setCenter marker.getPosition()
     else
       find_location = $("#instagrams").data("instagrams")
-      $.each find_location, ->
-        location = $(this).attr("location") if $(this).attr("location")?
-      if location.latitude and location.longitude?
+      $.each find_location, (index, value) ->
+        if find_location[index].location?
+          if find_location[index].location.latitude?
+            current_location.push find_location[index].location if current_location.length <= 1
+      if current_location[0]?
         marker = new google.maps.Marker
-          position: new google.maps.LatLng location.latitude - .01, location.longitude
+          position: new google.maps.LatLng current_location[0].latitude - .01, current_location[0].longitude
           map: Google.map
-          title: $(".label.label-important").text() + " location"
+          title: $('.legend h1').text() + " location"
           icon: image
           animation: google.maps.Animation.DROP
         Google.map.setZoom 8
         Google.map.setCenter marker.getPosition()
       else
         Google.map.setZoom 2
+    if current_location[0]?
+      city = [current_location[0].latitude, current_location[0].longitude].toString()
+      geocoder = new google.maps.Geocoder()
+      geocoder.geocode
+        address: city
+      , (results, status) ->
+        $('#user-location').text results[0].formatted_address
+    else
+        $('#user-location').text 'Unknown'
+    Story.board '', '', ''
 
-  placeIcon: ->
+  placeIcon: (address) ->
     Google.deleteIcons Google.iconsArray
     image = "/assets/camera.png"
     instagrams = $("#instagrams").data("instagrams")
@@ -163,6 +198,8 @@ Google =
           animation: google.maps.Animation.DROP
         Google.iconsArray.push marker
         content = "<div id=\"infowindow\">" + "<img src=" + $(this).attr("images").thumbnail.url + " />" + "</div>"
+        $('#search_area').text('Location: ' + address) if address?
+        $('#search_area #search-loader').remove()
         Google.openWindow marker, content, infoWindow
 
   deleteIcons: (array) ->
@@ -179,36 +216,31 @@ Google =
       infowindow.setContent content
       infowindow.open Google.map, marker
       Google.infowindowLightbox()
-
-    $(".thumb").on "mouseenter", ->
-      if $(this).data("thumb") is $(content).find("img").attr("src")
-        infowindow.setContent content
-        infowindow.open Google.map, marker
-    $(".thumb").on "mouseleave", ->
-      infowindow.close()
+    Story.board(marker, content, infowindow)
 
   instaGeocode: ->
-    $(".search_btn").on "click", (event) ->
-      event.preventDefault()
-      Container.loader()
-      geocoder = new google.maps.Geocoder()
-      address = $("#geocode_address").val()
-      geocoder.geocode
-        address: address
-      , (results, status) ->
-        if status is google.maps.GeocoderStatus.OK
-          Google.map.setZoom 15
-          Google.map.setCenter results[0].geometry.location
-          image = "/assets/custom_marker.png"
-          marker = new google.maps.Marker
-            map: Google.map
-            position: results[0].geometry.location
-            icon: image
-            title: "Your searched location - " + address
-          Instagram.ping results[0].geometry.location.Ya, results[0].geometry.location.Za
-        else
-          alert "Geocode was not successful for the following reason: " + status
-          $("#loader").remove()
+    $(".search-query").on 'keypress', (event) ->
+      if event.keyCode is 13
+        event.preventDefault()
+        geocoder = new google.maps.Geocoder()
+        address = $("#geocode_address").val()
+        $('#search_area').html 'Currently searching around: ' + address + ' <img id="search-loader" src="/assets/ajax-loader.gif" height=25 width=25 />'
+        geocoder.geocode
+          address: address
+        , (results, status) ->
+          if status is google.maps.GeocoderStatus.OK
+            Google.map.setZoom 14
+            Google.map.setCenter results[0].geometry.location
+            image = "/assets/custom_marker.png"
+            marker = new google.maps.Marker
+              map: Google.map
+              position: results[0].geometry.location
+              icon: image
+              title: "Your searched location - " + address
+            Instagram.ping results[0].geometry.location.Ya, results[0].geometry.location.Za, address
+          else
+            alert "Geocode was not successful for the following reason: " + status
+            $("#loader").remove()
 
   geoPosition: (latitude, longitude) ->
     Google.instaGeocode()
@@ -219,10 +251,8 @@ Google =
       styles: Google.styles
       mapTypeId: google.maps.MapTypeId.ROADMAP
     Google.map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions)
-    Container.loader()
     Instagram.ping myLatlng.Ya, myLatlng.Za
     google.maps.event.addListener Google.map, "click", (event) ->
-      Container.loader()
       Google.placeMarker event.latLng
       Instagram.ping event.latLng.Ya, event.latLng.Za
 
@@ -234,7 +264,7 @@ Google =
         Fancy.run this if $(this).data("thumb") is infowindow_pic
 
 Instagram =
-  ping: (latitude, longitude) ->
+  ping: (latitude, longitude, address) ->
     myLatlng = new google.maps.LatLng latitude, longitude
     $.ajax
       type: "get"
@@ -253,7 +283,7 @@ Instagram =
         Slider.flexi()
         $(".thumb").on "click", ->
           Fancy.run this
-        Google.placeIcon()
+        Google.placeIcon(address)
       error: ->
         alert "Please refresh the page"
         $("#loader").remove()
@@ -272,6 +302,18 @@ Instagram =
         alert "You've liked this photo"
       error: ->
         alert "Something happened... Try again later!"
+  
+  follow: ->
+    $('#follow-user').on 'click', ->
+      $.ajax
+        type: 'get'
+        url: '/follow'
+        dataType: 'json'
+        data: username: window.location.pathname.split('/')[2]
+        success: (data) ->
+          $('#follow-user').text('Following')
+        error: ->
+          alert 'Something happened'
 
 Slider =
   flexi: ->
