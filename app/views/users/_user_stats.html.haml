@@ -1,0 +1,18 @@
+%li
+	%a{ href: '#' }
+		%i.gicon-user
+		- if session[:user].nil?
+			= "#{@stats.counts.followed_by} followers"
+		- elsif @user
+			= "#{@stats.parsed_response["data"]["counts"]["followed_by"]} followers"
+		- else
+			= "#{@stats.counts.followed_by} followers"
+%li
+	%a{ href: '#' }
+		%i.gicon-globe
+		- if session[:user].nil?
+			= "#{@stats.counts.follows} following"
+		- elsif @user
+			= "#{@stats.parsed_response["data"]["counts"]["follows"]} following"
+		- else
+			= "#{@stats.counts.follows} following"

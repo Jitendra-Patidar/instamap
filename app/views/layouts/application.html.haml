@@ -1,17 +1,7 @@
 !!!
 %html.no-js
   %head
-    %meta{ charset: 'utf-8' }
-    %title= "Instamap | #{yield(:title)}"
-    %meta{ name: 'vietport', content: 'width=device-with, initial-scale=1.0' }
-    = favicon_link_tag '/favicon.ico'
-    %meta{ name: "author", content: "Richard VanBreemen, Matthew Powers" }/
-    %meta{ name: "description", content: "Instamap is a new and fun way to view recent photos that are geolocated. When you firist visit Instamap, the most recent images from Instagram based on your location is shown..." }/
-    %meta{ name: "keywords", content: "instagram photo views, instagram picture, display instagram photos, accessing instagram online, can i look at instagram online, how to go on instagram online, instagram picture search" }/
-    %script{ type: 'text/javascript', src: 'http://w.sharethis.com/button/buttons.js' }
-    %script{ type: 'text/javascript' }
-      :plain
-        stLight.options({publisher: "12ebfbd3-b227-471c-ad93-04492e23225d"});
+    = render 'layouts/meta'
   %body
     #loading
       = image_tag 'ajax-loader.gif'
@@ -22,131 +12,20 @@
             %i.icon-reorder
     #sidebar.collapse
       .logo
-        %a{ href: root_path }= image_tag 'logo.png', alt: 'Instamap', title: 'Instamap'
+        %a{ href: root_path }= image_tag 'logo.png', alt: 'Instamap is the best web interface to find Instagram photos on the web with Google Maps.', title: 'Instamap is the best web interface to find Instagram photos on the web with Google Maps.'
       %ul#sidebar_menu.navbar.nav.nav-list.sidebar_box
-        %li
-          %a{ href: root_path }
-            = image_tag 'menu_icons/widgets.png'
-            = 'Home'
-        %li
-          - if session[:user].nil?
-            %a{ href: login_path, id: 'feed' }
-              = image_tag 'menu_icons/gallery.png'
-              = 'Feed'
-          - else
-            %a{ href: show_path(session[:user].username) + '?feed=true' }
-              = image_tag 'menu_icons/gallery.png'
-              = 'Feed'
-        %li
-          %a{ href: popular_path }
-            = image_tag 'menu_icons/forms.png'
-            = 'Popular'
-        %li
-          - if session[:user].nil?
-            %a{ href: login_path }
-              = image_tag 'menu_icons/statistics.png'
-              = 'Likes'
-          - else
-            %a{ href: show_path(session[:user].username) + '?likes=true' }
-              = image_tag 'menu_icons/gallery.png'
-              = 'Likes'
-        %li
-          - if session[:user].nil?
-            %a{ href: login_path }
-              = image_tag 'menu_icons/dashboard.png'
-              = 'Profile'
-          - else
-            %a{ href: show_path(session[:user].username) }
-              = image_tag 'menu_icons/dashboard.png'
-              = 'Profile'
-        %li.active
-          = link_to '#' do
-            = image_tag 'sunglass_woman_green.png', height: 60, width: 60, id: 'instagram-user-profile', class: 'img-polaroid'
-            #photo-text= 'Hover over photo for stats'
-          #photo-stats
+        = render 'layouts/sidebar'
     #main
       .container
         .container_top
           .row-fluid
             .top_bar_stats.to_hide_tablet
               .stats
-                .addthis_toolbox.addthis_default_style
-                  %a.addthis_button_facebook_like{ 'fb:like:layout' => 'button_count' }
-                  %a.addthis_button_tweet
-                  %a.addthis_button_pinterest_pinit
-                %script{ type: 'text/javascript' }
-                  :plain
-                    var addthis_config = {"data_track_addressbar":false};
-                %script{ type: 'text/javascript', src: '//s7.addthis.com/js/300/addthis_widget.js#pubid=rvb80' }
+                = render 'layouts/social_buttons'
             .top_right
-              %ul.nav.search
-                %li
-                  = form_tag "/", class: 'form-search' do
-                    .input-append.input-xxlarge= text_field_tag "geocode_address", "", class: 'search-query', placeholder: 'Search by street address, a landmark, a city, etc'
-              %ul.nav.nav_menu
-                %li.dropdown
-                  - if session[:user].nil?
-                    %a{ class: 'dropdown-toggle administrator', id: 'dLabel', role: 'button', data: { toggle: 'dropdown', target: '#', href: root_path } }
-                      %span.icon
-                        = image_tag 'menu_top/profile-avatar.png'
-                      %span.title
-                        = 'Login'
-                    %ul{ class: 'dropdown-menu', role: 'menu', :'aria-labelledby' => 'dLabel' }
-                      %li
-                        %a{ href: login_path }
-                          %i.icon-flag
-                          = 'Login'
-                  - else
-                    %a{ class: 'dropdown-toggle administrator', id: 'dLabel', role: 'button', data: { toggle: 'dropdown', target: '#', href: root_path } }
-                      %span.icon
-                        = image_tag 'menu_top/profile-avatar.png'
-                      %span.title
-                        = session[:user].username
-                    %ul{ class: 'dropdown-menu', role: 'menu', :'aria-labelledby' => 'dLabel' }
-                      %li
-                        %a{ href: show_path(session[:user].username) }
-                          %i.icon-user
-                          = 'My Profile'
-                      %li
-                        %a{ href: logout_path }
-                          %i.icon-unlock
-                          = 'Logout'
-                %li.dropdown
-                  %a{ id: 'dLabel', role: 'button', data: { toggle: 'dropdown', target: '#', href: '#' } }
-                    %span.icon
-                      = image_tag 'menu_top/profile-messages.png'
-                  %ul.dropdown-menu.messages{ :'aria-labelledby' => 'dLabel' }
-                    .container
-                      .heading
-                        %span.title
-                          %i.icon-comments
-                          = 'Messages'
-                        %span.link
-                          %a{ href: '#' }
-                            = 'Send new message'
+              = render 'layouts/navi'
         = yield
     = stylesheet_link_tag    "application", media: "all"
     = javascript_include_tag "application"
     = csrf_meta_tags
-    %script{ type: "text/javascript", src: "https://maps.googleapis.com/maps/api/js?key=AIzaSyDYT6jDAWu1MexLFKU6Ek-uBC2K7N2Hmb8&sensor=true" }
-    %script{ type: "text/javascript", charset: "utf-8" }
-      :plain
-        var is_ssl = ("https:" == document.location.protocol); 
-        var asset_host = is_ssl ? "https://d3rdqalhjaisuu.cloudfront.net/" : "http://d3rdqalhjaisuu.cloudfront.net/"; 
-        document.write(unescape("%3Cscript src='" + asset_host + "javascripts/feedback-v2.js' type='text/javascript'%3E%3C/script%3E"));
-    %script{ type: 'text/javascript' }
-      :plain
-        stLight.options({publisher: "12ebfbd3-b227-471c-ad93-04492e23225d"});
-    %script{ type: "text/javascript" }
-      :plain
-        var _gaq = _gaq || [];
-        var pluginUrl = 
-        '//www.google-analytics.com/plugins/ga/inpage_linkid.js';
-        _gaq.push(['_require', 'inpage_linkid', pluginUrl]);
-        _gaq.push(['_setAccount', 'UA-37122479-1']);
-        _gaq.push(['_trackPageview']);
-        (function() {
-          var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-          ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-          var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-        })();
+    = render 'layouts/scripts'

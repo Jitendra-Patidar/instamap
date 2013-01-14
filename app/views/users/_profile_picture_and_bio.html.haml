@@ -1,0 +1,14 @@
+- if session[:user].nil?
+	= image_tag @instagram_user.profile_picture, class: 'row-fluid'
+- elsif @user
+	= image_tag @user.profile_picture, class: 'row-fluid'
+- else
+	= image_tag session[:user].profile_picture, class: 'row-fluid'
+%br
+%br
+- if session[:user].nil?
+	= @stats.bio
+- elsif @user
+	= @stats.parsed_response["data"]["bio"]
+- else
+	= @stats.bio

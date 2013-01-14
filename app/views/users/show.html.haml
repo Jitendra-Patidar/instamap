@@ -1,9 +1,4 @@
-- if session[:user].nil?
-	- title @instagram_user.username
-- elsif @user
-	- title @user.username
-- else
-	- title session[:user].username
+= render 'users/user_title'
 #container2.profile
 	.row-fluid
 		.span3
@@ -12,39 +7,9 @@
 					%h1= params[:username]
 			.content
 				.row-fluid.well.well-small
-					- if session[:user].nil?
-						= image_tag @instagram_user.profile_picture, class: 'row-fluid'
-					- elsif @user
-						= image_tag @user.profile_picture, class: 'row-fluid'
-					- else
-						= image_tag session[:user].profile_picture, class: 'row-fluid'
-					%br
-					%br
-					- if session[:user].nil?
-						= @stats.bio
-					- elsif @user
-						= @stats.parsed_response["data"]["bio"]
-					- else
-						= @stats.bio
+					= render 'users/profile_picture_and_bio'
 				%ul.nav.nav-tabs.nav-stacked
-					%li
-						%a{ href: '#' }
-							%i.gicon-user
-							- if session[:user].nil?
-								= "#{@stats.counts.followed_by} followers"
-							- elsif @user
-								= "#{@stats.parsed_response["data"]["counts"]["followed_by"]} followers"
-							- else
-								= "#{@stats.counts.followed_by} followers"
-					%li
-						%a{ href: '#' }
-							%i.gicon-globe
-							- if session[:user].nil?
-								= "#{@stats.counts.follows} following"
-							- elsif @user
-								= "#{@stats.parsed_response["data"]["counts"]["follows"]} following"
-							- else
-								= "#{@stats.counts.follows} following"
+					= render 'users/user_stats'
 		.span9
 			.row-fluid.legend.profile
 				.row-fluid
@@ -73,33 +38,4 @@
 			.profile_slider
 				.flexslider
 					%ul.slides
-						- if @images
-							- @images.each do |media|
-								- if media.location.nil?
-									%li.thumb{ data: { profile: media.user.profile_picture, lat: "0", long: "0", id: media.id, thumb: media.images.thumbnail.url, username: media.user.username, comments: media.comments['count'], likes: media.likes['count'], text: media.caption.to_a.flatten[3], link: media.link } }
-										= link_to image_tag(media.images.thumbnail.url), media.images.low_resolution.url, class: "fancybox fancybox.iframe"
-								- else
-									%li.thumb{ data: { profile: media.user.profile_picture, lat: media.location.latitude, long: media.location.longitude, id: media.id, thumb: media.images.thumbnail.url, username: media.user.username, comments: media.comments['count'], likes: media.likes['count'], text: media.caption.to_a.flatten[3], link: media.link} }
-										= link_to image_tag(media.images.thumbnail.url), media.images.low_resolution.url, class: "fancybox fancybox.iframe"
-						- elsif @likes
-							- @likes.data.each do |media|
-								- if media.location.nil?
-									%li.thumb{ data: { profile: media.user.profile_picture, lat: "0", long: "0", id: media.id, thumb: media.images.thumbnail.url, username: media.user.username, comments: media.comments['count'], likes: media.likes['count'], text: media.caption.to_a.flatten[3], link: media.link } }
-										= link_to image_tag(media.images.thumbnail.url), media.images.low_resolution.url, class: "fancybox fancybox.iframe"
-								- else
-									%li.thumb{ data: { profile: media.user.profile_picture, lat: media.location.latitude, long: media.location.longitude, id: media.id, thumb: media.images.thumbnail.url, username: media.user.username, comments: media.comments['count'], likes: media.likes['count'], text: media.caption.to_a.flatten[3], link: media.link } }
-										= link_to image_tag(media.images.thumbnail.url), media.images.low_resolution.url, class: "fancybox fancybox.iframe"
-						- else
-							- @feed.data.each do |media|
-								- if media.location.nil?
-									%li.thumb{ data: { profile: media.user.profile_picture, lat: "0", long: "0", id: media.id, thumb: media.images.thumbnail.url, username: media.user.username, comments: media.comments['count'], likes: media.likes['count'], text: media.caption.to_a.flatten[3], link: media.link } }
-										= link_to image_tag(media.images.thumbnail.url), media.images.low_resolution.url, class: "fancybox fancybox.iframe"
-								- else
-									%li.thumb{ data: { profile: media.user.profile_picture, lat: media.location.latitude, long: media.location.longitude, id: media.id, thumb: media.images.thumbnail.url, username: media.user.username, comments: media.comments['count'], likes: media.likes['count'], text: media.caption.to_a.flatten[3], link: media.link } }
-										= link_to image_tag(media.images.thumbnail.url), media.images.low_resolution.url, class: "fancybox fancybox.iframe"
-- if @images
-	#instagrams{ data: { instagrams: @images.to_json } }
-- elsif @feed
-	#instagrams{ data: { instagrams: @feed.data.to_json } }
-- else
-	#instagrams{ data: { instagrams: @likes.data.to_json } }
+						= render 'users/user_images'

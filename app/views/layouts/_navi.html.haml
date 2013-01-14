@@ -1,0 +1,45 @@
+%ul.nav.search
+  %li
+    = form_tag '/', class: 'form-search' do
+      .input-append.input-xxlarge= text_field_tag 'geocode_address', '', class: 'search-query', placeholder: 'Search by street address, a landmark, a city, etc'
+%ul.nav.nav_menu
+  %li.dropdown
+    - if session[:user].nil?
+      %a{ class: 'dropdown-toggle administrator', id: 'dLabel', role: 'button', data: { toggle: 'dropdown', target: '#', href: root_path } }
+        %span.icon
+          = image_tag 'menu_top/profile-avatar.png'
+        %span.title
+          = 'Login'
+      %ul{ class: 'dropdown-menu', role: 'menu', :'aria-labelledby' => 'dLabel' }
+        %li
+          %a{ href: login_path }
+            %i.icon-flag
+            = 'Login'
+    - else
+      %a{ class: 'dropdown-toggle administrator', id: 'dLabel', role: 'button', data: { toggle: 'dropdown', target: '#', href: root_path } }
+        %span.icon
+          = image_tag 'menu_top/profile-avatar.png'
+        %span.title
+          = session[:user].username
+      %ul{ class: 'dropdown-menu', role: 'menu', :'aria-labelledby' => 'dLabel' }
+        %li
+          %a{ href: show_path(session[:user].username) }
+            %i.icon-user
+            = 'My Profile'
+        %li
+          %a{ href: logout_path }
+            %i.icon-unlock
+            = 'Logout'
+  %li.dropdown
+    %a{ id: 'dLabel', role: 'button', data: { toggle: 'dropdown', target: '#', href: '#' } }
+      %span.icon
+        = image_tag 'menu_top/profile-messages.png'
+    %ul.dropdown-menu.messages{ :'aria-labelledby' => 'dLabel' }
+      .container
+        .heading
+          %span.title
+            %i.icon-comments
+            = 'Messages'
+          %span.link
+            %a{ href: '#' }
+              = 'Send new message'

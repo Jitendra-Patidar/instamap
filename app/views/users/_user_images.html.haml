@@ -1,0 +1,30 @@
+- if @images
+	- @images.each do |media|
+		- if media.location.nil?
+			%li.thumb{ data: { profile: media.user.profile_picture, lat: "0", long: "0", id: media.id, thumb: media.images.thumbnail.url, username: media.user.username, comments: media.comments['count'], likes: media.likes['count'], text: media.caption.to_a.flatten[3], link: media.link } }
+				= link_to image_tag(media.images.thumbnail.url), media.images.low_resolution.url, class: "fancybox fancybox.iframe"
+		- else
+			%li.thumb{ data: { profile: media.user.profile_picture, lat: media.location.latitude, long: media.location.longitude, id: media.id, thumb: media.images.thumbnail.url, username: media.user.username, comments: media.comments['count'], likes: media.likes['count'], text: media.caption.to_a.flatten[3], link: media.link} }
+				= link_to image_tag(media.images.thumbnail.url), media.images.low_resolution.url, class: "fancybox fancybox.iframe"
+- elsif @likes
+	- @likes.data.each do |media|
+		- if media.location.nil?
+			%li.thumb{ data: { profile: media.user.profile_picture, lat: "0", long: "0", id: media.id, thumb: media.images.thumbnail.url, username: media.user.username, comments: media.comments['count'], likes: media.likes['count'], text: media.caption.to_a.flatten[3], link: media.link } }
+				= link_to image_tag(media.images.thumbnail.url), media.images.low_resolution.url, class: "fancybox fancybox.iframe"
+		- else
+			%li.thumb{ data: { profile: media.user.profile_picture, lat: media.location.latitude, long: media.location.longitude, id: media.id, thumb: media.images.thumbnail.url, username: media.user.username, comments: media.comments['count'], likes: media.likes['count'], text: media.caption.to_a.flatten[3], link: media.link } }
+				= link_to image_tag(media.images.thumbnail.url), media.images.low_resolution.url, class: "fancybox fancybox.iframe"
+- else
+	- @feed.data.each do |media|
+		- if media.location.nil?
+			%li.thumb{ data: { profile: media.user.profile_picture, lat: "0", long: "0", id: media.id, thumb: media.images.thumbnail.url, username: media.user.username, comments: media.comments['count'], likes: media.likes['count'], text: media.caption.to_a.flatten[3], link: media.link } }
+				= link_to image_tag(media.images.thumbnail.url), media.images.low_resolution.url, class: "fancybox fancybox.iframe"
+		- else
+			%li.thumb{ data: { profile: media.user.profile_picture, lat: media.location.latitude, long: media.location.longitude, id: media.id, thumb: media.images.thumbnail.url, username: media.user.username, comments: media.comments['count'], likes: media.likes['count'], text: media.caption.to_a.flatten[3], link: media.link } }
+				= link_to image_tag(media.images.thumbnail.url), media.images.low_resolution.url, class: "fancybox fancybox.iframe"
+- if @images
+	#instagrams{ data: { instagrams: @images.to_json } }
+- elsif @feed
+	#instagrams{ data: { instagrams: @feed.data.to_json } }
+- else
+	#instagrams{ data: { instagrams: @likes.data.to_json } }

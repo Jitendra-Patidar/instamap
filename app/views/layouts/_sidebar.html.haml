@@ -1,0 +1,40 @@
+%li
+  %a{ href: root_path }
+    = image_tag 'menu_icons/widgets.png'
+    = 'Home'
+%li
+  - if session[:user].nil?
+    %a{ href: login_path, id: 'feed' }
+      = image_tag 'menu_icons/gallery.png'
+      = 'Feed'
+  - else
+    %a{ href: show_path(session[:user].username) + '?feed=true' }
+      = image_tag 'menu_icons/gallery.png'
+      = 'Feed'
+%li
+  %a{ href: popular_path }
+    = image_tag 'menu_icons/forms.png'
+    = 'Popular'
+%li
+  - if session[:user].nil?
+    %a{ href: login_path }
+      = image_tag 'menu_icons/statistics.png'
+      = 'Likes'
+  - else
+    %a{ href: show_path(session[:user].username) + '?likes=true' }
+      = image_tag 'menu_icons/gallery.png'
+      = 'Likes'
+%li
+  - if session[:user].nil?
+    %a{ href: login_path }
+      = image_tag 'menu_icons/dashboard.png'
+      = 'Profile'
+  - else
+    %a{ href: show_path(session[:user].username) }
+      = image_tag 'menu_icons/dashboard.png'
+      = 'Profile'
+%li.active
+  = link_to '#' do
+    = image_tag 'sunglass_woman_green.png', height: 60, width: 60, id: 'instagram-user-profile', class: 'img-polaroid'
+    #photo-text= 'Hover over photo for stats'
+  #photo-stats
