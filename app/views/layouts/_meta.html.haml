@@ -5,15 +5,15 @@
 %meta{ name: 'author', content: 'Richard VanBreemen, Matthew Powers' }/
 - if @instagram_user
   %meta{ name: 'description', content: "View #{@instagram_user.full_name} (#{@instagram_user.username}) Instagram photos with Google Maps on Instamap." }/
-  %meta{ property: 'og:title', content: "#{@instagram_user.full_name} (#{@instagram_user.username}) Instgram photos with Google Maps." }/
+  %meta{ property: 'og:title', content: "#{@instagram_user.full_name} (#{@instagram_user.username}) Instagram photos with Google Maps." }/
   %meta{ property: 'og:url', content: "#{request.protocol}#{request.host_with_port}#{request.fullpath}" }/
 - elsif @user
   %meta{ name: 'description', content: "View #{@user.full_name} (#{@user.username}) Instagram photos with Google Maps on Instamap." }/
-  %meta{ property: 'og:title', content: "#{@user.full_name} (#{@user.username}) Instgram photos with Google Maps." }/
+  %meta{ property: 'og:title', content: "#{@user.full_name} (#{@user.username}) Instagram photos with Google Maps." }/
   %meta{ property: 'og:url', content: "#{request.protocol}#{request.host_with_port}#{request.fullpath}" }/
 - elsif session[:user].username == params[:username]
   %meta{ name: 'description', content: "View #{session[:user].full_name} (#{session[:user].username}) Instagram photos with Google Maps on Instamap." }/
-  %meta{ property: 'og:title', content: "#{session[:user].full_name} (#{session[:user].username}) Instgram photos with Google Maps." }/
+  %meta{ property: 'og:title', content: "#{session[:user].full_name} (#{session[:user].username}) Instagram photos with Google Maps." }/
   %meta{ property: 'og:url', content: "#{request.protocol}#{request.host_with_port}#{request.fullpath}" }/
 - else
   %meta{ name: 'description', content: 'Instamap is the best web interface to find Instagram photos on the web with Google Maps.' }/
