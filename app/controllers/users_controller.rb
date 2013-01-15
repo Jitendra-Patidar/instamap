@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
-
+  
+  before_filter :return_to
   after_filter :get_user, only: :generate_token
 
   def login
@@ -22,10 +23,15 @@ class UsersController < ApplicationController
     if @user.nil?
       @user         = User.new.new_user(@instagram_user)
       @current_user = User.find_by_username(@user.username)
-      redirect_to show_path(@current_user.username)
+      redirect_to(session[:return_to])
     else
-      redirect_to show_path(@user.username)
+      redirect_to(session[:return_to])
     end
+  end
+
+  def redirect_back_or_default
+    redirect_to(session[:return_to])
+    session[:return_to] = nil
   end
 
   def image
@@ -65,8 +71,6 @@ class UsersController < ApplicationController
 
   def search
     @searched_results   = Instagram.user_search(params[:term]) if params[:term]
-    render json: @searched_results.each { |user| user.username }
-    # render json: %w[foo bar]
   end
 
   def show
@@ -111,6 +115,10 @@ class UsersController < ApplicationController
   end
 
 private
+
+  def return_to
+    session[:return_to] = request.env['HTTP_REFERER']
+  end
 
   def get_user
     session[:user] = @user

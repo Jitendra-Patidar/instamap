@@ -1,5 +1,4 @@
 class InstamapController < ApplicationController
-
   def index
   end
 

@@ -30,6 +30,8 @@
 								- else
 									%button#follow-user.btn.btn-primary
 										= 'Follow'
+							- if session[:user].nil?
+								= link_to 'Sign in to follow', login_path, class: 'btn btn-primary'
 			#container2
 				.row-fluid
 					.box.gradient

@@ -1,7 +1,7 @@
 %ul.nav.search
   %li
     = form_tag '/', class: 'form-search' do
-      .input-append.input-xxlarge= text_field_tag 'geocode_address', '', class: 'search-query', placeholder: 'Search by street address, a landmark, a city, etc'
+      .input-append.input-xxlarge= text_field_tag 'geocode_address', '', class: 'search-query', placeholder: 'Search by street address, landmark, city, person, username, etc'
 %ul.nav.nav_menu
   %li.dropdown
     - if session[:user].nil?

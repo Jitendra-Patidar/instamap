@@ -37,7 +37,7 @@ ul.ui-autocomplete {
 }
 
 .addthis_toolbox.addthis_default_style {
-  width: 300px;
+  width: 500px;
   margin-left: 0;
 }
 
@@ -57,8 +57,8 @@ ul.ui-autocomplete {
   width: auto; 
   img {
     margin-right: 10px; 
-    height: 230; 
-    width: 245px; 
+    height: 200px; 
+    width: 225px; 
   }
 }
 
@@ -155,10 +155,12 @@ iframe.fancybox-iframe {
   margin-left: 10px;
 }
 
-.flexslider {
-	height: 130px;
+.flex-control-nav.flex-control-paging {
+	margin-bottom: 5px;
 }
 
-.flex-control-nav.flex-control-paging {
-	margin-bottom: -23px;
+/* Search */
+
+#view-user {
+  color: white;
 }

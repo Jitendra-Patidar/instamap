@@ -33,7 +33,7 @@
     %a{ href: show_path(session[:user].username) }
       = image_tag 'menu_icons/dashboard.png'
       = 'Profile'
-%li.active
+%li#stat-box.active
   = link_to '#' do
     = image_tag 'sunglass_woman_green.png', height: 60, width: 60, id: 'instagram-user-profile', class: 'img-polaroid'
     #photo-text= 'Hover over photo for stats'

@@ -10822,7 +10822,7 @@ ul.general_statistics .desc {
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   border-radius: 3px;
-  width: 355px;
+  width: 450px;
   float: right;
   font-size: 14px;
   padding: 2px 5px 2px 30px;
@@ -10837,7 +10837,7 @@ ul.general_statistics .desc {
   transition: width 100ms;
 }
 #main .container_top form .input-append input.search-query:focus {
-  width: 370px;
+  width: 465px;
   -webkit-transition: width 100ms;
   -moz-transition: width 100ms;
   -o-transition: width 100ms;

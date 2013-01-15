@@ -28,5 +28,4 @@
                     %td
                       = user.bio
                     %td
-                      %button.btn.btn-primary
-                        = 'Follow'
+                      = link_to 'View', show_path(user.username), id: 'view-user', class: 'btn btn-primary'

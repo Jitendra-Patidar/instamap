@@ -1,5 +1,6 @@
 $(document).ready ->
   Modal.show()
+  User.search()
   Instagram.follow()
   if window.location.pathname is '/'
     Instamap.init()
@@ -8,6 +9,7 @@ $(document).ready ->
 
 $(window).load ->
   $('#loading').fadeOut(2000)
+  $('#stat-box').hide() if window.location.pathname is '/search'
 
 Instamap = 
   init: ->
@@ -26,6 +28,22 @@ Instamap =
         Google.geoPosition 40.69847032728747, -73.9514422416687
     else
       Google.geoPosition 40.69847032728747, -73.9514422416687
+
+User =
+  search: ->
+    $('.search-query').on 'keypress', (event) ->
+      event.preventDefault() if event.keyCode is 13
+    $('.search-query').autocomplete
+      minLength: 3
+      source: (request, response) ->
+        response ['Click to search by location', 'Click to search by user']
+      select: (event, selection) ->
+        if selection.item.label is 'Click to search by location'
+          event.preventDefault()
+          Google.instaGeocode()
+        else
+          event.preventDefault()
+          Instagram.search $('#geocode_address').val()
 
 Modal = 
   show: ->
@@ -71,7 +89,7 @@ Modal =
                 $('#myModal').modal 'hide'
               , 1050
             error: ->
-              alert 'Oops. Something weird happened. Please try submitting the contact form again.'
+              alert 'Oops. Something happened. Please try again later...'
 
 Story =
   board: (marker, content, infowindow) ->
@@ -206,32 +224,28 @@ Google =
     Story.board(marker, content, infowindow)
 
   instaGeocode: ->
-    $('.search-query').on 'keypress', (event) ->
-      if event.keyCode is 13
-        event.preventDefault()
-        geocoder = new google.maps.Geocoder()
-        user_input = $('#geocode_address').val()
-        $('#search_area').html 'Currently searching: ' + user_input + ' <img id="search-loader" src="/assets/ajax-loader.gif" height=25 width=25 />'
-        geocoder.geocode
-          address: user_input
-        , (results, status) ->
-          if status is google.maps.GeocoderStatus.OK
-            Google.map.setZoom 14
-            Google.map.setCenter results[0].geometry.location
-            image = '/assets/custom_marker.png'
-            marker = new google.maps.Marker
-              map: Google.map
-              position: results[0].geometry.location
-              icon: image
-              title: 'Your searched location - ' + user_input
-            Instagram.ping results[0].geometry.location.Ya, results[0].geometry.location.Za, user_input
-          else
-            # Instagram.search user_input
-            alert 'Geocode was not successful for the following reason: ' + status
-            $('#loader').remove()
+    geocoder = new google.maps.Geocoder()
+    user_input = $('#geocode_address').val()
+    $('#search_area').html 'Currently searching: ' + user_input + ' <img id="search-loader" src="/assets/ajax-loader.gif" height=25 width=25 />'
+    geocoder.geocode
+      address: user_input
+    , (results, status) ->
+      if status is google.maps.GeocoderStatus.OK
+        Google.map.setZoom 14
+        Google.map.setCenter results[0].geometry.location
+        image = '/assets/custom_marker.png'
+        marker = new google.maps.Marker
+          map: Google.map
+          position: results[0].geometry.location
+          icon: image
+          title: 'Your searched location - ' + user_input
+        Instagram.ping results[0].geometry.location.Ya, results[0].geometry.location.Za, user_input
+      else
+        alert 'Geocode was not successful for the following reason: ' + status
+        $('#search-loader').remove()
 
   geoPosition: (latitude, longitude) ->
-    Google.instaGeocode()
+    # Google.instaGeocode()
     myLatlng = new google.maps.LatLng latitude, longitude
     mapOptions =
       zoom: 12
@@ -289,7 +303,7 @@ Instagram =
       success: (data) ->
         alert 'You\'ve liked this photo'
       error: ->
-        alert 'Something happened... Try again later!'
+        alert 'Oops. You have to be signed in to like a photo.'
   
   follow: ->
     $('#follow-user').on 'click', ->
@@ -301,7 +315,7 @@ Instagram =
         success: (data) ->
           $('#follow-user').text('Following')
         error: ->
-          alert 'Something happened'
+          alert 'Oops. You have to be signed in to follow a user.'
 
   search: (user_input) ->
     window.location.replace 'http://localhost:3000/search?term=' + user_input
@@ -311,7 +325,6 @@ Instagram =
       dataType: 'jsonp'
       data: search_user: user_input
       success: (data) ->
-
 
 Slider =
   flexi: ->
