@@ -63,6 +63,12 @@ class UsersController < ApplicationController
     end
   end
 
+  def search
+    @searched_results   = Instagram.user_search(params[:term]) if params[:term]
+    render json: @searched_results.each { |user| user.username }
+    # render json: %w[foo bar]
+  end
+
   def show
     if session[:user].nil?
       begin
