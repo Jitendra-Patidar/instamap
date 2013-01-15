@@ -318,13 +318,7 @@ Instagram =
           alert 'Oops. You have to be signed in to follow a user.'
 
   search: (user_input) ->
-    window.location.replace 'http://localhost:3000/search?term=' + user_input
-    $.ajax
-      type: 'get'
-      url: '/search'
-      dataType: 'jsonp'
-      data: search_user: user_input
-      success: (data) ->
+    window.location.replace 'http://www.instamap.it/search?term=' + user_input
 
 Slider =
   flexi: ->
