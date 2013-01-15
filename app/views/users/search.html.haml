@@ -1,0 +1,32 @@
+= title "Instamap search results for #{params[:search_user]}"
+#container2
+  .row-fluid
+    .box.gradient
+      .title
+        %table.table.table-striped.table-hover
+          %thead
+            %tr
+              %th.to_hide_phone.no_sort
+              %th.to_hide_phone.no_sort
+                = 'Name'
+              %th.to_hide_phone.no_sort
+                = 'Username'
+              %th.to_hide_phone.no_sort
+                = 'Bio'
+              %th.to_hide_phone.no_sort
+                = 'Action'
+            - if @searched_results
+              - @searched_results.each do |user|
+                %tbody
+                  %tr
+                    %td
+                      = link_to image_tag(user.profile_picture, class: 'img-polaroid', alt: "#{user.full_name} (#{user.username})", title: "#{user.full_name} (#{user.username})"), show_path(user.username)
+                    %td
+                      = link_to user.full_name, show_path(user.username)
+                    %td
+                      = link_to user.username, show_path(user.username)
+                    %td
+                      = user.bio
+                    %td
+                      %button.btn.btn-primary
+                        = 'Follow'

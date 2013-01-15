@@ -1,6 +1,6 @@
 %meta{ charset: 'utf-8' }
 %title= "#{yield(:title)}"
-%meta{ name: 'vietport', content: 'width=device-with, initial-scale=1.0' }/
+%meta{ name: 'viewport', content: 'width=device-with, initial-scale=1.0' }/
 = favicon_link_tag '/favicon.ico'
 %meta{ name: 'author', content: 'Richard VanBreemen, Matthew Powers' }/
 - if @instagram_user
@@ -11,7 +11,7 @@
   %meta{ name: 'description', content: "View #{@user.full_name} (#{@user.username}) Instagram photos with Google Maps on Instamap." }/
   %meta{ property: 'og:title', content: "#{@user.full_name} (#{@user.username}) Instagram photos with Google Maps." }/
   %meta{ property: 'og:url', content: "#{request.protocol}#{request.host_with_port}#{request.fullpath}" }/
-- elsif session[:user].username == params[:username]
+- elsif params[:username] != nil and session[:user].username != nil
   %meta{ name: 'description', content: "View #{session[:user].full_name} (#{session[:user].username}) Instagram photos with Google Maps on Instamap." }/
   %meta{ property: 'og:title', content: "#{session[:user].full_name} (#{session[:user].username}) Instagram photos with Google Maps." }/
   %meta{ property: 'og:url', content: "#{request.protocol}#{request.host_with_port}#{request.fullpath}" }/

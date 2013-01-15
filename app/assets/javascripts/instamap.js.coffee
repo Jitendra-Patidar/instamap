@@ -5,9 +5,6 @@ $(document).ready ->
     Instamap.init()
   else
     Google.placeMarker ''
-  $('.search-query').autocomplete
-    delay: 5000
-    source: '/search'
 
 $(window).load ->
   $('#loading').fadeOut(2000)
@@ -230,9 +227,8 @@ Google =
             Instagram.ping results[0].geometry.location.Ya, results[0].geometry.location.Za, user_input
           else
             # Instagram.search user_input
-            # Instagram.search user_input
-            # alert 'Geocode was not successful for the following reason: ' + status
-            # $('#loader').remove()
+            alert 'Geocode was not successful for the following reason: ' + status
+            $('#loader').remove()
 
   geoPosition: (latitude, longitude) ->
     Google.instaGeocode()
