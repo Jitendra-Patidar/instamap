@@ -19,19 +19,13 @@ class UsersController < ApplicationController
                           } )
     
     @user = User.find_by_username(@instagram_user["user"]["username"])
+    @user = User.new.new_user(@instagram_user) if @user.nil?
     
-    if @user.nil?
-      @user         = User.new.new_user(@instagram_user)
-      @current_user = User.find_by_username(@user.username)
-      redirect_to(session[:return_to])
+    if session[:return_to].nil?
+      redirect_to root_path
     else
       redirect_to(session[:return_to])
     end
-  end
-
-  def redirect_back_or_default
-    redirect_to(session[:return_to])
-    session[:return_to] = nil
   end
 
   def image

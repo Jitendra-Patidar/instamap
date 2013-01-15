@@ -4,19 +4,19 @@
 = favicon_link_tag '/favicon.ico'
 %meta{ name: 'author', content: 'Richard VanBreemen, Matthew Powers' }/
 - if @instagram_user
-  %meta{ name: 'description', content: "View #{@instagram_user.full_name} (#{@instagram_user.username}) Instagram photos with Google Maps on Instamap." }/
-  %meta{ property: 'og:title', content: "#{@instagram_user.full_name} (#{@instagram_user.username}) Instagram photos with Google Maps." }/
+  %meta{ name: 'description', content: "Instamap. View #{@instagram_user.full_name} (#{@instagram_user.username}) Instagram photos with Google Maps and street view locations." }/
+  %meta{ property: 'og:title', content: "Instamap | #{@instagram_user.full_name} (#{@instagram_user.username}) Instagram photos with Google Maps and street view locations" }/
   %meta{ property: 'og:url', content: "#{request.protocol}#{request.host_with_port}#{request.fullpath}" }/
 - elsif @user
-  %meta{ name: 'description', content: "View #{@user.full_name} (#{@user.username}) Instagram photos with Google Maps on Instamap." }/
-  %meta{ property: 'og:title', content: "#{@user.full_name} (#{@user.username}) Instagram photos with Google Maps." }/
+  %meta{ name: 'description', content: "Instamap. View #{@user.full_name} (#{@user.username}) Instagram photos with Google Maps and street view locations." }/
+  %meta{ property: 'og:title', content: "Instamap | #{@user.full_name} (#{@user.username}) Instagram photos with Google Maps and street view locations" }/
   %meta{ property: 'og:url', content: "#{request.protocol}#{request.host_with_port}#{request.fullpath}" }/
 - elsif params[:username] != nil and session[:user].username != nil
-  %meta{ name: 'description', content: "View #{session[:user].full_name} (#{session[:user].username}) Instagram photos with Google Maps on Instamap." }/
-  %meta{ property: 'og:title', content: "#{session[:user].full_name} (#{session[:user].username}) Instagram photos with Google Maps." }/
+  %meta{ name: 'description', content: "Instamap. View #{session[:user].full_name} (#{session[:user].username}) Instagram photos with Google Maps and street view locations." }/
+  %meta{ property: 'og:title', content: "Instamap | #{session[:user].full_name} (#{session[:user].username}) Instagram photos with Google Maps and street view locations" }/
   %meta{ property: 'og:url', content: "#{request.protocol}#{request.host_with_port}#{request.fullpath}" }/
 - else
-  %meta{ name: 'description', content: 'Instamap is the best web interface to find Instagram photos on the web with Google Maps.' }/
-  %meta{ property: 'og:title', content: 'Instamap is the best web interface to find Instagram photos on the web with Google Maps.' }/
+  %meta{ name: 'description', content: 'Instamap. View Instagram photos with Google Maps and street view locations. Instamap allows you to search by location, address, landmarks, person, username, etc.' }/
+  %meta{ property: 'og:title', content: 'Instamap | Instagram photos with Google Maps and street view locations' }/
   %meta{ property: 'og:url', content: 'http://www.instamap.it' }/
 %meta{ property: 'og:type', content: 'website' }/

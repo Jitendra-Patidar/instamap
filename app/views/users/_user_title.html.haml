@@ -1,6 +1,6 @@
 - if session[:user].nil?
-	- title raw "#{@instagram_user.full_name} (#{@instagram_user.username}) Instgram photos with Google Maps"
+	- title raw "#Instamap | {@instagram_user.full_name} (#{@instagram_user.username}) Instgram photos with Google Maps and street view locations"
 - elsif @user
-	- title raw "#{@user.full_name} (#{@user.username}) Instagram photos with Google Maps"
+	- title raw "Instamap | #{@user.full_name} (#{@user.username}) Instagram photos with Google Maps and street view locations"
 - else
-	- title raw "#{session[:user].full_name} (#{session[:user].username}) Instagram photos with Google Maps"
+	- title raw "Instamap | #{session[:user].full_name} (#{session[:user].username}) Instagram photos with Google Maps and street view locations"
