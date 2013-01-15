@@ -215,7 +215,7 @@ Google =
         geocoder.geocode
           address: user_input
         , (results, status) ->
-          if results is user_input # status is google.maps.GeocoderStatus.OK
+          if status is google.maps.GeocoderStatus.OK
             Google.map.setZoom 14
             Google.map.setCenter results[0].geometry.location
             image = '/assets/custom_marker.png'
