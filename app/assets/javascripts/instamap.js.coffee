@@ -325,7 +325,7 @@ Instagram =
     window.location.replace 'http://www.instamap.it/search?term=' + user_input
 
   tag: (user_input) ->
-    window.location.replace 'http://localhost:3000/tag?term=' + user_input
+    window.location.replace 'http://www.instamap.it/tag?term=' + user_input
     $.ajax
       type: 'get'
       url: '/tag'
