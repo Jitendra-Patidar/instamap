@@ -1,10 +1,10 @@
 !!!
 %html.no-js
   %head
+    = render 'layouts/meta'
     = stylesheet_link_tag    "application", media: "all"
     = javascript_include_tag "application"
     = csrf_meta_tags
-    = render 'layouts/meta'
     = render 'layouts/scripts'
   %body
     #loading
@@ -21,6 +21,8 @@
         = render 'layouts/sidebar'
     #main
       .container
+        - if notice
+          #notice-error.alert.alert-error= "#{notice}"
         .container_top
           .row-fluid
             .top_bar_stats.to_hide_tablet

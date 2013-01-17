@@ -1,0 +1,23 @@
+= title "Instamap search results for tag #{params[:term]}"
+#container2
+	.row-fluid
+		.box.gradient
+			.title
+				.row-fluid
+					%h3
+						= "Instamap search results for tag #{params[:term]}"
+			#content
+				#map_canvas
+	.flexslider
+		%ul.slides
+			- @tags.data.each do |media|
+				- if media.location.nil?
+					%li.thumb{ data: { profile: media.user.profile_picture, lat: "0", long: "0", id: media.id, thumb: media.images.thumbnail.url, username: media.user.username, comments: media.comments['count'], likes: media.likes['count'], text: media.caption.to_a.flatten[3], link: media.link } }
+						= link_to image_tag(media.images.thumbnail.url), media.images.low_resolution.url, class: "fancybox fancybox.iframe"
+				- else
+					%li.thumb{ data: { profile: media.user.profile_picture, lat: media.location.latitude, long: media.location.longitude, id: media.id, thumb: media.images.thumbnail.url, username: media.user.username, comments: media.comments['count'], likes: media.likes['count'], text: media.caption.to_a.flatten[3], link: media.link} }
+						= link_to image_tag(media.images.thumbnail.url), media.images.low_resolution.url, class: "fancybox fancybox.iframe"
+	#load-more.btn.btn-primary
+		= link_to 'Load more', @tags.pagination.next_url, id: 'more-tag'
+	#footer
+#instagrams{ data: { instagrams: @tags.data.to_json } }

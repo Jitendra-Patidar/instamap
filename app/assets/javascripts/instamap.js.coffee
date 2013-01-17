@@ -13,6 +13,9 @@ $(window).load ->
 
 Instamap = 
   init: ->
+    setTimeout ->
+      $('#notice-error').slideUp('slow')
+    , 4000
     if navigator.geolocation
       navigator.geolocation.getCurrentPosition ((position) ->
         latitude = position.coords.latitude
@@ -36,11 +39,14 @@ User =
     $('.search-query').autocomplete
       minLength: 3
       source: (request, response) ->
-        response ['Click to search by location', 'Click to search by user']
+        response ['Search by location', 'Search by tag', 'Search by user']
       select: (event, selection) ->
-        if selection.item.label is 'Click to search by location'
+        if selection.item.label is 'Search by location'
           event.preventDefault()
           Google.instaGeocode()
+        else if selection.item.label is 'Search by tag'
+          event.preventDefault()
+          Instagram.tag $('#geocode_address').val()
         else
           event.preventDefault()
           Instagram.search $('#geocode_address').val()
@@ -245,7 +251,6 @@ Google =
         $('#search-loader').remove()
 
   geoPosition: (latitude, longitude) ->
-    # Google.instaGeocode()
     myLatlng = new google.maps.LatLng latitude, longitude
     mapOptions =
       zoom: 12
@@ -263,7 +268,7 @@ Google =
       infowindow_pic = $(this).parent().find('img').attr('src')
       thumbs = $('.thumb')
       $.each thumbs, ->
-        Fancy.run this if $(this).data('thumb') is infowindow_pic
+        Fancy.run @ if $(this).data('thumb') is infowindow_pic
 
 Instagram =
   ping: (latitude, longitude, user_input) ->
@@ -272,9 +277,7 @@ Instagram =
       type: 'get'
       url: '/places'
       dataType: 'json'
-      data:
-        lat: latitude
-        lng: longitude
+      data: lat: latitude, lng: longitude
       success: (data) ->
         $('#loader').remove()
         if data.instagram.length is 122
@@ -284,10 +287,11 @@ Instagram =
         $('.imageSlider').html data.instagram
         Slider.flexi()
         $('.thumb').on 'click', ->
-          Fancy.run this
+          Fancy.run @
         Google.placeIcon user_input
       error: ->
-        alert 'Please refresh the page'
+        Google.geoPosition 40.69847032728747, -73.9514422416687
+        alert 'There was an error from Instagram. By default, New York City is loaded, try searching or refreshing the page'
         $('#loader').remove()
 
   post: ->
@@ -319,6 +323,16 @@ Instagram =
 
   search: (user_input) ->
     window.location.replace 'http://www.instamap.it/search?term=' + user_input
+
+  tag: (user_input) ->
+    window.location.replace 'http://localhost:3000/tag?term=' + user_input
+    $.ajax
+      type: 'get'
+      url: '/tag'
+      dataType: 'json'
+      data: term: user_input
+      success: (data) ->
+        Slider.flexi()
 
 Slider =
   flexi: ->

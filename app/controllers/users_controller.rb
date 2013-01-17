@@ -67,6 +67,14 @@ class UsersController < ApplicationController
     @searched_results   = Instagram.user_search(params[:term]) if params[:term]
   end
 
+  def tag
+    begin
+      @tags             = Instagram.tag_recent_media(params[:term], options = { count: 200 })
+    rescue Exception
+      redirect_to root_path, notice: "#{params[:term]} is not a valid tag search"
+    end
+  end
+
   def show
     if session[:user].nil?
       begin

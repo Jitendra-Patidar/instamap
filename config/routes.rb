@@ -13,4 +13,5 @@ Instamap::Application.routes.draw do
   match '/popular',          to: 'instamap#popular',     as: :popular
   match '/follow',           to: 'users#follow',         as: :follow
   match '/search',           to: 'users#search',         as: :search
+  match '/tag',              to: 'users#tag',            as: :tag
 end
