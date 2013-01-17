@@ -38,6 +38,8 @@ User =
       event.preventDefault() if event.keyCode is 13
     $('.search-query').autocomplete
       minLength: 3
+      focus: (event, response) ->
+        event.preventDefault()
       source: (request, response) ->
         response ['Search by location', 'Search by tag', 'Search by user']
       select: (event, selection) ->
