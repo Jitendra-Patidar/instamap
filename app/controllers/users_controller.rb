@@ -49,7 +49,7 @@ class UsersController < ApplicationController
     else
       user_to_follow = params[:username]
       find_user = Instagram.user_search(user_to_follow).first
-      @following_usr = Instagram.follow_user(find_user.id, options = { access_token: session[:user].access_token })
+      @following_user = Instagram.follow_user(find_user.id, options = { access_token: session[:user].access_token })
       render :json => @following_user
     end
   end
