@@ -1,4 +1,6 @@
 $(document).ready ->
+  $('#loading').fadeOut(2000)
+  $('#stat-box').hide() if window.location.pathname is '/search'
   Modal.show()
   User.search()
   Instagram.follow()
@@ -6,10 +8,6 @@ $(document).ready ->
     Instamap.init()
   else
     Google.placeMarker ''
-
-$(window).load ->
-  $('#loading').fadeOut(2000)
-  $('#stat-box').hide() if window.location.pathname is '/search'
 
 Instamap = 
   init: ->
