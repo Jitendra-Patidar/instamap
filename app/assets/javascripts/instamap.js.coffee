@@ -290,6 +290,7 @@ Instagram =
           Fancy.run @
         Google.placeIcon user_input
       error: ->
+        return
         Google.geoPosition 40.69847032728747, -73.9514422416687
         alert 'There was an error from Instagram. By default, New York City is loaded, try searching or refreshing the page'
         $('#loader').remove()
